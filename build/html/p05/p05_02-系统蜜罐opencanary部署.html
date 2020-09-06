@@ -1,0 +1,742 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>5.2 系统蜜罐opencanary部署 &mdash; ArchitecTang’Blog 2.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="第六章 shell脚本学习笔记" href="../chapters/p06.html" />
+    <link rel="prev" title="5.1 BetterBackdoor 多功能后门工具" href="p05_01-BetterBackdoor_%E5%A4%9A%E5%8A%9F%E8%83%BD%E5%90%8E%E9%97%A8%E5%B7%A5%E5%85%B7.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> ArchitecTang’Blog
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../preface.html">前言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p01.html">第一章 Linux 使用笔记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p02.html">第二章 Python 学习笔记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p03.html">第三章 微服务入门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p04.html">第四章 网络相关</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../chapters/p05.html">第五章 安全相关</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="p05_01-BetterBackdoor_%E5%A4%9A%E5%8A%9F%E8%83%BD%E5%90%8E%E9%97%A8%E5%B7%A5%E5%85%B7.html">5.1 BetterBackdoor 多功能后门工具</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5.2 系统蜜罐opencanary部署</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">5.2.1 opencanary简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">5.2.2 模拟服务</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">5.2.3 安装环境</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mysql">5.2.4 安装配置mysql</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#supervisor">5.2.5 安装配置supervisor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#nginxtornado">5.2.6 安装nginx反向代理tornado</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">5.2.7 登陆管理后台</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">5.2.8 安装客户端</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">5.2.9 卸载opencanary方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">5.2.10 后台可统计的信息</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">5.2.11 参考</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p06.html">第六章 shell脚本学习笔记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p07.html">第七章 开发工具</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p08.html">第八章 数据库学习笔记</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ArchitecTang’Blog</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../chapters/p05.html">第五章 安全相关</a> &raquo;</li>
+        
+      <li>5.2 系统蜜罐opencanary部署</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/p05/p05_02-系统蜜罐opencanary部署.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="contents topic" id="id1">
+<p class="topic-title">目录</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#opencanary" id="id11">5.2 系统蜜罐opencanary部署</a></p>
+<ul>
+<li><p><a class="reference internal" href="#id2" id="id12">5.2.1 opencanary简介</a></p></li>
+<li><p><a class="reference internal" href="#id3" id="id13">5.2.2 模拟服务</a></p></li>
+<li><p><a class="reference internal" href="#id4" id="id14">5.2.3 安装环境</a></p></li>
+<li><p><a class="reference internal" href="#mysql" id="id15">5.2.4 安装配置mysql</a></p></li>
+<li><p><a class="reference internal" href="#supervisor" id="id16">5.2.5 安装配置supervisor</a></p></li>
+<li><p><a class="reference internal" href="#nginxtornado" id="id17">5.2.6 安装nginx反向代理tornado</a></p></li>
+<li><p><a class="reference internal" href="#id5" id="id18">5.2.7 登陆管理后台</a></p></li>
+<li><p><a class="reference internal" href="#id6" id="id19">5.2.8 安装客户端</a></p></li>
+<li><p><a class="reference internal" href="#id7" id="id20">5.2.9 卸载opencanary方法</a></p></li>
+<li><p><a class="reference internal" href="#id8" id="id21">5.2.10 后台可统计的信息</a></p></li>
+<li><p><a class="reference internal" href="#id9" id="id22">5.2.11 参考</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="opencanary">
+<h1><a class="toc-backref" href="#id11">5.2 系统蜜罐opencanary部署</a><a class="headerlink" href="#opencanary" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id2">
+<h2><a class="toc-backref" href="#id12">5.2.1 opencanary简介</a><a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>内网低交互蜜罐opencanary：</p>
+<p>opencanary是2015年blackhat在单独发布环节推出的的一款蜜罐工具，纯python模拟多种应用和服务。当模拟的服务被某人使用（交互登录）时，它就会产生相应的日志。
+<a class="reference external" href="https://github.com/thinkst/opencanary/tree/master/opencanary">Github项目地址</a></p>
+</div>
+<div class="section" id="id3">
+<h2><a class="toc-backref" href="#id13">5.2.2 模拟服务</a><a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">1</span><span class="p">)</span><span class="n">端口扫描行为</span>
+
+<span class="mi">2</span><span class="p">)</span><span class="n">ftp登录尝试</span>
+
+<span class="mi">3</span><span class="p">)</span><span class="n">web蜜罐被访问</span>
+
+<span class="mi">4</span><span class="p">)</span><span class="n">web蜜罐被登录</span>
+
+<span class="mi">5</span><span class="p">)</span><span class="n">ssh建立连接</span>
+
+<span class="mi">6</span><span class="p">)</span><span class="n">ssh远程版本发送</span>
+
+<span class="mi">7</span><span class="p">)</span><span class="n">ssh登录尝试</span>
+
+<span class="mi">8</span><span class="p">)</span><span class="n">telnet登录尝试</span>
+
+<span class="mi">9</span><span class="p">)</span><span class="n">mysql登录尝试</span>
+</pre></div>
+</div>
+<p>项目架构图： <img alt="honeypot.png" src="https://i.loli.net/2019/07/20/5d3305b1c825093839.png" /></p>
+</div>
+<div class="section" id="id4">
+<h2><a class="toc-backref" href="#id14">5.2.3 安装环境</a><a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<p>安装系统：Centos7 64位系统</p>
+<p>Python使用系统自带的 Python 2.7</p>
+<p>系统配置</p>
+<p>关闭selinux</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">setenforce</span> <span class="mi">0</span>
+<span class="n">vim</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">selinux</span><span class="o">/</span><span class="n">config</span>
+
+<span class="c1"># This file controls the state of SELinux on the system.</span>
+<span class="c1"># SELINUX= can take one of these three values:</span>
+<span class="c1">#     enforcing - SELinux security policy is enforced.</span>
+<span class="c1">#     permissive - SELinux prints warnings instead of enforcing.</span>
+<span class="c1">#     disabled - No SELinux policy is loaded.</span>
+<span class="n">SELINUX</span><span class="o">=</span><span class="n">disabled</span>
+ <span class="n">SELINUXTYPE</span><span class="o">=</span> <span class="n">can</span> <span class="n">take</span> <span class="n">one</span> <span class="n">of</span> <span class="n">three</span> <span class="n">two</span> <span class="n">values</span><span class="p">:</span>
+<span class="c1">#     targeted - Targeted processes are protected,</span>
+<span class="c1">#     minimum - Modification of targeted policy. Only selected processes are protected.</span>
+<span class="c1">#     mls - Multi Level Security protection.</span>
+<span class="n">SELINUXTYPE</span><span class="o">=</span><span class="n">targeted</span>
+</pre></div>
+</div>
+<p>然后重启服务器，selinux 便永久生效了</p>
+<p>查看系统Python版本</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">root</span><span class="nd">@node1</span> <span class="o">~</span><span class="p">]</span><span class="c1"># python -V</span>
+<span class="n">Python</span> <span class="mf">2.7</span><span class="o">.</span><span class="mi">5</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@node1</span> <span class="o">~</span><span class="p">]</span><span class="c1">#</span>
+</pre></div>
+</div>
+<p>tornado安装</p>
+<p>下载web源码和安装依赖</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@node1</span> <span class="n">src</span><span class="p">]</span><span class="c1"># git clone https://github.com/p1r06u3/opencanary_web.git</span>
+<span class="n">正克隆到</span> <span class="s1">&#39;opencanary_web&#39;</span><span class="o">...</span>
+<span class="n">remote</span><span class="p">:</span> <span class="n">Enumerating</span> <span class="n">objects</span><span class="p">:</span> <span class="mi">46</span><span class="p">,</span> <span class="n">done</span><span class="o">.</span>
+<span class="n">remote</span><span class="p">:</span> <span class="n">Counting</span> <span class="n">objects</span><span class="p">:</span> <span class="mi">100</span><span class="o">%</span> <span class="p">(</span><span class="mi">46</span><span class="o">/</span><span class="mi">46</span><span class="p">),</span> <span class="n">done</span><span class="o">.</span>
+<span class="n">remote</span><span class="p">:</span> <span class="n">Compressing</span> <span class="n">objects</span><span class="p">:</span> <span class="mi">100</span><span class="o">%</span> <span class="p">(</span><span class="mi">34</span><span class="o">/</span><span class="mi">34</span><span class="p">),</span> <span class="n">done</span><span class="o">.</span>
+<span class="n">remote</span><span class="p">:</span> <span class="n">Total</span> <span class="mi">1083</span> <span class="p">(</span><span class="n">delta</span> <span class="mi">20</span><span class="p">),</span> <span class="n">reused</span> <span class="mi">30</span> <span class="p">(</span><span class="n">delta</span> <span class="mi">11</span><span class="p">),</span> <span class="n">pack</span><span class="o">-</span><span class="n">reused</span> <span class="mi">1037</span>
+<span class="n">接收对象中</span><span class="p">:</span> <span class="mi">100</span><span class="o">%</span> <span class="p">(</span><span class="mi">1083</span><span class="o">/</span><span class="mi">1083</span><span class="p">),</span> <span class="mf">3.78</span> <span class="n">MiB</span> <span class="o">|</span> <span class="mf">101.00</span> <span class="n">KiB</span><span class="o">/</span><span class="n">s</span><span class="p">,</span> <span class="n">done</span><span class="o">.</span>
+<span class="n">处理</span> <span class="n">delta</span> <span class="n">中</span><span class="p">:</span> <span class="mi">100</span><span class="o">%</span> <span class="p">(</span><span class="mi">558</span><span class="o">/</span><span class="mi">558</span><span class="p">),</span> <span class="n">done</span><span class="o">.</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@node1</span> <span class="n">src</span><span class="p">]</span><span class="c1"># cd opencanary_web/</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@node1</span> <span class="n">opencanary_web</span><span class="p">]</span><span class="c1"># pip install -r requirements.txt</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="mysql">
+<h2><a class="toc-backref" href="#id15">5.2.4 安装配置mysql</a><a class="headerlink" href="#mysql" title="永久链接至标题">¶</a></h2>
+<p>下载mysql5.7 安装包</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">dev</span><span class="o">.</span><span class="n">mysql</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">get</span><span class="o">/</span><span class="n">mysql57</span><span class="o">-</span><span class="n">community</span><span class="o">-</span><span class="n">release</span><span class="o">-</span><span class="n">el7</span><span class="o">-</span><span class="mf">8.</span><span class="n">noarch</span><span class="o">.</span><span class="n">rpm</span>
+</pre></div>
+</div>
+<p>安装mysql 源</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">localinstall</span> <span class="n">mysql57</span><span class="o">-</span><span class="n">community</span><span class="o">-</span><span class="n">release</span><span class="o">-</span><span class="n">el7</span><span class="o">-</span><span class="mf">8.</span><span class="n">noarch</span><span class="o">.</span><span class="n">rpm</span>
+</pre></div>
+</div>
+<p>检查mysql源是否安装成功</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">repolist</span> <span class="n">enabled</span><span class="o">|</span><span class="n">grep</span> <span class="s2">&quot;mysql.*-community.*&quot;</span>
+</pre></div>
+</div>
+<p>安装mysql</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">install</span> <span class="n">mysql</span><span class="o">-</span><span class="n">server</span>
+</pre></div>
+</div>
+<p>启动mysql并设置开机自启动</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">start</span> <span class="n">mysqld</span>
+<span class="n">systemctl</span> <span class="n">enable</span> <span class="n">mysqld</span>
+<span class="n">systemctl</span> <span class="n">daemon</span><span class="o">-</span><span class="n">reload</span>
+</pre></div>
+</div>
+<p>修改mysql本地登陆密码</p>
+<p>mysql安装完成后在/var/log/mysqld.log文件中给root用户生成了一个默认密码</p>
+<p>通过以下方式找到root默认密码，然后登录mysql进行修改：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[root@node1 ~]# grep &#39;temporary password&#39; /var/log/mysqld.log
+2019-07-20T13:07:38.462181Z 1 [Note] A temporary password is generated for root@localhost: ponNmM,qj0&lt;Z
+root@localhost: 后面就是默认初始密码
+登录mysql：mysql -u root -p
+[root@node1 ~]# mysql -u root -p
+Enter password:
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 4
+Server version: 5.7.26
+
+Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type &#39;help;&#39; or &#39;\h&#39; for help. Type &#39;\c&#39; to clear the current input statement.
+
+mysql&gt;
+</pre></div>
+</div>
+<p>重置mysql密码</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>执行修改密码语句：ALTER USER &#39;root&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;new-password&#39;;
+mysql&gt;  ALTER USER &#39;root&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;new-password&#39;;     ---新密码需要符合要求,即密码组成应由大、小写字母、数字、符号组成
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&gt;  flush privileges;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&gt; exit
+Bye
+</pre></div>
+</div>
+<p>创建mysql数据库和表结构</p>
+<p>切换到opencanary_web目录</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">opencanary_web</span>
+</pre></div>
+</div>
+<p>登陆mysql创建数据库并还原表结构</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">create</span> <span class="n">database</span> <span class="n">honeypot</span><span class="p">;</span>
+<span class="n">use</span> <span class="n">honeypot</span><span class="p">;</span>
+<span class="n">source</span> <span class="n">honeypot</span><span class="o">.</span><span class="n">sql</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>这时数据库中User表内默认用户名和密码为：admin:raw-latex:<cite>admin</cite></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>若要修改web后台登录密码请执行sql语句password的值换成自己的32位md5：
+UPDATE User SET password=&#39;900150983cd24fb0d6963f7d28e17f72&#39; WHERE id=1;
+</pre></div>
+</div>
+<p>修改web数据库连接密码</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>vim /usr/local/src/opencanary_web/dbs/initdb.py
+修改：
+DB_PWD = &#39;&#39;  修改为自己的mysql密码
+</pre></div>
+</div>
+<p>单tornado实例启动测试</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">server</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">port</span><span class="o">=</span><span class="mi">80</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@node1</span> <span class="n">opencanary_web</span><span class="p">]</span><span class="c1"># python server.py --port=80</span>
+<span class="n">Development</span> <span class="n">server</span> <span class="ow">is</span> <span class="n">running</span> <span class="n">at</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p">:</span><span class="mi">80</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>若输出“Development server is running at
+<a class="reference external" href="http://0.0.0.0:80/">http://0.0.0.0:80/</a>”，且访问主机的ip能够显示出登录后台地址，则web单实例后台启动成功。</p>
+</div>
+<div class="section" id="supervisor">
+<h2><a class="toc-backref" href="#id16">5.2.5 安装配置supervisor</a><a class="headerlink" href="#supervisor" title="永久链接至标题">¶</a></h2>
+<p>Supervisor（ <a class="reference external" href="http://supervisord.org/">http://supervisord.org/</a>
+）是用Python开发的一个client/server服务，是Linux/Unix系统下的一个进程管理工具，不支持Windows系统。它可以很方便的监听、启动、停止、重启一个或多个进程。</p>
+<p>用Supervisor管理的进程，当一个进程意外被杀死，supervisort监听到进程死后，会自动将它重新拉起，很方便的做到进程自动恢复的功能，不再需要自己写shell脚本来控制。</p>
+<p>启动 supervisor</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">install</span> <span class="n">supervisor</span>
+<span class="n">设置开机自启动</span>
+<span class="n">systemctl</span> <span class="n">enable</span> <span class="n">supervisord</span><span class="o">.</span><span class="n">service</span>
+</pre></div>
+</div>
+<p>配置文件</p>
+<p>supervisord 的配置 文件是 /etc/supervisord.conf</p>
+<p>自定义配置文件目录是/etc/supervisord.d/,该目录下文件以.ini为后缀</p>
+<p>这里给出我的supervisor子配置：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">vi</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">supervisord</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">tornado</span><span class="o">.</span><span class="n">ini</span>
+<span class="p">[</span><span class="n">group</span><span class="p">:</span><span class="n">tornadoes</span><span class="p">]</span>
+<span class="n">programs</span><span class="o">=</span><span class="n">tornado</span><span class="o">-</span><span class="mi">8000</span><span class="p">,</span><span class="n">tornado</span><span class="o">-</span><span class="mi">8001</span><span class="p">,</span><span class="n">tornado</span><span class="o">-</span><span class="mi">8002</span><span class="p">,</span><span class="n">tornado</span><span class="o">-</span><span class="mi">8003</span>
+
+<span class="p">[</span><span class="n">program</span><span class="p">:</span><span class="n">tornado</span><span class="o">-</span><span class="mi">8000</span><span class="p">]</span>
+<span class="n">command</span><span class="o">=</span><span class="n">python</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">opencanary_web</span><span class="o">/</span><span class="n">server</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">port</span><span class="o">=</span><span class="mi">8000</span>
+<span class="n">directory</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">opencanary_web</span>
+<span class="n">autorestart</span><span class="o">=</span><span class="n">true</span>
+<span class="n">redirect_stderr</span><span class="o">=</span><span class="n">true</span>
+<span class="n">stdout_logfile</span><span class="o">=/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">tornado</span><span class="o">.</span><span class="n">log</span>
+<span class="n">loglevel</span><span class="o">=</span><span class="n">debug</span>
+
+<span class="p">[</span><span class="n">program</span><span class="p">:</span><span class="n">tornado</span><span class="o">-</span><span class="mi">8001</span><span class="p">]</span>
+<span class="n">command</span><span class="o">=</span><span class="n">python</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">opencanary_web</span><span class="o">/</span><span class="n">server</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">port</span><span class="o">=</span><span class="mi">8001</span>
+<span class="n">directory</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">opencanary_web</span>
+<span class="n">autorestart</span><span class="o">=</span><span class="n">true</span>
+<span class="n">redirect_stderr</span><span class="o">=</span><span class="n">true</span>
+<span class="n">stdout_logfile</span><span class="o">=/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">tornado</span><span class="o">.</span><span class="n">log</span>
+<span class="n">loglevel</span><span class="o">=</span><span class="n">debug</span>
+
+<span class="p">[</span><span class="n">program</span><span class="p">:</span><span class="n">tornado</span><span class="o">-</span><span class="mi">8002</span><span class="p">]</span>
+<span class="n">command</span><span class="o">=</span><span class="n">python</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">opencanary_web</span><span class="o">/</span><span class="n">server</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">port</span><span class="o">=</span><span class="mi">8002</span>
+<span class="n">directory</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">opencanary_web</span>
+<span class="n">autorestart</span><span class="o">=</span><span class="n">true</span>
+<span class="n">redirect_stderr</span><span class="o">=</span><span class="n">true</span>
+<span class="n">stdout_logfile</span><span class="o">=/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">tornado</span><span class="o">.</span><span class="n">log</span>
+<span class="n">loglevel</span><span class="o">=</span><span class="n">debug</span>
+
+<span class="p">[</span><span class="n">program</span><span class="p">:</span><span class="n">tornado</span><span class="o">-</span><span class="mi">8003</span><span class="p">]</span>
+<span class="n">command</span><span class="o">=</span><span class="n">python</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">opencanary_web</span><span class="o">/</span><span class="n">server</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">port</span><span class="o">=</span><span class="mi">8003</span>
+<span class="n">directory</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">opencanary_web</span>
+<span class="n">autorestart</span><span class="o">=</span><span class="n">true</span>
+<span class="n">redirect_stderr</span><span class="o">=</span><span class="n">true</span>
+<span class="n">stdout_logfile</span><span class="o">=/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">tornado</span><span class="o">.</span><span class="n">log</span>
+<span class="n">loglevel</span><span class="o">=</span><span class="n">debug</span>
+</pre></div>
+</div>
+<p>启动supervisor</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>systemctl start supervisord
+其他常用命令：
+systemctl stop supervisord      # 停止supervisord
+systemctl restart supervisord   # 重启supervisord
+</pre></div>
+</div>
+<p>启动多tornado实例</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">supervisorctl</span> <span class="n">start</span> <span class="n">tornadoes</span><span class="p">:</span><span class="o">*</span>
+<span class="n">其他更多supervisord</span> <span class="n">客户端管理命令</span>
+<span class="n">supervisorctl</span> <span class="n">status</span>                    <span class="c1"># 状态</span>
+<span class="n">supervisorctl</span> <span class="n">stop</span> <span class="n">nginx</span>                <span class="c1">#关闭 nginx</span>
+<span class="n">supervisorctl</span> <span class="n">start</span> <span class="n">nginx</span>               <span class="c1">#启动 nginx</span>
+<span class="n">supervisorctl</span> <span class="n">restart</span> <span class="n">nginx</span>             <span class="c1">#重启 nginx</span>
+<span class="n">supervisorctl</span> <span class="n">reread</span>
+<span class="n">supervisorctl</span> <span class="n">update</span>                    <span class="c1">#更新新的配置</span>
+</pre></div>
+</div>
+<p>查看应用web是否启动成功</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>ps aux|grep python
+root      3303  0.0  0.9 562428 18316 ?        Ssl  7月12   0:49 /usr/bin/python -Es /usr/sbin/tuned -l -P
+root     14126  0.0  0.7 224872 13804 ?        Ss   22:25   0:00 /usr/bin/python /usr/bin/supervisord -c /etc/supervisord.conf
+root     14128  0.6  1.9 335660 36356 ?        Sl   22:25   0:00 python /usr/local/src/opencanary_web/server.py --port=8000
+root     14129  0.6  1.9 409648 37572 ?        Sl   22:25   0:00 python /usr/local/src/opencanary_web/server.py --port=8001
+root     14130  0.6  1.9 335664 36364 ?        Sl   22:25   0:00 python /usr/local/src/opencanary_web/server.py --port=8002
+root     14131  0.6  1.9 335664 36360 ?        Sl   22:25   0:00 python /usr/local/src/opencanary_web/server.py --port=8003
+root     14279  0.0  0.0 112728   980 pts/0    R+   22:27   0:00 grep --color=auto python
+</pre></div>
+</div>
+</div>
+<div class="section" id="nginxtornado">
+<h2><a class="toc-backref" href="#id17">5.2.6 安装nginx反向代理tornado</a><a class="headerlink" href="#nginxtornado" title="永久链接至标题">¶</a></h2>
+<p>安装nginx</p>
+<p>可以使用源码编译安装和yum安装</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>这里使用yum安装 。。。。省事
+yum -y install nginx
+</pre></div>
+</div>
+<p>nginx反向代理tornado配置</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>先备份nginx配置文件
+cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
+修改配置文件
+    user nginx;
+worker_processes 5;
+error_log /var/log/nginx/error.log warn;
+pid    /var/run/nginx.pid;
+events {
+    worker_connections 1024;
+}
+http {
+    include    /etc/nginx/mime.types;
+    default_type application/octet-stream;
+    log_format main &#39;$remote_addr - $remote_user [$time_local] &quot;$request&quot;&#39;
+            &#39;$status $body_bytes_sent &quot;$http_referer&quot; &#39;
+            &#39;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#39;;
+    access_log /var/log/nginx/access.log main;
+    sendfile    on;
+    #tcp_nopush   on;
+    keepalive_timeout 65;
+    #gzip on;
+    fastcgi_connect_timeout 1800;
+    fastcgi_send_timeout 1800;
+    fastcgi_read_timeout 1800;
+    fastcgi_buffer_size 1024k;
+    fastcgi_buffers 32 1024k;
+    fastcgi_busy_buffers_size 2048k;
+    fastcgi_temp_file_write_size 2048k;
+    map $http_upgrade $connection_upgrade {
+    default upgrade;
+    &#39;&#39;   close;
+    }
+    include /etc/nginx/conf.d/*.conf;
+}
+</pre></div>
+</div>
+<p>测试配置文件是否正确</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">nginx</span> <span class="o">-</span><span class="n">t</span>    <span class="o">--</span><span class="n">使用</span><span class="o">-</span><span class="n">t参数进行验证nginx配置文件是否正确</span>
+<span class="n">nginx</span><span class="p">:</span> <span class="n">the</span> <span class="n">configuration</span> <span class="n">file</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">nginx</span><span class="o">.</span><span class="n">conf</span> <span class="n">syntax</span> <span class="ow">is</span> <span class="n">ok</span>
+<span class="n">nginx</span><span class="p">:</span> <span class="n">configuration</span> <span class="n">file</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">nginx</span><span class="o">.</span><span class="n">conf</span> <span class="n">test</span> <span class="ow">is</span> <span class="n">successful</span>
+</pre></div>
+</div>
+<p>添加/etc/nginx/conf.d/hp.conf配置</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>vi /etc/nginx/conf.d/hp.conf
+upstream hp {
+    server 127.0.0.1:8000;
+    server 127.0.0.1:8001;
+    server 127.0.0.1:8002;
+    server 127.0.0.1:8003;
+}
+server {
+    listen  80;
+    server_name localhost;
+    proxy_connect_timeout 10d;
+    proxy_read_timeout 10d;
+    proxy_send_timeout 10d;
+    location /static/ {
+        alias   /usr/local/src/opencanary_web/dist/static/;
+
+    }
+    location / {
+        proxy_pass http://hp;
+        proxy_pass_header Server;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Scheme $scheme;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection &quot;upgrade&quot;;
+    }
+}
+</pre></div>
+</div>
+<p>启动/重启nginx</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>启动:
+/sbin/nginx
+查看nginx是否已经启动L
+ps -aux | grep nginx
+root     15002  0.0  0.0  56724  1212 ?        Ss   22:41   0:00 nginx: master process /sbin/nginx
+nginx    15003  0.0  0.1  57212  2040 ?        S    22:41   0:00 nginx: worker process
+nginx    15004  0.0  0.1  57212  2040 ?        S    22:41   0:00 nginx: worker process
+nginx    15005  0.0  0.1  57212  2040 ?        S    22:41   0:00 nginx: worker process
+nginx    15006  0.0  0.1  57212  2040 ?        S    22:41   0:00 nginx: worker process
+nginx    15007  0.0  0.1  57212  2040 ?        S    22:41   0:00 nginx: worker process
+root     15034  0.0  0.0 112728   980 pts/0    R+   22:41   0:00 grep --color=auto nginx
+</pre></div>
+</div>
+<p>访问主机ip的80端口，查看是否可以正常访问、正常登陆。</p>
+</div>
+<div class="section" id="id5">
+<h2><a class="toc-backref" href="#id18">5.2.7 登陆管理后台</a><a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">ip</span>
+</pre></div>
+</div>
+<p>登陆页面： <img alt="后台页面.png" src="https://i.loli.net/2019/07/20/5d3327b6d65ba39094.png" /></p>
+<p>管理控制台： <img alt="后台管理页面.png" src="https://i.loli.net/2019/07/20/5d332814c4da971352.png" /></p>
+</div>
+<div class="section" id="id6">
+<h2><a class="toc-backref" href="#id19">5.2.8 安装客户端</a><a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h2>
+<p>当蜜罐管理后台部署完成之后，可以重新启用一台虚拟主机部署客户端。</p>
+<p>这里优先推荐使用Centos7因为系统比较新默认python环境为2.7.x，类库也比较新。</p>
+<p>系统配置</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>系统：Centos 7
+Python: Python 2.7.X
+安装扩展源
+yum -y install epel-release
+安装依赖
+yum -y install libpcap-devel openssl-devel libffi-devel python-devel gcc python-pip gcc-c++
+</pre></div>
+</div>
+<p>安装opencanary客户端</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cd /usr/local/src/
+git clone https://github.com/p1r06u3/opencanary.git
+cd opencanary/
+修改配置文件：
+vi opencanary/data/settings.json
+</pre></div>
+</div>
+<p>将第2行，device.node_id的值opencanary-1代表将来告警的节点，改为主机名</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;device.node_id&quot;</span><span class="p">:</span> <span class="s2">&quot;node2&quot;</span><span class="p">,</span>
+</pre></div>
+</div>
+<p>将第3行，server.ip改成自己web服务端的ip</p>
+<p>注意: 如果你的web端，不是80端口，要在配置的ip后面跟上“:端口号”。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;server.ip&quot;</span><span class="p">:</span> <span class="s2">&quot;172.31.8.8&quot;</span><span class="p">,</span>
+</pre></div>
+</div>
+<p>将第4行，device.listen_addr改成自己本机ip(非127.0.0.1)。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;device.listen_addr&quot;</span><span class="p">:</span> <span class="s2">&quot;172.31.8.13&quot;</span><span class="p">,</span>
+</pre></div>
+</div>
+<div class="figure align-default" id="id10">
+<img alt="客户端配置.png" src="https://i.loli.net/2019/07/20/5d332b1aa542e89869.png" />
+<p class="caption"><span class="caption-text">客户端配置.png</span><a class="headerlink" href="#id10" title="永久链接至图片">¶</a></p>
+</div>
+<p>安装opencanary</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">sdist</span>
+<span class="n">cd</span> <span class="n">dist</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="n">opencanary</span><span class="o">-</span><span class="mf">0.4</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+</pre></div>
+</div>
+<p>配置端口扫描发现功能</p>
+<p>端口扫描发现模块是依赖于iptables；需要rsyslog配合产生kern.log日志。</p>
+<p>安装iptables</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">install</span> <span class="n">iptables</span><span class="o">-</span><span class="n">services</span>
+</pre></div>
+</div>
+<p>配置rsyslog</p>
+<p>通过rsyslog 控制日志产生位置： vim /etc/rsyslog.conf</p>
+<p>修改第50行</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">kern</span><span class="o">.*</span>                                                 <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">kern</span><span class="o">.</span><span class="n">log</span>
+</pre></div>
+</div>
+<p>重启rsyslog</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">restart</span> <span class="n">rsyslog</span>
+</pre></div>
+</div>
+<p>启动和停止opencanary方法</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>若第一次安装opencanary，需要先运行opencanaryd --copyconfig，会生成/root/.opencanary.conf配置文件。
+启动命令: opencanaryd --start
+停止命令: opencanaryd --stop
+重启命令: opencanaryd --restart
+opencanary日志: /var/tmp/opencanary.log
+</pre></div>
+</div>
+<p>启动opencanaryd</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>opencanaryd --start
+查看进程：
+ps -aux | grep opencan
+root     21586  0.1  4.4 412296 83484 ?        Sl   23:46   0:00 /usr/bin/python2 /usr/bin/twistd -y /usr/bin/opencanary.tac --pidfile /usr/bin/opencanaryd.pid --syslog --prefix=opencanaryd
+</pre></div>
+</div>
+<p>在后台管理页面查看主机状态： <img alt="主机列表.png" src="https://i.loli.net/2019/07/20/5d33370ce12f982913.png" />
+可以看到新增加的node2节点已经出现在管理页面里</p>
+</div>
+<div class="section" id="id7">
+<h2><a class="toc-backref" href="#id20">5.2.9 卸载opencanary方法</a><a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h2>
+<p>首先卸载旧客户端</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">opencanaryd</span> <span class="o">--</span><span class="n">stop</span>
+<span class="n">rm</span> <span class="o">-</span><span class="n">rf</span> <span class="o">/</span><span class="n">root</span><span class="o">/.</span><span class="n">opencanary</span><span class="o">.</span><span class="n">conf</span>
+<span class="n">rm</span> <span class="o">-</span><span class="n">rf</span>  <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">opencanary</span><span class="o">/</span>
+<span class="n">pip</span> <span class="n">uninstall</span> <span class="n">opencanary</span> <span class="o">-</span><span class="n">y</span>
+<span class="n">iptables</span> <span class="o">-</span><span class="n">t</span> <span class="n">mangle</span> <span class="o">-</span><span class="n">F</span>
+
+<span class="n">安装新客户端</span>
+<span class="n">curl</span> <span class="o">-</span><span class="n">O</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">p1r06u3</span><span class="o">/</span><span class="n">opencanary_web</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">install</span><span class="o">/</span><span class="n">install_opencanary_agent</span><span class="o">.</span><span class="n">sh</span>
+<span class="n">bash</span> <span class="n">install_opencanary_agent</span><span class="o">.</span><span class="n">sh</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id8">
+<h2><a class="toc-backref" href="#id21">5.2.10 后台可统计的信息</a><a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>1.ftp登录尝试；
+2.http访问请求；
+3.http登录请求；
+4.ssh建立连接；
+5.ssh远程版本发送；
+6.ssh登录尝试；
+7.telnet登录尝试；
+8.全端口(SYN)扫描识别;
+9.NMAP OS扫描识别；
+10.NMAP NULL扫描识别；
+11.NMAP XMAS扫描识别；
+12.NMAP FIN扫描识别；
+13.mysql登录尝试；
+14.git clone请求；
+16.ntp monlist请求（默认关闭）；
+16.redis命令请求；
+17.TCP连接请求；
+18.vnc连接请求；
+19.rdp协议windows远程登录；
+20.snmp扫描；
+21.sip请求；
+22.mssql登录sql账户认证；
+23.mssql登录win身份认证；
+24.http代理登录尝试；
+</pre></div>
+</div>
+</div>
+<div class="section" id="id9">
+<h2><a class="toc-backref" href="#id22">5.2.11 参考</a><a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h2>
+<p><a class="reference external" href="https://github.com/p1r06u3/opencanary_web/blob/master/docs/install/Linux_AutoInstall.md">自动安装：https://github.com/p1r06u3/opencanary_web/blob/master/docs/install/Linux_AutoInstall.md</a></p>
+<p><a class="reference external" href="https://github.com/p1r06u3/opencanary_web/blob/master/docs/install/Manual_Installation.md#%E6%89%8B%E5%B7%A5%E5%AE%89%E8%A3%85">手动安装：https://github.com/p1r06u3/opencanary_web/blob/master/docs/install/Linux_AutoInstall.md</a></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../chapters/p06.html" class="btn btn-neutral float-right" title="第六章 shell脚本学习笔记" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="p05_01-BetterBackdoor_%E5%A4%9A%E5%8A%9F%E8%83%BD%E5%90%8E%E9%97%A8%E5%B7%A5%E5%85%B7.html" class="btn btn-neutral float-left" title="5.1 BetterBackdoor 多功能后门工具" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; 版权所有 2020, Architectang
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

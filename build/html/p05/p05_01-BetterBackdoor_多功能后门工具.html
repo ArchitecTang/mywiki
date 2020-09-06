@@ -1,0 +1,345 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>5.1 BetterBackdoor 多功能后门工具 &mdash; ArchitecTang’Blog 2.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="5.2 系统蜜罐opencanary部署" href="p05_02-%E7%B3%BB%E7%BB%9F%E8%9C%9C%E7%BD%90opencanary%E9%83%A8%E7%BD%B2.html" />
+    <link rel="prev" title="第五章 安全相关" href="../chapters/p05.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> ArchitecTang’Blog
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../preface.html">前言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p01.html">第一章 Linux 使用笔记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p02.html">第二章 Python 学习笔记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p03.html">第三章 微服务入门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p04.html">第四章 网络相关</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../chapters/p05.html">第五章 安全相关</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5.1 BetterBackdoor 多功能后门工具</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">5.1.1 功能列表</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">5.1.2 BetterBackdoor 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">5.1.3 BetterBackdoor操作机制</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">5.1.4 工具使用条件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">5.1.5 工具下载与安装</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="p05_02-%E7%B3%BB%E7%BB%9F%E8%9C%9C%E7%BD%90opencanary%E9%83%A8%E7%BD%B2.html">5.2 系统蜜罐opencanary部署</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p06.html">第六章 shell脚本学习笔记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p07.html">第七章 开发工具</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p08.html">第八章 数据库学习笔记</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ArchitecTang’Blog</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../chapters/p05.html">第五章 安全相关</a> &raquo;</li>
+        
+      <li>5.1 BetterBackdoor 多功能后门工具</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/p05/p05_01-BetterBackdoor_多功能后门工具.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="contents topic" id="id1">
+<p class="topic-title">目录</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#betterbackdoor" id="id7">5.1 BetterBackdoor 多功能后门工具</a></p>
+<ul>
+<li><p><a class="reference internal" href="#id2" id="id8">5.1.1 功能列表</a></p></li>
+<li><p><a class="reference internal" href="#id3" id="id9">5.1.2 BetterBackdoor 简介</a></p></li>
+<li><p><a class="reference internal" href="#id4" id="id10">5.1.3 BetterBackdoor操作机制</a></p></li>
+<li><p><a class="reference internal" href="#id5" id="id11">5.1.4 工具使用条件</a></p></li>
+<li><p><a class="reference internal" href="#id6" id="id12">5.1.5 工具下载与安装</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="betterbackdoor">
+<h1><a class="toc-backref" href="#id7">5.1 BetterBackdoor 多功能后门工具</a><a class="headerlink" href="#betterbackdoor" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id2">
+<h2><a class="toc-backref" href="#id8">5.1.1 功能列表</a><a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">cmd</span><span class="p">]</span> <span class="n">Run</span> <span class="n">Command</span> <span class="n">Prompt</span> <span class="n">commands</span>                                        <span class="n">运行命令提示符命令</span>
+<span class="p">[</span><span class="n">ps</span><span class="p">]</span> <span class="n">Run</span> <span class="n">a</span> <span class="n">PowerShell</span> <span class="n">script</span>                                             <span class="n">运行一个PowerShell脚本</span>
+<span class="p">[</span><span class="n">ds</span><span class="p">]</span> <span class="n">Run</span> <span class="n">a</span> <span class="n">DuckyScript</span>                                                   <span class="n">运行一个DuckyScript</span>
+<span class="p">[</span><span class="n">exfiles</span><span class="p">]</span> <span class="n">Exfiltarte</span> <span class="n">files</span> <span class="n">based</span> <span class="n">on</span> <span class="n">extension</span>                            <span class="n">基于扩展名的Exfiltarte文件</span>
+<span class="p">[</span><span class="n">expass</span><span class="p">]</span> <span class="n">Exfiltrate</span> <span class="n">Microsoft</span> <span class="n">Edge</span> <span class="ow">and</span> <span class="n">WiFi</span> <span class="n">passwords</span>                    <span class="n">获取微软Edge和WiFi密码</span>
+<span class="p">[</span><span class="n">filesend</span><span class="p">]</span> <span class="n">Send</span> <span class="n">a</span> <span class="n">file</span> <span class="n">to</span> <span class="n">victim</span><span class="s1">&#39;s computer                              发送一个文件到受害者的电脑</span>
+<span class="p">[</span><span class="n">filerec</span><span class="p">]</span> <span class="n">Receive</span> <span class="n">a</span> <span class="n">file</span> <span class="kn">from</span> <span class="nn">victim</span><span class="s1">&#39;s computer                          从受控的电脑收到一个文件</span>
+<span class="p">[</span><span class="n">keylog</span><span class="p">]</span> <span class="n">Start</span> <span class="n">a</span> <span class="n">KeyLogger</span> <span class="n">on</span> <span class="n">victim</span><span class="s1">&#39;s computer                          在受控的电脑上启动一个键盘记录程序</span>
+<span class="p">[</span><span class="n">ss</span><span class="p">]</span> <span class="n">Get</span> <span class="n">a</span> <span class="n">screenshot</span> <span class="n">of</span> <span class="n">vitim</span><span class="s1">&#39;s computer                                获取受控电脑的的屏幕截图</span>
+<span class="p">[</span><span class="n">cb</span><span class="p">]</span> <span class="n">Get</span> <span class="n">text</span> <span class="n">currently</span> <span class="n">copied</span> <span class="n">to</span> <span class="n">victim</span><span class="s1">&#39;s clipboard                     获取当前复制到受控电脑剪贴板的文本</span>
+<span class="p">[</span><span class="n">cat</span><span class="p">]</span> <span class="n">Get</span> <span class="n">contents</span> <span class="n">of</span> <span class="n">a</span> <span class="n">file</span> <span class="n">on</span> <span class="n">victim</span><span class="s1">&#39;s computer                        获取受控电脑上的文件内容</span>
+<span class="p">[</span><span class="nb">zip</span><span class="p">]</span> <span class="n">Compress</span> <span class="n">a</span> <span class="n">directory</span> <span class="n">to</span> <span class="n">a</span> <span class="n">ZIP</span> <span class="n">file</span>                                 <span class="n">将目录压缩为zip文件</span>
+<span class="p">[</span><span class="n">unzip</span><span class="p">]</span> <span class="n">Decompress</span> <span class="n">a</span> <span class="n">ZIP</span> <span class="n">file</span>                                            <span class="n">解压缩压缩文件</span>
+<span class="p">[</span><span class="n">remove</span><span class="p">]</span> <span class="n">Remove</span> <span class="n">backdoor</span> <span class="ow">and</span> <span class="nb">all</span> <span class="n">backdoor</span> <span class="n">files</span> <span class="kn">from</span> <span class="nn">victim</span><span class="s1">&#39;s computer   从受控的电脑中移除后门和所有后门文件</span>
+<span class="p">[</span><span class="n">exit</span><span class="p">]</span> <span class="n">Exit</span>                                                              <span class="n">退出</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h2><a class="toc-backref" href="#id9">5.1.2 BetterBackdoor 简介</a><a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>BetterBackdoor创建的后门由一个客户端和一个服务器组成，并且双方通过套接字链接进行通信。
+渗透测试的发起者需要启动服务器，而目标设备则需要以客户端的形式与该服务器建立连接。
+成功建立连接后，渗透测试员可以将控制命令从服务器发送到目标设备，以管理和控制后门程序。</p>
+</div>
+<div class="section" id="id4">
+<h2><a class="toc-backref" href="#id10">5.1.3 BetterBackdoor操作机制</a><a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<p>首先，BetterBackdoor创建一个“
+run.jar”文件（后门jar文件），然后将其复制到“ backdoor”目录中。
+接下来，将包含服务器IP地址的文本文件添加到“
+run.jar”文件中，其中IP地址以明文形式写入。</p>
+<p>如果需要，还可以将Java运行时环境复制到“backdoor”目录，并创建批处理文件“
+run.bat”以在打包的Java运行时环境中运行后门。</p>
+<p>BetterBackdoor支持在单个网络，局域网或Internet（广域网）下工作。
+如果要在WAN上使用BetterBackdoor，则必须进行端口转发。</p>
+<p>要使用WAN，必须在服务器主机上启用TCP，并使用端口1025和1026进行端口转发。
+完成此操作后，即使目标设备和渗透发起程序位于不同的网络上，渗透测试人员也可以控制后门。</p>
+<p>要在目标设备上启动后门，将“backdoor”目录中的所有文件传输到目标设备。
+如果JRE环境打包在后门文件中，则直接运行run.bat，否则运行run.jar文件。
+运行完成后，后门将在目标设备上启动。</p>
+</div>
+<div class="section" id="id5">
+<h2><a class="toc-backref" href="#id11">5.1.4 工具使用条件</a><a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>1.Java JDK&gt; = 8
+2.生成后门和控制后门的设备必须相同，并且IP地址必须是静态的。
+3.控制后门的设备必须关闭本地防火墙。 如果在类似Unix的操作系统下运行，则需要使用“ sudo”权限来运行BetterBackdoor。
+</pre></div>
+</div>
+<p>兼容性</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>BetterBackdoor支持在Windows，macOS和Linux平台上运行，但是生成的后门程序当前仅支持在Windows平台上运行。
+</pre></div>
+</div>
+</div>
+<div class="section" id="id6">
+<h2><a class="toc-backref" href="#id12">5.1.5 工具下载与安装</a><a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h2>
+<p>使用以下命令在本地克隆项目源代码：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">ThatcherDev</span><span class="o">/</span><span class="n">BetterBackdoor</span><span class="o">.</span><span class="n">git</span>
+</pre></div>
+</div>
+<p>转到项目所在的工作目录：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">BetterBackdoor</span>
+</pre></div>
+</div>
+<p>使用Maven构建BetterBackdoor。 对于Windows，运行以下命令：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mvnw</span><span class="o">.</span><span class="n">cmd</span> <span class="n">clean</span> <span class="n">package</span>
+</pre></div>
+</div>
+<p>对于Linux和macOS环境，运行以下命令以完成BetterBackdoor：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sh</span> <span class="n">mvnw</span> <span class="n">clean</span> <span class="n">package</span>
+</pre></div>
+</div>
+<p>工具使用</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">java</span> <span class="o">-</span><span class="n">jar</span> <span class="n">betterbackdoor</span><span class="o">.</span><span class="n">jar</span>
+</pre></div>
+</div>
+<p><img alt="image0" src="https://s1.ax1x.com/2020/06/12/tONmNT.png" /></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Select:
+[0] Create backdoor   创建一个后门程序
+[1] Open backdoor shell    #打开后门shell
+
+选择 0 创建一个后门程序
+选择 0 创建一个LAN（内网环境）下的后门程序
+两次回车后 开始创建后门程序
+</pre></div>
+</div>
+<p><img alt="image1" src="https://s1.ax1x.com/2020/06/12/tONwgH.png" /></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>输入 help 可以查看支持的功能
+输入 ss 获取受控主机的屏幕截图
+
+输入remove 移除受控主机上的所有后门文件，并退出程序
+</pre></div>
+</div>
+<p><a class="reference external" href="https://www.freebuf.com/sectool/225119.html">文章参考自：
+https://www.freebuf.com/sectool/225119.html</a></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="p05_02-%E7%B3%BB%E7%BB%9F%E8%9C%9C%E7%BD%90opencanary%E9%83%A8%E7%BD%B2.html" class="btn btn-neutral float-right" title="5.2 系统蜜罐opencanary部署" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../chapters/p05.html" class="btn btn-neutral float-left" title="第五章 安全相关" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; 版权所有 2020, Architectang
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

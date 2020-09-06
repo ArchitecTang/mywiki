@@ -1,0 +1,359 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>1.4 zabbix监控历史数据清理操作方案 &mdash; ArchitecTang’Blog 2.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="1.5 clamav Linux-杀毒软件" href="p01_05-clamav_Linux-%E6%9D%80%E6%AF%92%E8%BD%AF%E4%BB%B6.html" />
+    <link rel="prev" title="1.3 Haproxy入门(安装篇)" href="p01_03-Haproxy%E5%85%A5%E9%97%A8-%E5%AE%89%E8%A3%85%E7%AF%87.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> ArchitecTang’Blog
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../preface.html">前言</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../chapters/p01.html">第一章 Linux 使用笔记</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="p01_01-Nmap%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7.html">1.1 nmap使用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="p01_02-Rabbitmq-%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85.html">1.2 Rabbitmq 入门(集群安装篇)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="p01_03-Haproxy%E5%85%A5%E9%97%A8-%E5%AE%89%E8%A3%85%E7%AF%87.html">1.3 Haproxy入门(安装篇)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">1.4 zabbix监控历史数据清理操作方案</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#zabbixhttp">1.4.1 关闭zabbix、http服务</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">1.4.2 清理zabbix历史数据</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">1.4.3 启动服务</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#truncatezabbix">1.4.4 使用truncate命令清空zabbix 所有监控数据</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="p01_05-clamav_Linux-%E6%9D%80%E6%AF%92%E8%BD%AF%E4%BB%B6.html">1.5 clamav Linux-杀毒软件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="p01_06-Linux-%E8%BD%AF%E9%93%BE%E6%8E%A5%E5%92%8C%E7%A1%AC%E9%93%BE%E6%8E%A5%E4%BB%8B%E7%BB%8D.html">1.6 Linux-软链接和硬链接</a></li>
+<li class="toctree-l2"><a class="reference internal" href="p01_07-Ansible%E5%9C%A8%E4%BD%BF%E7%94%A8%E8%BF%87%E7%A8%8B%E4%B8%AD%E5%87%BA%E7%8E%B0%E7%9A%84%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95.html">1.7 Ansible在使用过程中出现的错误解决方法</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p02.html">第二章 Python 学习笔记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p03.html">第三章 微服务入门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p04.html">第四章 网络相关</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p05.html">第五章 安全相关</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p06.html">第六章 shell脚本学习笔记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p07.html">第七章 开发工具</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p08.html">第八章 数据库学习笔记</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ArchitecTang’Blog</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../chapters/p01.html">第一章 Linux 使用笔记</a> &raquo;</li>
+        
+      <li>1.4 zabbix监控历史数据清理操作方案</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/p01/p01_04-zabbix监控历史数据清理操作方案.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="contents topic" id="id1">
+<p class="topic-title">目录</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#zabbix" id="id4">1.4 zabbix监控历史数据清理操作方案</a></p>
+<ul>
+<li><p><a class="reference internal" href="#zabbixhttp" id="id5">1.4.1 关闭zabbix、http服务</a></p></li>
+<li><p><a class="reference internal" href="#id2" id="id6">1.4.2 清理zabbix历史数据</a></p></li>
+<li><p><a class="reference internal" href="#id3" id="id7">1.4.3 启动服务</a></p></li>
+<li><p><a class="reference internal" href="#truncatezabbix" id="id8">1.4.4 使用truncate命令清空zabbix 所有监控数据</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="zabbix">
+<h1><a class="toc-backref" href="#id4">1.4 zabbix监控历史数据清理操作方案</a><a class="headerlink" href="#zabbix" title="永久链接至标题">¶</a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">2018</span><span class="o">/</span><span class="mi">12</span><span class="o">/</span><span class="mi">24</span> <span class="mi">14</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">57</span>
+</pre></div>
+</div>
+<p>zabbix监控运行一段时间以后，会留下大量的历史监控数据，zabbix数据库一直在增大；可能会造成系统性能下降，查看历史数据室查询速度缓慢。</p>
+<p>zabbix里面最大的表就是history和history_uint两个表，而且zabbix里面的时间是使用的时间戳方式记录，所以可以根据时间戳来删除历史数据</p>
+<div class="section" id="zabbixhttp">
+<h2><a class="toc-backref" href="#id5">1.4.1 关闭zabbix、http服务</a><a class="headerlink" href="#zabbixhttp" title="永久链接至标题">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pkill</span> <span class="o">-</span><span class="mi">9</span> <span class="n">zabbix</span>
+<span class="n">service</span> <span class="n">httpd</span> <span class="n">stop</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id2">
+<h2><a class="toc-backref" href="#id6">1.4.2 清理zabbix历史数据</a><a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>查看数据库目录文件</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[root@zabbix-server zabbix]# cd /var/lib/mysql/zabbix/
+[root@zabbix-server zabbix]# ls -lh | grep G
+total 177G
+-rw-r----- 1 mysql mysql 1.7G Dec 24 13:49 events.ibd
+-rw-r----- 1 mysql mysql  60G Dec 24 13:49 history.ibd
+-rw-r----- 1 mysql mysql 2.4G Dec 24 13:49 history_str.ibd
+-rw-r----- 1 mysql mysql  99G Dec 24 13:49 history_uint.ibd
+-rw-r----- 1 mysql mysql 4.6G Dec 24 13:02 trends.ibd
+-rw-r----- 1 mysql mysql 9.5G Dec 24 13:49 trends_uint.ibd
+[root@zabbix-server zabbix]#
+生成Unix时间戳。时间定为2018年2月1日（暂定是保存18年2月以后的监控数据）
+[root@zabbix-server zabbix]# date +%s -d &quot;Feb 1, 2018 00:00:00&quot;    #执行此命令以后会生成一个ID
+1517414400            #这是生成的ID
+</pre></div>
+</div>
+<p>数据备份</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@zabbix</span><span class="o">-</span><span class="n">server</span> <span class="n">zabbix</span><span class="p">]</span><span class="c1">#mysql -uroot -p zabbix &gt; /root/mysqlback/zabbix.sql     #需要创建mysqlback目录</span>
+</pre></div>
+</div>
+<p>登录数据库</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[root@zabbix-server zabbix]# mysql -uroot -p
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 7
+Server version: 5.5.60-MariaDB MariaDB Server
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type &#39;help;&#39; or &#39;\h&#39; for help. Type &#39;\c&#39; to clear the current input statement.
+
+MariaDB [(none)]&gt;
+
+use zabbix;    #选择zabbix数据库
+
+执行sql查看指定日期之前的数据大小：
+SELECT table_schema as `Database`,table_name AS `Table`,round(((data_length + index_length) / 1024 / 1024 / 1024), 2) `Size in MB`FROM information_schema.TABLES where CREATE_TIME &lt; &#39;2018-02-01 00:00:00&#39; and table_name=&#39;history.ibd&#39;;
+根据需要修改日期和查询的表名称(如果查询出来的结果是0.0，需要将sql中的三个1024删除一个，以G为单位显示)
+</pre></div>
+</div>
+<p>执行以下命令，清理指定时间之前的数据、对zabbix数据库执行以下sql</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>delete from history where clock &lt; 1517414400;
+optimize table history;
+
+delete from history_uint where clock &lt; 1517414400;
+optimize table history_uint;
+
+delete from trends where clock &lt; 1517414400;
+optimize table trends;
+
+delete from trends_uint where clock &lt; 1517414400;
+optimize table trends_uint;
+
+注意：sql中的ID是生成Unix时间戳的ID号,需要改为自己生成的ID号
+</pre></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h2><a class="toc-backref" href="#id7">1.4.3 启动服务</a><a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">zabbix_server</span> <span class="o">-</span><span class="n">c</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">zabbix</span><span class="o">/</span><span class="n">zabbix_server</span><span class="o">.</span><span class="n">conf</span>    <span class="c1">#zabbix server</span>
+<span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">zabbix_agentd</span> <span class="o">-</span><span class="n">c</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">zabbix</span><span class="o">/</span><span class="n">zabbix_agentd</span><span class="o">.</span><span class="n">conf</span>    <span class="c1">#zabbix agent</span>
+<span class="n">service</span> <span class="n">httpd</span> <span class="n">start</span>
+</pre></div>
+</div>
+<p>===============================分===========隔==========符===================================</p>
+</div>
+<div class="section" id="truncatezabbix">
+<h2><a class="toc-backref" href="#id8">1.4.4 使用truncate命令清空zabbix 所有监控数据</a><a class="headerlink" href="#truncatezabbix" title="永久链接至标题">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-------------------------------------------------------</span>
+<span class="n">truncate</span> <span class="n">table</span> <span class="n">history</span><span class="p">;</span>
+<span class="n">optimize</span> <span class="n">table</span> <span class="n">history</span><span class="p">;</span>
+<span class="o">-------------------------------------------------------</span>
+<span class="n">truncate</span> <span class="n">table</span> <span class="n">history_str</span><span class="p">;</span>
+<span class="n">optimize</span> <span class="n">table</span> <span class="n">history_str</span><span class="p">;</span>
+<span class="o">-------------------------------------------------------</span>
+<span class="n">truncate</span> <span class="n">table</span> <span class="n">history_uint</span><span class="p">;</span>
+<span class="n">optimize</span> <span class="n">table</span> <span class="n">history_uint</span><span class="p">;</span>
+<span class="o">-------------------------------------------------------</span>
+<span class="n">truncate</span> <span class="n">table</span> <span class="n">trends</span><span class="p">;</span>
+<span class="n">optimize</span> <span class="n">table</span> <span class="n">trends</span><span class="p">;</span>
+<span class="o">-------------------------------------------------------</span>
+<span class="n">truncate</span> <span class="n">table</span> <span class="n">trends_uint</span><span class="p">;</span>
+<span class="n">optimize</span> <span class="n">table</span> <span class="n">trends_uint</span><span class="p">;</span>
+<span class="o">-------------------------------------------------------</span>
+<span class="n">truncate</span> <span class="n">table</span> <span class="n">events</span><span class="p">;</span>
+<span class="n">optimize</span> <span class="n">table</span> <span class="n">events</span><span class="p">;</span>
+<span class="o">-------------------------------------------------------</span>
+</pre></div>
+</div>
+<p>注意：这些命令会把zabbix所有的监控数据清空，操作前注意备份数据库</p>
+<p>truncate是删除了表，然后根据表结构重新建立，delete删除的是记录的数据没有修改表</p>
+<p>truncate执行删除比较快，但是在事务处理安全性方面不如delete,如果我们执行truncat的表正在处理事务，这个命令退出并会产生错误信息</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="p01_05-clamav_Linux-%E6%9D%80%E6%AF%92%E8%BD%AF%E4%BB%B6.html" class="btn btn-neutral float-right" title="1.5 clamav Linux-杀毒软件" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="p01_03-Haproxy%E5%85%A5%E9%97%A8-%E5%AE%89%E8%A3%85%E7%AF%87.html" class="btn btn-neutral float-left" title="1.3 Haproxy入门(安装篇)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; 版权所有 2020, Architectang
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

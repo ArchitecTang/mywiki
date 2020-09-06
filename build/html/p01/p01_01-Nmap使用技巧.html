@@ -1,0 +1,489 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>1.1 nmap使用 &mdash; ArchitecTang’Blog 2.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="1.2 Rabbitmq 入门(集群安装篇)" href="p01_02-Rabbitmq-%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85.html" />
+    <link rel="prev" title="第一章 Linux 使用笔记" href="../chapters/p01.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> ArchitecTang’Blog
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../preface.html">前言</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../chapters/p01.html">第一章 Linux 使用笔记</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">1.1 nmap使用</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#centos-nmap">1.1.1 Centos 系统安装nmap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">1.1.2 查看安装版本</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">1.1.3 nmap常用命令</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">1.1.4 深入探究</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="p01_02-Rabbitmq-%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85.html">1.2 Rabbitmq 入门(集群安装篇)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="p01_03-Haproxy%E5%85%A5%E9%97%A8-%E5%AE%89%E8%A3%85%E7%AF%87.html">1.3 Haproxy入门(安装篇)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="p01_04-zabbix%E7%9B%91%E6%8E%A7%E5%8E%86%E5%8F%B2%E6%95%B0%E6%8D%AE%E6%B8%85%E7%90%86%E6%93%8D%E4%BD%9C%E6%96%B9%E6%A1%88.html">1.4 zabbix监控历史数据清理操作方案</a></li>
+<li class="toctree-l2"><a class="reference internal" href="p01_05-clamav_Linux-%E6%9D%80%E6%AF%92%E8%BD%AF%E4%BB%B6.html">1.5 clamav Linux-杀毒软件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="p01_06-Linux-%E8%BD%AF%E9%93%BE%E6%8E%A5%E5%92%8C%E7%A1%AC%E9%93%BE%E6%8E%A5%E4%BB%8B%E7%BB%8D.html">1.6 Linux-软链接和硬链接</a></li>
+<li class="toctree-l2"><a class="reference internal" href="p01_07-Ansible%E5%9C%A8%E4%BD%BF%E7%94%A8%E8%BF%87%E7%A8%8B%E4%B8%AD%E5%87%BA%E7%8E%B0%E7%9A%84%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95.html">1.7 Ansible在使用过程中出现的错误解决方法</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p02.html">第二章 Python 学习笔记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p03.html">第三章 微服务入门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p04.html">第四章 网络相关</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p05.html">第五章 安全相关</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p06.html">第六章 shell脚本学习笔记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p07.html">第七章 开发工具</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p08.html">第八章 数据库学习笔记</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ArchitecTang’Blog</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../chapters/p01.html">第一章 Linux 使用笔记</a> &raquo;</li>
+        
+      <li>1.1 nmap使用</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/p01/p01_01-Nmap使用技巧.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="figure align-default">
+<img alt="nmap.jpg" src="https://i.loli.net/2019/07/20/5d32d776e715059620.jpg" />
+</div>
+<p>nmap支持很多扫描技术，例如：UDP、TCP connect()、TCP
+SYN(半开扫描)、ftp代理(bounce攻击)、反向标志、ICMP、FIN、ACK扫描、圣诞树(Xmas
+Tree)、null扫描。</p>
+<p>nmap还提供了一些高级的特征，例如：通过TCP/IP协议栈特征探测操作系统类型，秘密扫描，动态延时和重传计算，并行扫描，通过并行ping扫描探测关闭的主机，诱饵扫描，避开端口过滤检测，直接RPC扫描(无须端口影射)，碎片扫描，以及灵活的目标和端口设定.nmap总会给出well
+known端口的服务名(如果可能)、端口号、状态和协议等信息。</p>
+<p>每个端口的状态有：open、filtered、
+unfiltered。open状态意味着目标主机能够在这个端口使用accept()系统调用接受连接。</p>
+<p>filtered状态表示：防火墙、包过滤和其
+它的网络安全软件掩盖了这个端口，禁止 nmap探测其是否打开。</p>
+<p>unfiltered表示：这个端口关闭，并且没有防火墙/包过滤软件来隔离nmap的探测企图。通常情况下，端口的状态基本都
+是unfiltered状态，只有在大多数被扫描的端口处于filtered状态下，才会显示处于unfiltered状态的端口。</p>
+<p>根据使用的功能选
+项，nmap也可以报告远程主机的下列特征：使用的操作系统、TCP序列、运行绑定到每个端口上的应用程序的用户名、DNS名、主机地址是否是欺骗地址、
+以及其它一些东西。</p>
+<p>可以使用nmap -h快速列出功能选项的列表。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@node1</span> <span class="o">~</span><span class="p">]</span><span class="c1"># nmap -h</span>
+<span class="n">Nmap</span> <span class="mf">6.40</span> <span class="p">(</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">nmap</span><span class="o">.</span><span class="n">org</span> <span class="p">)</span>
+<span class="n">Usage</span><span class="p">:</span> <span class="n">nmap</span> <span class="p">[</span><span class="n">Scan</span> <span class="n">Type</span><span class="p">(</span><span class="n">s</span><span class="p">)]</span> <span class="p">[</span><span class="n">Options</span><span class="p">]</span> <span class="p">{</span><span class="n">target</span> <span class="n">specification</span><span class="p">}</span>
+<span class="n">TARGET</span> <span class="n">SPECIFICATION</span><span class="p">:</span>
+<span class="n">Can</span> <span class="k">pass</span> <span class="n">hostnames</span><span class="p">,</span> <span class="n">IP</span> <span class="n">addresses</span><span class="p">,</span> <span class="n">networks</span><span class="p">,</span> <span class="n">etc</span><span class="o">.</span>
+<span class="n">Ex</span><span class="p">:</span> <span class="n">scanme</span><span class="o">.</span><span class="n">nmap</span><span class="o">.</span><span class="n">org</span><span class="p">,</span> <span class="n">microsoft</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="mi">24</span><span class="p">,</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">0.1</span><span class="p">;</span> <span class="mf">10.0</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="mf">255.1</span><span class="o">-</span><span class="mi">254</span>
+<span class="o">-</span><span class="n">iL</span> <span class="o">&lt;</span><span class="n">inputfilename</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">Input</span> <span class="kn">from</span> <span class="nn">list</span> <span class="n">of</span> <span class="n">hosts</span><span class="o">/</span><span class="n">networks</span>
+<span class="o">-</span><span class="n">iR</span> <span class="o">&lt;</span><span class="n">num</span> <span class="n">hosts</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">Choose</span> <span class="n">random</span> <span class="n">targets</span>
+<span class="o">--</span><span class="n">exclude</span> <span class="o">&lt;</span><span class="n">host1</span><span class="p">[,</span><span class="n">host2</span><span class="p">][,</span><span class="n">host3</span><span class="p">],</span><span class="o">...&gt;</span><span class="p">:</span> <span class="n">Exclude</span> <span class="n">hosts</span><span class="o">/</span><span class="n">networks</span>
+<span class="o">--</span><span class="n">excludefile</span> <span class="o">&lt;</span><span class="n">exclude_file</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">Exclude</span> <span class="nb">list</span> <span class="kn">from</span> <span class="nn">file</span>
+<span class="n">HOST</span> <span class="n">DISCOVERY</span><span class="p">:</span>
+<span class="o">-</span><span class="n">sL</span><span class="p">:</span> <span class="n">List</span> <span class="n">Scan</span> <span class="o">-</span> <span class="n">simply</span> <span class="nb">list</span> <span class="n">targets</span> <span class="n">to</span> <span class="n">scan</span>
+<span class="o">-</span><span class="n">sn</span><span class="p">:</span> <span class="n">Ping</span> <span class="n">Scan</span> <span class="o">-</span> <span class="n">disable</span> <span class="n">port</span> <span class="n">scan</span>
+<span class="o">-</span><span class="n">Pn</span><span class="p">:</span> <span class="n">Treat</span> <span class="nb">all</span> <span class="n">hosts</span> <span class="k">as</span> <span class="n">online</span> <span class="o">--</span> <span class="n">skip</span> <span class="n">host</span> <span class="n">discovery</span>
+<span class="o">-</span><span class="n">PS</span><span class="o">/</span><span class="n">PA</span><span class="o">/</span><span class="n">PU</span><span class="o">/</span><span class="n">PY</span><span class="p">[</span><span class="n">portlist</span><span class="p">]:</span> <span class="n">TCP</span> <span class="n">SYN</span><span class="o">/</span><span class="n">ACK</span><span class="p">,</span> <span class="n">UDP</span> <span class="ow">or</span> <span class="n">SCTP</span> <span class="n">discovery</span> <span class="n">to</span> <span class="n">given</span> <span class="n">ports</span>
+<span class="o">-</span><span class="n">PE</span><span class="o">/</span><span class="n">PP</span><span class="o">/</span><span class="n">PM</span><span class="p">:</span> <span class="n">ICMP</span> <span class="n">echo</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="ow">and</span> <span class="n">netmask</span> <span class="n">request</span> <span class="n">discovery</span> <span class="n">probes</span>
+<span class="o">-</span><span class="n">PO</span><span class="p">[</span><span class="n">protocol</span> <span class="nb">list</span><span class="p">]:</span> <span class="n">IP</span> <span class="n">Protocol</span> <span class="n">Ping</span>
+<span class="o">-</span><span class="n">n</span><span class="o">/-</span><span class="n">R</span><span class="p">:</span> <span class="n">Never</span> <span class="n">do</span> <span class="n">DNS</span> <span class="n">resolution</span><span class="o">/</span><span class="n">Always</span> <span class="n">resolve</span> <span class="p">[</span><span class="n">default</span><span class="p">:</span> <span class="n">sometimes</span><span class="p">]</span>
+<span class="o">--</span><span class="n">dns</span><span class="o">-</span><span class="n">servers</span> <span class="o">&lt;</span><span class="n">serv1</span><span class="p">[,</span><span class="n">serv2</span><span class="p">],</span><span class="o">...&gt;</span><span class="p">:</span> <span class="n">Specify</span> <span class="n">custom</span> <span class="n">DNS</span> <span class="n">servers</span>
+<span class="o">--</span><span class="n">system</span><span class="o">-</span><span class="n">dns</span><span class="p">:</span> <span class="n">Use</span> <span class="n">OS</span><span class="s1">&#39;s DNS resolver</span>
+<span class="o">--</span><span class="n">traceroute</span><span class="p">:</span> <span class="n">Trace</span> <span class="n">hop</span> <span class="n">path</span> <span class="n">to</span> <span class="n">each</span> <span class="n">host</span>
+<span class="n">SCAN</span> <span class="n">TECHNIQUES</span><span class="p">:</span>
+<span class="o">-</span><span class="n">sS</span><span class="o">/</span><span class="n">sT</span><span class="o">/</span><span class="n">sA</span><span class="o">/</span><span class="n">sW</span><span class="o">/</span><span class="n">sM</span><span class="p">:</span> <span class="n">TCP</span> <span class="n">SYN</span><span class="o">/</span><span class="n">Connect</span><span class="p">()</span><span class="o">/</span><span class="n">ACK</span><span class="o">/</span><span class="n">Window</span><span class="o">/</span><span class="n">Maimon</span> <span class="n">scans</span>
+<span class="o">-</span><span class="n">sU</span><span class="p">:</span> <span class="n">UDP</span> <span class="n">Scan</span>
+<span class="o">-</span><span class="n">sN</span><span class="o">/</span><span class="n">sF</span><span class="o">/</span><span class="n">sX</span><span class="p">:</span> <span class="n">TCP</span> <span class="n">Null</span><span class="p">,</span> <span class="n">FIN</span><span class="p">,</span> <span class="ow">and</span> <span class="n">Xmas</span> <span class="n">scans</span>
+<span class="o">--</span><span class="n">scanflags</span> <span class="o">&lt;</span><span class="n">flags</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">Customize</span> <span class="n">TCP</span> <span class="n">scan</span> <span class="n">flags</span>
+<span class="o">-</span><span class="n">sI</span> <span class="o">&lt;</span><span class="n">zombie</span> <span class="n">host</span><span class="p">[:</span><span class="n">probeport</span><span class="p">]</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">Idle</span> <span class="n">scan</span>
+<span class="o">-</span><span class="n">sY</span><span class="o">/</span><span class="n">sZ</span><span class="p">:</span> <span class="n">SCTP</span> <span class="n">INIT</span><span class="o">/</span><span class="n">COOKIE</span><span class="o">-</span><span class="n">ECHO</span> <span class="n">scans</span>
+<span class="o">-</span><span class="n">sO</span><span class="p">:</span> <span class="n">IP</span> <span class="n">protocol</span> <span class="n">scan</span>
+<span class="o">-</span><span class="n">b</span> <span class="o">&lt;</span><span class="n">FTP</span> <span class="n">relay</span> <span class="n">host</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">FTP</span> <span class="n">bounce</span> <span class="n">scan</span>
+<span class="n">PORT</span> <span class="n">SPECIFICATION</span> <span class="n">AND</span> <span class="n">SCAN</span> <span class="n">ORDER</span><span class="p">:</span>
+<span class="o">-</span><span class="n">p</span> <span class="o">&lt;</span><span class="n">port</span> <span class="n">ranges</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">Only</span> <span class="n">scan</span> <span class="n">specified</span> <span class="n">ports</span>
+    <span class="n">Ex</span><span class="p">:</span> <span class="o">-</span><span class="n">p22</span><span class="p">;</span> <span class="o">-</span><span class="n">p1</span><span class="o">-</span><span class="mi">65535</span><span class="p">;</span> <span class="o">-</span><span class="n">p</span> <span class="n">U</span><span class="p">:</span><span class="mi">53</span><span class="p">,</span><span class="mi">111</span><span class="p">,</span><span class="mi">137</span><span class="p">,</span><span class="n">T</span><span class="p">:</span><span class="mi">21</span><span class="o">-</span><span class="mi">25</span><span class="p">,</span><span class="mi">80</span><span class="p">,</span><span class="mi">139</span><span class="p">,</span><span class="mi">8080</span><span class="p">,</span><span class="n">S</span><span class="p">:</span><span class="mi">9</span>
+<span class="o">-</span><span class="n">F</span><span class="p">:</span> <span class="n">Fast</span> <span class="n">mode</span> <span class="o">-</span> <span class="n">Scan</span> <span class="n">fewer</span> <span class="n">ports</span> <span class="n">than</span> <span class="n">the</span> <span class="n">default</span> <span class="n">scan</span>
+<span class="o">-</span><span class="n">r</span><span class="p">:</span> <span class="n">Scan</span> <span class="n">ports</span> <span class="n">consecutively</span> <span class="o">-</span> <span class="n">don</span><span class="s1">&#39;t randomize</span>
+<span class="o">--</span><span class="n">top</span><span class="o">-</span><span class="n">ports</span> <span class="o">&lt;</span><span class="n">number</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">Scan</span> <span class="o">&lt;</span><span class="n">number</span><span class="o">&gt;</span> <span class="n">most</span> <span class="n">common</span> <span class="n">ports</span>
+<span class="o">--</span><span class="n">port</span><span class="o">-</span><span class="n">ratio</span> <span class="o">&lt;</span><span class="n">ratio</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">Scan</span> <span class="n">ports</span> <span class="n">more</span> <span class="n">common</span> <span class="n">than</span> <span class="o">&lt;</span><span class="n">ratio</span><span class="o">&gt;</span>
+<span class="n">SERVICE</span><span class="o">/</span><span class="n">VERSION</span> <span class="n">DETECTION</span><span class="p">:</span>
+<span class="o">-</span><span class="n">sV</span><span class="p">:</span> <span class="n">Probe</span> <span class="nb">open</span> <span class="n">ports</span> <span class="n">to</span> <span class="n">determine</span> <span class="n">service</span><span class="o">/</span><span class="n">version</span> <span class="n">info</span>
+<span class="o">--</span><span class="n">version</span><span class="o">-</span><span class="n">intensity</span> <span class="o">&lt;</span><span class="n">level</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">Set</span> <span class="kn">from</span> <span class="mi">0</span> <span class="p">(</span><span class="n">light</span><span class="p">)</span> <span class="n">to</span> <span class="mi">9</span> <span class="p">(</span><span class="k">try</span> <span class="nb">all</span> <span class="n">probes</span><span class="p">)</span>
+<span class="o">--</span><span class="n">version</span><span class="o">-</span><span class="n">light</span><span class="p">:</span> <span class="n">Limit</span> <span class="n">to</span> <span class="n">most</span> <span class="n">likely</span> <span class="n">probes</span> <span class="p">(</span><span class="n">intensity</span> <span class="mi">2</span><span class="p">)</span>
+<span class="o">--</span><span class="n">version</span><span class="o">-</span><span class="nb">all</span><span class="p">:</span> <span class="n">Try</span> <span class="n">every</span> <span class="n">single</span> <span class="n">probe</span> <span class="p">(</span><span class="n">intensity</span> <span class="mi">9</span><span class="p">)</span>
+<span class="o">--</span><span class="n">version</span><span class="o">-</span><span class="n">trace</span><span class="p">:</span> <span class="n">Show</span> <span class="n">detailed</span> <span class="n">version</span> <span class="n">scan</span> <span class="n">activity</span> <span class="p">(</span><span class="k">for</span> <span class="n">debugging</span><span class="p">)</span>
+<span class="n">SCRIPT</span> <span class="n">SCAN</span><span class="p">:</span>
+<span class="o">-</span><span class="n">sC</span><span class="p">:</span> <span class="n">equivalent</span> <span class="n">to</span> <span class="o">--</span><span class="n">script</span><span class="o">=</span><span class="n">default</span>
+<span class="o">--</span><span class="n">script</span><span class="o">=&lt;</span><span class="n">Lua</span> <span class="n">scripts</span><span class="o">&gt;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">Lua</span> <span class="n">scripts</span><span class="o">&gt;</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">comma</span> <span class="n">separated</span> <span class="nb">list</span> <span class="n">of</span>
+        <span class="n">directories</span><span class="p">,</span> <span class="n">script</span><span class="o">-</span><span class="n">files</span> <span class="ow">or</span> <span class="n">script</span><span class="o">-</span><span class="n">categories</span>
+<span class="o">--</span><span class="n">script</span><span class="o">-</span><span class="n">args</span><span class="o">=&lt;</span><span class="n">n1</span><span class="o">=</span><span class="n">v1</span><span class="p">,[</span><span class="n">n2</span><span class="o">=</span><span class="n">v2</span><span class="p">,</span><span class="o">...</span><span class="p">]</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">provide</span> <span class="n">arguments</span> <span class="n">to</span> <span class="n">scripts</span>
+<span class="o">--</span><span class="n">script</span><span class="o">-</span><span class="n">args</span><span class="o">-</span><span class="n">file</span><span class="o">=</span><span class="n">filename</span><span class="p">:</span> <span class="n">provide</span> <span class="n">NSE</span> <span class="n">script</span> <span class="n">args</span> <span class="ow">in</span> <span class="n">a</span> <span class="n">file</span>
+<span class="o">--</span><span class="n">script</span><span class="o">-</span><span class="n">trace</span><span class="p">:</span> <span class="n">Show</span> <span class="nb">all</span> <span class="n">data</span> <span class="n">sent</span> <span class="ow">and</span> <span class="n">received</span>
+<span class="o">--</span><span class="n">script</span><span class="o">-</span><span class="n">updatedb</span><span class="p">:</span> <span class="n">Update</span> <span class="n">the</span> <span class="n">script</span> <span class="n">database</span><span class="o">.</span>
+<span class="o">--</span><span class="n">script</span><span class="o">-</span><span class="n">help</span><span class="o">=&lt;</span><span class="n">Lua</span> <span class="n">scripts</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">Show</span> <span class="n">help</span> <span class="n">about</span> <span class="n">scripts</span><span class="o">.</span>
+        <span class="o">&lt;</span><span class="n">Lua</span> <span class="n">scripts</span><span class="o">&gt;</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">comma</span> <span class="n">separted</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">script</span><span class="o">-</span><span class="n">files</span> <span class="ow">or</span>
+        <span class="n">script</span><span class="o">-</span><span class="n">categories</span><span class="o">.</span>
+<span class="n">OS</span> <span class="n">DETECTION</span><span class="p">:</span>
+<span class="o">-</span><span class="n">O</span><span class="p">:</span> <span class="n">Enable</span> <span class="n">OS</span> <span class="n">detection</span>
+<span class="o">--</span><span class="n">osscan</span><span class="o">-</span><span class="n">limit</span><span class="p">:</span> <span class="n">Limit</span> <span class="n">OS</span> <span class="n">detection</span> <span class="n">to</span> <span class="n">promising</span> <span class="n">targets</span>
+<span class="o">--</span><span class="n">osscan</span><span class="o">-</span><span class="n">guess</span><span class="p">:</span> <span class="n">Guess</span> <span class="n">OS</span> <span class="n">more</span> <span class="n">aggressively</span>
+<span class="n">TIMING</span> <span class="n">AND</span> <span class="n">PERFORMANCE</span><span class="p">:</span>
+<span class="n">Options</span> <span class="n">which</span> <span class="n">take</span> <span class="o">&lt;</span><span class="n">time</span><span class="o">&gt;</span> <span class="n">are</span> <span class="ow">in</span> <span class="n">seconds</span><span class="p">,</span> <span class="ow">or</span> <span class="n">append</span> <span class="s1">&#39;ms&#39;</span> <span class="p">(</span><span class="n">milliseconds</span><span class="p">),</span>
+<span class="s1">&#39;s&#39;</span> <span class="p">(</span><span class="n">seconds</span><span class="p">),</span> <span class="s1">&#39;m&#39;</span> <span class="p">(</span><span class="n">minutes</span><span class="p">),</span> <span class="ow">or</span> <span class="s1">&#39;h&#39;</span> <span class="p">(</span><span class="n">hours</span><span class="p">)</span> <span class="n">to</span> <span class="n">the</span> <span class="n">value</span> <span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">g</span><span class="o">.</span> <span class="mi">30</span><span class="n">m</span><span class="p">)</span><span class="o">.</span>
+<span class="o">-</span><span class="n">T</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">-</span><span class="mi">5</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">Set</span> <span class="n">timing</span> <span class="n">template</span> <span class="p">(</span><span class="n">higher</span> <span class="ow">is</span> <span class="n">faster</span><span class="p">)</span>
+<span class="o">--</span><span class="nb">min</span><span class="o">-</span><span class="n">hostgroup</span><span class="o">/</span><span class="nb">max</span><span class="o">-</span><span class="n">hostgroup</span> <span class="o">&lt;</span><span class="n">size</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">Parallel</span> <span class="n">host</span> <span class="n">scan</span> <span class="n">group</span> <span class="n">sizes</span>
+<span class="o">--</span><span class="nb">min</span><span class="o">-</span><span class="n">parallelism</span><span class="o">/</span><span class="nb">max</span><span class="o">-</span><span class="n">parallelism</span> <span class="o">&lt;</span><span class="n">numprobes</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">Probe</span> <span class="n">parallelization</span>
+<span class="o">--</span><span class="nb">min</span><span class="o">-</span><span class="n">rtt</span><span class="o">-</span><span class="n">timeout</span><span class="o">/</span><span class="nb">max</span><span class="o">-</span><span class="n">rtt</span><span class="o">-</span><span class="n">timeout</span><span class="o">/</span><span class="n">initial</span><span class="o">-</span><span class="n">rtt</span><span class="o">-</span><span class="n">timeout</span> <span class="o">&lt;</span><span class="n">time</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">Specifies</span>
+    <span class="n">probe</span> <span class="nb">round</span> <span class="n">trip</span> <span class="n">time</span><span class="o">.</span>
+<span class="o">--</span><span class="nb">max</span><span class="o">-</span><span class="n">retries</span> <span class="o">&lt;</span><span class="n">tries</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">Caps</span> <span class="n">number</span> <span class="n">of</span> <span class="n">port</span> <span class="n">scan</span> <span class="n">probe</span> <span class="n">retransmissions</span><span class="o">.</span>
+<span class="o">--</span><span class="n">host</span><span class="o">-</span><span class="n">timeout</span> <span class="o">&lt;</span><span class="n">time</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">Give</span> <span class="n">up</span> <span class="n">on</span> <span class="n">target</span> <span class="n">after</span> <span class="n">this</span> <span class="n">long</span>
+<span class="o">--</span><span class="n">scan</span><span class="o">-</span><span class="n">delay</span><span class="o">/--</span><span class="nb">max</span><span class="o">-</span><span class="n">scan</span><span class="o">-</span><span class="n">delay</span> <span class="o">&lt;</span><span class="n">time</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">Adjust</span> <span class="n">delay</span> <span class="n">between</span> <span class="n">probes</span>
+<span class="o">--</span><span class="nb">min</span><span class="o">-</span><span class="n">rate</span> <span class="o">&lt;</span><span class="n">number</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">Send</span> <span class="n">packets</span> <span class="n">no</span> <span class="n">slower</span> <span class="n">than</span> <span class="o">&lt;</span><span class="n">number</span><span class="o">&gt;</span> <span class="n">per</span> <span class="n">second</span>
+<span class="o">--</span><span class="nb">max</span><span class="o">-</span><span class="n">rate</span> <span class="o">&lt;</span><span class="n">number</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">Send</span> <span class="n">packets</span> <span class="n">no</span> <span class="n">faster</span> <span class="n">than</span> <span class="o">&lt;</span><span class="n">number</span><span class="o">&gt;</span> <span class="n">per</span> <span class="n">second</span>
+<span class="n">FIREWALL</span><span class="o">/</span><span class="n">IDS</span> <span class="n">EVASION</span> <span class="n">AND</span> <span class="n">SPOOFING</span><span class="p">:</span>
+<span class="o">-</span><span class="n">f</span><span class="p">;</span> <span class="o">--</span><span class="n">mtu</span> <span class="o">&lt;</span><span class="n">val</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">fragment</span> <span class="n">packets</span> <span class="p">(</span><span class="n">optionally</span> <span class="n">w</span><span class="o">/</span><span class="n">given</span> <span class="n">MTU</span><span class="p">)</span>
+<span class="o">-</span><span class="n">D</span> <span class="o">&lt;</span><span class="n">decoy1</span><span class="p">,</span><span class="n">decoy2</span><span class="p">[,</span><span class="n">ME</span><span class="p">],</span><span class="o">...&gt;</span><span class="p">:</span> <span class="n">Cloak</span> <span class="n">a</span> <span class="n">scan</span> <span class="k">with</span> <span class="n">decoys</span>
+<span class="o">-</span><span class="n">S</span> <span class="o">&lt;</span><span class="n">IP_Address</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">Spoof</span> <span class="n">source</span> <span class="n">address</span>
+<span class="o">-</span><span class="n">e</span> <span class="o">&lt;</span><span class="n">iface</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">Use</span> <span class="n">specified</span> <span class="n">interface</span>
+<span class="o">-</span><span class="n">g</span><span class="o">/--</span><span class="n">source</span><span class="o">-</span><span class="n">port</span> <span class="o">&lt;</span><span class="n">portnum</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">Use</span> <span class="n">given</span> <span class="n">port</span> <span class="n">number</span>
+<span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="n">length</span> <span class="o">&lt;</span><span class="n">num</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">Append</span> <span class="n">random</span> <span class="n">data</span> <span class="n">to</span> <span class="n">sent</span> <span class="n">packets</span>
+<span class="o">--</span><span class="n">ip</span><span class="o">-</span><span class="n">options</span> <span class="o">&lt;</span><span class="n">options</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">Send</span> <span class="n">packets</span> <span class="k">with</span> <span class="n">specified</span> <span class="n">ip</span> <span class="n">options</span>
+<span class="o">--</span><span class="n">ttl</span> <span class="o">&lt;</span><span class="n">val</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">Set</span> <span class="n">IP</span> <span class="n">time</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">live</span> <span class="n">field</span>
+<span class="o">--</span><span class="n">spoof</span><span class="o">-</span><span class="n">mac</span> <span class="o">&lt;</span><span class="n">mac</span> <span class="n">address</span><span class="o">/</span><span class="n">prefix</span><span class="o">/</span><span class="n">vendor</span> <span class="n">name</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">Spoof</span> <span class="n">your</span> <span class="n">MAC</span> <span class="n">address</span>
+<span class="o">--</span><span class="n">badsum</span><span class="p">:</span> <span class="n">Send</span> <span class="n">packets</span> <span class="k">with</span> <span class="n">a</span> <span class="n">bogus</span> <span class="n">TCP</span><span class="o">/</span><span class="n">UDP</span><span class="o">/</span><span class="n">SCTP</span> <span class="n">checksum</span>
+<span class="n">OUTPUT</span><span class="p">:</span>
+<span class="o">-</span><span class="n">oN</span><span class="o">/-</span><span class="n">oX</span><span class="o">/-</span><span class="n">oS</span><span class="o">/-</span><span class="n">oG</span> <span class="o">&lt;</span><span class="n">file</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">Output</span> <span class="n">scan</span> <span class="ow">in</span> <span class="n">normal</span><span class="p">,</span> <span class="n">XML</span><span class="p">,</span> <span class="n">s</span><span class="o">|&lt;</span><span class="n">rIpt</span> <span class="n">kIddi3</span><span class="p">,</span>
+    <span class="ow">and</span> <span class="n">Grepable</span> <span class="nb">format</span><span class="p">,</span> <span class="n">respectively</span><span class="p">,</span> <span class="n">to</span> <span class="n">the</span> <span class="n">given</span> <span class="n">filename</span><span class="o">.</span>
+<span class="o">-</span><span class="n">oA</span> <span class="o">&lt;</span><span class="n">basename</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">Output</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">three</span> <span class="n">major</span> <span class="n">formats</span> <span class="n">at</span> <span class="n">once</span>
+<span class="o">-</span><span class="n">v</span><span class="p">:</span> <span class="n">Increase</span> <span class="n">verbosity</span> <span class="n">level</span> <span class="p">(</span><span class="n">use</span> <span class="o">-</span><span class="n">vv</span> <span class="ow">or</span> <span class="n">more</span> <span class="k">for</span> <span class="n">greater</span> <span class="n">effect</span><span class="p">)</span>
+<span class="o">-</span><span class="n">d</span><span class="p">:</span> <span class="n">Increase</span> <span class="n">debugging</span> <span class="n">level</span> <span class="p">(</span><span class="n">use</span> <span class="o">-</span><span class="n">dd</span> <span class="ow">or</span> <span class="n">more</span> <span class="k">for</span> <span class="n">greater</span> <span class="n">effect</span><span class="p">)</span>
+<span class="o">--</span><span class="n">reason</span><span class="p">:</span> <span class="n">Display</span> <span class="n">the</span> <span class="n">reason</span> <span class="n">a</span> <span class="n">port</span> <span class="ow">is</span> <span class="ow">in</span> <span class="n">a</span> <span class="n">particular</span> <span class="n">state</span>
+<span class="o">--</span><span class="nb">open</span><span class="p">:</span> <span class="n">Only</span> <span class="n">show</span> <span class="nb">open</span> <span class="p">(</span><span class="ow">or</span> <span class="n">possibly</span> <span class="nb">open</span><span class="p">)</span> <span class="n">ports</span>
+<span class="o">--</span><span class="n">packet</span><span class="o">-</span><span class="n">trace</span><span class="p">:</span> <span class="n">Show</span> <span class="nb">all</span> <span class="n">packets</span> <span class="n">sent</span> <span class="ow">and</span> <span class="n">received</span>
+<span class="o">--</span><span class="n">iflist</span><span class="p">:</span> <span class="n">Print</span> <span class="n">host</span> <span class="n">interfaces</span> <span class="ow">and</span> <span class="n">routes</span> <span class="p">(</span><span class="k">for</span> <span class="n">debugging</span><span class="p">)</span>
+<span class="o">--</span><span class="n">log</span><span class="o">-</span><span class="n">errors</span><span class="p">:</span> <span class="n">Log</span> <span class="n">errors</span><span class="o">/</span><span class="n">warnings</span> <span class="n">to</span> <span class="n">the</span> <span class="n">normal</span><span class="o">-</span><span class="nb">format</span> <span class="n">output</span> <span class="n">file</span>
+<span class="o">--</span><span class="n">append</span><span class="o">-</span><span class="n">output</span><span class="p">:</span> <span class="n">Append</span> <span class="n">to</span> <span class="n">rather</span> <span class="n">than</span> <span class="n">clobber</span> <span class="n">specified</span> <span class="n">output</span> <span class="n">files</span>
+<span class="o">--</span><span class="n">resume</span> <span class="o">&lt;</span><span class="n">filename</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">Resume</span> <span class="n">an</span> <span class="n">aborted</span> <span class="n">scan</span>
+<span class="o">--</span><span class="n">stylesheet</span> <span class="o">&lt;</span><span class="n">path</span><span class="o">/</span><span class="n">URL</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">XSL</span> <span class="n">stylesheet</span> <span class="n">to</span> <span class="n">transform</span> <span class="n">XML</span> <span class="n">output</span> <span class="n">to</span> <span class="n">HTML</span>
+<span class="o">--</span><span class="n">webxml</span><span class="p">:</span> <span class="n">Reference</span> <span class="n">stylesheet</span> <span class="kn">from</span> <span class="nn">Nmap.Org</span> <span class="k">for</span> <span class="n">more</span> <span class="n">portable</span> <span class="n">XML</span>
+<span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">stylesheet</span><span class="p">:</span> <span class="n">Prevent</span> <span class="n">associating</span> <span class="n">of</span> <span class="n">XSL</span> <span class="n">stylesheet</span> <span class="n">w</span><span class="o">/</span><span class="n">XML</span> <span class="n">output</span>
+<span class="n">MISC</span><span class="p">:</span>
+<span class="o">-</span><span class="mi">6</span><span class="p">:</span> <span class="n">Enable</span> <span class="n">IPv6</span> <span class="n">scanning</span>
+<span class="o">-</span><span class="n">A</span><span class="p">:</span> <span class="n">Enable</span> <span class="n">OS</span> <span class="n">detection</span><span class="p">,</span> <span class="n">version</span> <span class="n">detection</span><span class="p">,</span> <span class="n">script</span> <span class="n">scanning</span><span class="p">,</span> <span class="ow">and</span> <span class="n">traceroute</span>
+<span class="o">--</span><span class="n">datadir</span> <span class="o">&lt;</span><span class="n">dirname</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">Specify</span> <span class="n">custom</span> <span class="n">Nmap</span> <span class="n">data</span> <span class="n">file</span> <span class="n">location</span>
+<span class="o">--</span><span class="n">send</span><span class="o">-</span><span class="n">eth</span><span class="o">/--</span><span class="n">send</span><span class="o">-</span><span class="n">ip</span><span class="p">:</span> <span class="n">Send</span> <span class="n">using</span> <span class="n">raw</span> <span class="n">ethernet</span> <span class="n">frames</span> <span class="ow">or</span> <span class="n">IP</span> <span class="n">packets</span>
+<span class="o">--</span><span class="n">privileged</span><span class="p">:</span> <span class="n">Assume</span> <span class="n">that</span> <span class="n">the</span> <span class="n">user</span> <span class="ow">is</span> <span class="n">fully</span> <span class="n">privileged</span>
+<span class="o">--</span><span class="n">unprivileged</span><span class="p">:</span> <span class="n">Assume</span> <span class="n">the</span> <span class="n">user</span> <span class="n">lacks</span> <span class="n">raw</span> <span class="n">socket</span> <span class="n">privileges</span>
+<span class="o">-</span><span class="n">V</span><span class="p">:</span> <span class="n">Print</span> <span class="n">version</span> <span class="n">number</span>
+<span class="o">-</span><span class="n">h</span><span class="p">:</span> <span class="n">Print</span> <span class="n">this</span> <span class="n">help</span> <span class="n">summary</span> <span class="n">page</span><span class="o">.</span>
+<span class="n">EXAMPLES</span><span class="p">:</span>
+<span class="n">nmap</span> <span class="o">-</span><span class="n">v</span> <span class="o">-</span><span class="n">A</span> <span class="n">scanme</span><span class="o">.</span><span class="n">nmap</span><span class="o">.</span><span class="n">org</span>
+<span class="n">nmap</span> <span class="o">-</span><span class="n">v</span> <span class="o">-</span><span class="n">sn</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">0.0</span><span class="o">/</span><span class="mi">16</span> <span class="mf">10.0</span><span class="o">.</span><span class="mf">0.0</span><span class="o">/</span><span class="mi">8</span>
+<span class="n">nmap</span> <span class="o">-</span><span class="n">v</span> <span class="o">-</span><span class="n">iR</span> <span class="mi">10000</span> <span class="o">-</span><span class="n">Pn</span> <span class="o">-</span><span class="n">p</span> <span class="mi">80</span>
+<span class="n">SEE</span> <span class="n">THE</span> <span class="n">MAN</span> <span class="n">PAGE</span> <span class="p">(</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">nmap</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">book</span><span class="o">/</span><span class="n">man</span><span class="o">.</span><span class="n">html</span><span class="p">)</span> <span class="n">FOR</span> <span class="n">MORE</span> <span class="n">OPTIONS</span> <span class="n">AND</span> <span class="n">EXAMPLES</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@node1</span> <span class="o">~</span><span class="p">]</span><span class="c1">#</span>
+</pre></div>
+</div>
+<p><a class="reference external" href="http://www.nmap.com.cn/doc/manual.shtm">参考nmap中文网</a></p>
+<div class="section" id="nmap">
+<h1>1.1 nmap使用<a class="headerlink" href="#nmap" title="永久链接至标题">¶</a></h1>
+<div class="section" id="centos-nmap">
+<h2>1.1.1 Centos 系统安装nmap<a class="headerlink" href="#centos-nmap" title="永久链接至标题">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">nmap</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id1">
+<h2>1.1.2 查看安装版本<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@node1</span> <span class="o">~</span><span class="p">]</span><span class="c1"># nmap -version</span>
+
+<span class="n">Nmap</span> <span class="n">version</span> <span class="mf">6.40</span> <span class="p">(</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">nmap</span><span class="o">.</span><span class="n">org</span> <span class="p">)</span>
+<span class="n">Platform</span><span class="p">:</span> <span class="n">x86_64</span><span class="o">-</span><span class="n">redhat</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnu</span>
+<span class="n">Compiled</span> <span class="k">with</span><span class="p">:</span> <span class="n">nmap</span><span class="o">-</span><span class="n">liblua</span><span class="o">-</span><span class="mf">5.2</span><span class="o">.</span><span class="mi">2</span> <span class="n">openssl</span><span class="o">-</span><span class="mf">1.0</span><span class="o">.</span><span class="mi">2</span><span class="n">k</span> <span class="n">libpcre</span><span class="o">-</span><span class="mf">8.32</span> <span class="n">libpcap</span><span class="o">-</span><span class="mf">1.5</span><span class="o">.</span><span class="mi">3</span> <span class="n">nmap</span><span class="o">-</span><span class="n">libdnet</span><span class="o">-</span><span class="mf">1.12</span> <span class="n">ipv6</span>
+<span class="n">Compiled</span> <span class="n">without</span><span class="p">:</span>
+<span class="n">Available</span> <span class="n">nsock</span> <span class="n">engines</span><span class="p">:</span> <span class="n">epoll</span> <span class="n">poll</span> <span class="n">select</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@node1</span> <span class="o">~</span><span class="p">]</span><span class="c1">#</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id2">
+<h2>1.1.3 nmap常用命令<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>nmap 172.31.8.8                             ---扫描单个主机
+nmap 172.31.8.0/24                          ---扫描整个子网
+nmap 172.31.8.8 172.31.8.13                 ---扫描多个目标
+nmap 172.31.8.8-20                          ---扫描一个指定范围内的目标
+nmap -iL pinglist.txt                       ---如果有一个IP地址列表，将这些IP保存在一个pinglist.txt文件内，使用nmap -iL iplist.txt 扫描指定文件内的目标 list
+例：
+[root@node1 ~]# cat pinglist.txt
+172.31.8.2
+172.31.8.3
+172.31.8.75
+172.31.8.107
+[root@node1 ~]# nmap -iL pinglist.txt
+
+Starting Nmap 6.40 ( http://nmap.org ) at 2019-07-20 17:13 CST
+Nmap scan report for 172.31.8.3
+Host is up (0.0034s latency).
+Not shown: 995 filtered ports
+PORT     STATE SERVICE
+135/tcp  open  msrpc
+139/tcp  open  netbios-ssn
+445/tcp  open  microsoft-ds
+3389/tcp open  ms-wbt-server
+5357/tcp open  wsdapi
+MAC Address: 50:7B:9D:99:AA:D9 (Unknown)
+
+Nmap scan report for node4 (172.31.8.75)
+Host is up (0.000022s latency).
+Not shown: 999 closed ports
+PORT   STATE SERVICE
+22/tcp open  ssh
+MAC Address: 00:0C:29:E3:5F:D2 (VMware)
+
+Nmap scan report for node3 (172.31.8.107)
+Host is up (0.000066s latency).
+Not shown: 999 closed ports
+PORT   STATE SERVICE
+22/tcp open  ssh
+MAC Address: 00:0C:29:9A:43:BC (VMware)
+
+Nmap done: 4 IP addresses (3 hosts up) scanned in 5.15 seconds
+[root@node1 ~]#
+
+nmap 172.31.8.0/24 -exclude 172.31.8.8      ---扫描172.31.8.0/24 这个子网除172.31.8.8以外的所有IP
+nmap 172.31.8/0/24 -exclude iplist.txt      ---扫描172.31.8.0/24 这个子网所有的IP，排除iplist.txt这个文件内列出的IP
+nmap -p8080,22 172.31.8.8                   ---扫描特定主机上的8080，22端口
+</pre></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>1.1.4 深入探究<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>nmap -sS 172.31.8.8                         ---SYN扫描，指定IP/IP范围指定扫描端口:nmap -sS 172.31.8.8 -p 8080
+nmap -sP 172.31.8.0/24                      ---扫描存活主机,可以添加 | grep up 参数过滤存活主机:nmap -sP 172.31.8.0/24 | grep up
+nmap -sV 172.31.8.8 -p 8080                 ---扫描主机的8080端口的服务和服务版本
+nmap -O 172.31.8.8                          ---扫描目标主机的系统版本
+nmap -A 172.31.8.8                          ---扫描目标主机，-A参数包括:-sV、-O 系统全面检测、启动脚本检测、扫描等操作
+nmap -PO 172.31.8.8                         ---扫描之前不使用ping操作，适用于禁ping的系统和设备
+nmap -v 172.31.8.8                          ---显示目标主机上详细信息
+例：
+[root@node1 ~]# nmap -v 172.31.8.8
+
+Starting Nmap 6.40 ( http://nmap.org ) at 2019-07-20 17:15 CST
+Initiating SYN Stealth Scan at 17:15
+Scanning node1 (172.31.8.8) [1000 ports]
+Discovered open port 8080/tcp on 172.31.8.8
+adjust_timeouts2: packet supposedly had rtt of 1428142253061189 microseconds.  Ignoring time.
+adjust_timeouts2: packet supposedly had rtt of 1428142253061189 microseconds.  Ignoring time.
+Discovered open port 22/tcp on 172.31.8.8
+adjust_timeouts2: packet supposedly had rtt of 1428142253061166 microseconds.  Ignoring time.
+adjust_timeouts2: packet supposedly had rtt of 1428142253061166 microseconds.  Ignoring time.
+Discovered open port 8009/tcp on 172.31.8.8
+adjust_timeouts2: packet supposedly had rtt of 1428142274531622 microseconds.  Ignoring time.
+adjust_timeouts2: packet supposedly had rtt of 1428142274531622 microseconds.  Ignoring time.
+Completed SYN Stealth Scan at 17:15, 0.01s elapsed (1000 total ports)
+Nmap scan report for node1 (172.31.8.8)
+Host is up (0.0000010s latency).
+Not shown: 997 closed ports
+PORT     STATE SERVICE
+22/tcp   open  ssh
+8009/tcp open  ajp13
+8080/tcp open  http-proxy
+
+Read data files from: /usr/bin/../share/nmap
+Nmap done: 1 IP address (1 host up) scanned in 0.03 seconds
+        Raw packets sent: 1000 (44.000KB) | Rcvd: 2003 (84.132KB)
+[root@node1 ~]#
+
+nmap -T4 -sP 172.31.8.0/24 &amp;&amp; egrep &quot;00:00:00:00:00:00&quot; /proc/net/arp | grep Unknown     ---扫描子网上未使用的IP
+nmap -PN -T4 -p139,445 -n -v --script=smb-check-vulns --script-args safe=1 172.31.8.0/24  ---在子网中探测Conficker 蠕虫病毒
+nmap -F -O 172.31.8.0/24 | grep &quot;Running: &quot; &gt; /tmp/os; echo &quot;$(cat /tmp/os | grep Linux | wc -l) Linux device(s)&quot;; echo &quot;$(cat /tmp/os | grep Windows | wc -l) Window(s) device&quot;
+---扫描子网中存在的Linux、windows设备数量
+</pre></div>
+</div>
+<p><img alt="主机数量探测.png" src="https://i.loli.net/2019/07/20/5d32d5a15ff3269908.png" />
+nmap是一款非常强大的扫描工具，以上的命令基本都是比较常用的命令，如果想深入了解nmap的功能，可以自己去研究一下。</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="p01_02-Rabbitmq-%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85.html" class="btn btn-neutral float-right" title="1.2 Rabbitmq 入门(集群安装篇)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../chapters/p01.html" class="btn btn-neutral float-left" title="第一章 Linux 使用笔记" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; 版权所有 2020, Architectang
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

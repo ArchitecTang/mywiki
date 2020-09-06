@@ -1,0 +1,366 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>1.2 Rabbitmq 入门(集群安装篇) &mdash; ArchitecTang’Blog 2.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="1.3 Haproxy入门(安装篇)" href="p01_03-Haproxy%E5%85%A5%E9%97%A8-%E5%AE%89%E8%A3%85%E7%AF%87.html" />
+    <link rel="prev" title="1.1 nmap使用" href="p01_01-Nmap%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> ArchitecTang’Blog
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../preface.html">前言</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../chapters/p01.html">第一章 Linux 使用笔记</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="p01_01-Nmap%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7.html">1.1 nmap使用</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">1.2 Rabbitmq 入门(集群安装篇)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">1.2.1 软件下载：</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">1.2.2 安装环境:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">1.2.3 部署集群:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">1.2.4 集群管理</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="p01_03-Haproxy%E5%85%A5%E9%97%A8-%E5%AE%89%E8%A3%85%E7%AF%87.html">1.3 Haproxy入门(安装篇)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="p01_04-zabbix%E7%9B%91%E6%8E%A7%E5%8E%86%E5%8F%B2%E6%95%B0%E6%8D%AE%E6%B8%85%E7%90%86%E6%93%8D%E4%BD%9C%E6%96%B9%E6%A1%88.html">1.4 zabbix监控历史数据清理操作方案</a></li>
+<li class="toctree-l2"><a class="reference internal" href="p01_05-clamav_Linux-%E6%9D%80%E6%AF%92%E8%BD%AF%E4%BB%B6.html">1.5 clamav Linux-杀毒软件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="p01_06-Linux-%E8%BD%AF%E9%93%BE%E6%8E%A5%E5%92%8C%E7%A1%AC%E9%93%BE%E6%8E%A5%E4%BB%8B%E7%BB%8D.html">1.6 Linux-软链接和硬链接</a></li>
+<li class="toctree-l2"><a class="reference internal" href="p01_07-Ansible%E5%9C%A8%E4%BD%BF%E7%94%A8%E8%BF%87%E7%A8%8B%E4%B8%AD%E5%87%BA%E7%8E%B0%E7%9A%84%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95.html">1.7 Ansible在使用过程中出现的错误解决方法</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p02.html">第二章 Python 学习笔记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p03.html">第三章 微服务入门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p04.html">第四章 网络相关</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p05.html">第五章 安全相关</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p06.html">第六章 shell脚本学习笔记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p07.html">第七章 开发工具</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p08.html">第八章 数据库学习笔记</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ArchitecTang’Blog</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../chapters/p01.html">第一章 Linux 使用笔记</a> &raquo;</li>
+        
+      <li>1.2 Rabbitmq 入门(集群安装篇)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/p01/p01_02-Rabbitmq-集群安装.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="rabbitmq">
+<h1>1.2 Rabbitmq 入门(集群安装篇)<a class="headerlink" href="#rabbitmq" title="永久链接至标题">¶</a></h1>
+<p>简介:</p>
+<p>RabbitMQ是采用Erlang语言实现AMQP（Advanced Message Queuing
+Protocol，高级消息队列协议）的消息中间件，它最初起源于金融系统，用于在分布式系统中存储转发消息。
+MQ全称为Message Queue,
+消息队列（MQ）是一种应用程序对应用程序的通信方法。应用程序通过读写出入队列的消息（针对应用程序的数据）来通信，而无需专用连接来链接它们。消息传递指的是程序之间通过在消息中发送数据进行通信，而不是通过直接调用彼此来通信，直接调用通常是用于诸如远程过程调用的技术。排队指的是应用程序通过
+队列来通信。队列的使用除去了接收和发送应用程序同时执行的要求。其中较为成熟的MQ产品有IBM
+WEBSPHERE MQ等等。
+RabbitMQ是目前非常热门的一款消息中间件，很多行业都在使用这个消息中间件，RabbitMQ凭借其高可靠、易扩展、高可用及丰富的功能特性收到很多人的青睐。</p>
+<div class="section" id="id1">
+<h2>1.2.1 软件下载：<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>下载<a class="reference external" href="https://pan.baidu.com/s/1QLR4OelHXfMGLYywD13ydw">Erlang</a>
+百度云提取码: 864m</p>
+<p>下载<a class="reference external" href="https://pan.baidu.com/s/15xSC2qo6-0Jh6FYnXkA4Yw">Rabbitmq
+源码包</a>
+百度云提取码: qwih</p>
+<p><a class="reference external" href="https://www.rabbitmq.com/">点击此处跳转到官方网站下载最新版本</a></p>
+</div>
+<div class="section" id="id2">
+<h2>1.2.2 安装环境:<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>node1 172.31.8.8 system Centos 7 —- node3 172.31.8.107 system Centos 7</p>
+<p>node2 172.31.8.13 system Centos 7 —- node4 172.31.8.75 system Centos 7</p>
+<p>软件版本：</p>
+<p>Erlang 21.3</p>
+<p>rabbitmq 3.7.7</p>
+<p>单点安装(以下操作需要在其他四个节点重复执行)</p>
+<p>分别编辑四台机器的/etc/hosts 文件，增加以下内容</p>
+<p>172.31.8.8 node1</p>
+<p>172.31.8.13 node2</p>
+<p>172.31.8.107 node3</p>
+<p>172.31.8.75 node4</p>
+<p>安装依赖包</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="o">*</span><span class="n">epel</span><span class="o">*</span> <span class="n">gcc</span><span class="o">-</span><span class="n">c</span><span class="o">++</span> <span class="n">unixODBC</span> <span class="n">unixODBC</span><span class="o">-</span><span class="n">devel</span> <span class="n">openssl</span><span class="o">-</span><span class="n">devel</span> <span class="n">ncurses</span><span class="o">-</span><span class="n">devel</span>
+</pre></div>
+</div>
+<p>编译安装 Erlang</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@node1</span> <span class="o">~</span><span class="p">]</span><span class="c1"># tar xf otp_src_21.3.tar.gz</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@node1</span> <span class="o">~</span><span class="p">]</span><span class="c1"># cd otp_src_21.3</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@node1</span> <span class="n">otp_src_21</span><span class="o">.</span><span class="mi">3</span><span class="p">]</span><span class="c1"># ./configure --prefix=/usr/local/bin/erlang --without-javac</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@node1</span> <span class="n">otp_src_21</span><span class="o">.</span><span class="mi">3</span><span class="p">]</span><span class="c1"># make &amp;&amp; make install</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@node1</span> <span class="n">otp_src_21</span><span class="o">.</span><span class="mi">3</span><span class="p">]</span><span class="c1"># echo &quot;export PATH=$PATH:/usr/local/bin/erlang/bin:/usr/local/bin/rabbitmq_server-3.6.5/sbin&quot; &gt;&gt; /etc/profile</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@node1</span> <span class="n">otp_src_21</span><span class="o">.</span><span class="mi">3</span><span class="p">]</span><span class="c1"># source /etc/profile</span>
+</pre></div>
+</div>
+<p>查看erlang 是否安装成功，出现以下输出即证明erlang已经安装成功
+<img alt="erlang版本.png" src="https://i.loli.net/2019/07/02/5d1b6526a7b9185754.png" /></p>
+<p>安装Rabbitmq</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@node1</span> <span class="o">~</span><span class="p">]</span><span class="c1"># tar xf rabbitmq-server-generic-unix-3.7.7.tar</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@node2</span> <span class="o">~</span><span class="p">]</span><span class="c1"># mv rabbitmq_server-3.7.7 /usr/local/rabbitmq-3.7.7</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@node2</span> <span class="o">~</span><span class="p">]</span><span class="c1"># cd /usr/local/rabbitmq-3.7.7/</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@node1</span> <span class="o">~</span><span class="p">]</span><span class="c1"># echo &quot;export PATH=$PATH:/usr/local/rabbitmq-3.7.7/sbin&quot; &gt;&gt; /etc/profile</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@node1</span> <span class="o">~</span><span class="p">]</span><span class="c1"># source /etc/profile</span>
+
+<span class="p">[</span><span class="n">root</span><span class="nd">@node1</span> <span class="o">~</span><span class="p">]</span><span class="c1"># rabbitmq-plugins enable rabbitmq_management   ---打开管理页面插件</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@node1</span> <span class="o">~</span><span class="p">]</span><span class="c1"># rabbitmq-server -detached  --后台启动服务</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@node1</span> <span class="o">~</span><span class="p">]</span><span class="c1"># rabbitmqctl add_user  admin 123456  --增加用户名admin，密码123456</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@node1</span> <span class="o">~</span><span class="p">]</span><span class="c1"># rabbitmqctl set_permissions -p &quot;/&quot; admin &quot;.*&quot; &quot;.*&quot; &quot;.*&quot;</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@node1</span> <span class="o">~</span><span class="p">]</span><span class="c1"># rabbitmqctl set_user_tags admin administrator --设置用户admin为管理员</span>
+</pre></div>
+</div>
+<p>打开web页面，出现以下页面即安装成功</p>
+<p>node1 <img alt="rabbitmqnode1.png" src="https://i.loli.net/2019/07/03/5d1ca62e894fb35867.png" /> node2 <img alt="rabbitmqnode2.png" src="https://i.loli.net/2019/07/03/5d1ca66bb841381637.png" /></p>
+</div>
+<div class="section" id="id3">
+<h2>1.2.3 部署集群:<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>修改 .erlang.cookie文件，node1、node4节点内容改为一致</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@node1</span> <span class="o">~</span><span class="p">]</span><span class="c1"># chmod 400 .erlang.cookie  --设置.erlang.cookie文件权限,为了防止添加集群失败四个节点均需要调整为一致</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@node1</span> <span class="o">~</span><span class="p">]</span><span class="c1"># scp .erlang.cookie root@172.31.8.13:/root/</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@node1</span> <span class="o">~</span><span class="p">]</span><span class="c1"># scp .erlang.cookie root@172.31.8.107:/root/</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@node1</span> <span class="o">~</span><span class="p">]</span><span class="c1"># scp .erlang.cookie root@172.31.8.75:/root/</span>
+</pre></div>
+</div>
+<p>添加集群失败报错示例: 出现此信息可根据提示进行排查 <img alt="报错示例.png" src="https://i.loli.net/2019/07/03/5d1cb7afc3b9469683.png" />
+替换完.erlang.cookie文件，需要重启各个节点的rabbitmq服务</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">node1</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@node1</span> <span class="o">~</span><span class="p">]</span><span class="c1"># kill -9 PID</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@node1</span> <span class="o">~</span><span class="p">]</span><span class="c1"># rabbitmq-server -detached</span>
+<span class="n">node2</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@node2</span> <span class="o">~</span><span class="p">]</span><span class="c1"># kill -9 PID</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@node2</span> <span class="o">~</span><span class="p">]</span><span class="c1"># rabbitmq-server -detached</span>
+<span class="n">node3</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@node3</span> <span class="o">~</span><span class="p">]</span><span class="c1"># kill -9 PID</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@node3</span> <span class="o">~</span><span class="p">]</span><span class="c1"># rabbitmq-server -detached</span>
+<span class="n">node4</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@node4</span> <span class="o">~</span><span class="p">]</span><span class="c1"># kill -9 PID</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@node5</span> <span class="o">~</span><span class="p">]</span><span class="c1"># rabbitmq-server -detached</span>
+</pre></div>
+</div>
+<p>添加节点到集群，将node1节点作为主节点</p>
+<p>在 node2 节点执行以下命令：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@node2</span> <span class="o">~</span><span class="p">]</span><span class="c1"># rabbitmqctl stop_app</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@node4</span> <span class="o">~</span><span class="p">]</span><span class="c1"># rabbitmqctl join_cluster rabbit@node1  --默认为disc节点，如果需要指定节点角色，可以添加--ram/--disc参数</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@node4</span> <span class="o">~</span><span class="p">]</span><span class="c1"># rabbitmqctl start_app</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@node4</span> <span class="o">~</span><span class="p">]</span><span class="c1"># rabbitmqctl cluster_status</span>
+</pre></div>
+</div>
+<p>以上命令在node3、4节点重复执行</p>
+<p>执行结果: <img alt="添加集群.png" src="https://i.loli.net/2019/07/03/5d1cb507de47990688.png" /> 打开web管理页面查看状态 <img alt="查看集群.png" src="https://i.loli.net/2019/07/03/5d1cb57e207a876254.png" /></p>
+<p>到此Rabbitmq集群已经安装完毕，四个节点均已正常运行</p>
+</div>
+<div class="section" id="id4">
+<h2>1.2.4 集群管理<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<p>假设Rabbitmq-node2节点需要退出集群</p>
+<p>在node2节点执行：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>rabbitmqctl stop_app   --停止rabbitmq服务
+rabbitmqctl reset --将RabbitMQ node还原到最初状态.包括从所在群集中删除此node,从管理数据库中删除所有配置数据，如已配置的用户和虚拟主机，以及删除所有持久化消息.
+rabbitmqctl start_app
+</pre></div>
+</div>
+<p>在主节点（node1）执行</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rabbitmqctl</span> <span class="n">forget_cluster_node</span> <span class="n">rabbit</span><span class="nd">@node2</span> <span class="o">--</span><span class="n">此命令会从集群中删除rabbit</span><span class="nd">@node2节点</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>修改node2、node4节点为内存节点，在node2、4节点执行:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@node2</span> <span class="o">~</span><span class="p">]</span><span class="c1"># rabbitmqctl stop_app   --停止rabbitmq服务</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@node2</span> <span class="o">~</span><span class="p">]</span><span class="c1"># rabbitmqctl change_cluster_node_type ram    --修改节点为内存节点</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@node2</span> <span class="o">~</span><span class="p">]</span><span class="c1"># rabbitmqctl start_app    --启动服务</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@node2</span> <span class="o">~</span><span class="p">]</span><span class="c1"># rabbitmqctl cluster_status --查看集群状态</span>
+</pre></div>
+</div>
+<p>执行结果可以看到node2节点已经修改为RAM节点，disc节点为node1、3、4
+<img alt="node2RAM.png" src="https://i.loli.net/2019/07/04/5d1d75112e7ab28091.png" /> 再修改node4节点： <img alt="node4RAM.png" src="https://i.loli.net/2019/07/04/5d1d7671ed99316232.png" />
+node2、node4节点已经成功修改为内存节点，现在集群就是双内存、双硬盘节点，从控制台查看更为直观:
+<img alt="web控制台.png" src="https://i.loli.net/2019/07/04/5d1d79643889841417.png" /></p>
+<p>更多管理命令可参考文档:</p>
+<p><a class="reference external" href="https://blog.csdn.net/wulex/article/details/64127224">https://blog.csdn.net/wulex/article/details/64127224</a></p>
+<p><a class="reference external" href="https://www.rabbitmq.com/clustering.html">点击此处查看官方文档</a></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="p01_03-Haproxy%E5%85%A5%E9%97%A8-%E5%AE%89%E8%A3%85%E7%AF%87.html" class="btn btn-neutral float-right" title="1.3 Haproxy入门(安装篇)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="p01_01-Nmap%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7.html" class="btn btn-neutral float-left" title="1.1 nmap使用" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; 版权所有 2020, Architectang
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

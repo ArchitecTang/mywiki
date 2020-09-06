@@ -1,0 +1,488 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>1.3 Haproxy入门(安装篇) &mdash; ArchitecTang’Blog 2.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="1.4 zabbix监控历史数据清理操作方案" href="p01_04-zabbix%E7%9B%91%E6%8E%A7%E5%8E%86%E5%8F%B2%E6%95%B0%E6%8D%AE%E6%B8%85%E7%90%86%E6%93%8D%E4%BD%9C%E6%96%B9%E6%A1%88.html" />
+    <link rel="prev" title="1.2 Rabbitmq 入门(集群安装篇)" href="p01_02-Rabbitmq-%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> ArchitecTang’Blog
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../preface.html">前言</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../chapters/p01.html">第一章 Linux 使用笔记</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="p01_01-Nmap%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7.html">1.1 nmap使用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="p01_02-Rabbitmq-%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85.html">1.2 Rabbitmq 入门(集群安装篇)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">1.3 Haproxy入门(安装篇)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">1.3.1 下载需要的haproxy版本并上传到服务器上</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">1.3.2 设置HAproxy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">1.3.3 启动haproxy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">1.3.4 使用浏览器进行访问测试</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">1.3.5 测试</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">1.3.6 编写haproxy启动脚本</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#haproxy-cfg">1.3.7 haproxy.cfg 配置文件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#haproxy-sh">1.3.8 haproxy.sh 启动脚本：</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="p01_04-zabbix%E7%9B%91%E6%8E%A7%E5%8E%86%E5%8F%B2%E6%95%B0%E6%8D%AE%E6%B8%85%E7%90%86%E6%93%8D%E4%BD%9C%E6%96%B9%E6%A1%88.html">1.4 zabbix监控历史数据清理操作方案</a></li>
+<li class="toctree-l2"><a class="reference internal" href="p01_05-clamav_Linux-%E6%9D%80%E6%AF%92%E8%BD%AF%E4%BB%B6.html">1.5 clamav Linux-杀毒软件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="p01_06-Linux-%E8%BD%AF%E9%93%BE%E6%8E%A5%E5%92%8C%E7%A1%AC%E9%93%BE%E6%8E%A5%E4%BB%8B%E7%BB%8D.html">1.6 Linux-软链接和硬链接</a></li>
+<li class="toctree-l2"><a class="reference internal" href="p01_07-Ansible%E5%9C%A8%E4%BD%BF%E7%94%A8%E8%BF%87%E7%A8%8B%E4%B8%AD%E5%87%BA%E7%8E%B0%E7%9A%84%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95.html">1.7 Ansible在使用过程中出现的错误解决方法</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p02.html">第二章 Python 学习笔记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p03.html">第三章 微服务入门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p04.html">第四章 网络相关</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p05.html">第五章 安全相关</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p06.html">第六章 shell脚本学习笔记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p07.html">第七章 开发工具</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p08.html">第八章 数据库学习笔记</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ArchitecTang’Blog</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../chapters/p01.html">第一章 Linux 使用笔记</a> &raquo;</li>
+        
+      <li>1.3 Haproxy入门(安装篇)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/p01/p01_03-Haproxy入门-安装篇.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="haproxy">
+<h1>1.3 Haproxy入门(安装篇)<a class="headerlink" href="#haproxy" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id1">
+<h2>1.3.1 下载需要的haproxy版本并上传到服务器上<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">pkgs</span><span class="o">.</span><span class="n">fedoraproject</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">repo</span><span class="o">/</span><span class="n">pkgs</span><span class="o">/</span><span class="n">haproxy</span><span class="o">/</span><span class="n">haproxy</span><span class="o">-</span><span class="mf">1.7</span><span class="o">.</span><span class="mf">9.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+</pre></div>
+</div>
+<div class="figure align-default">
+<img alt="下载.png" src="https://i.loli.net/2019/07/21/5d34068e4705318240.png" />
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tar</span> <span class="o">-</span><span class="n">zxvf</span> <span class="n">haproxy</span><span class="o">-</span><span class="mf">1.7</span><span class="o">.</span><span class="mf">9.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">cd</span> <span class="n">haproxy</span><span class="o">-</span><span class="mf">1.7</span><span class="o">.</span><span class="mi">9</span>
+</pre></div>
+</div>
+<p>查看linux内核版本 <img alt="版本.png" src="https://i.loli.net/2019/07/21/5d3407121b56169904.png" /> 编译</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">TARGET</span><span class="o">=</span><span class="n">linux26</span> <span class="n">prefix</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">haproxy</span>
+</pre></div>
+</div>
+<p><img alt="编译.png" src="https://i.loli.net/2019/07/21/5d340776c5c2a40135.png" /> 安装</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">install</span> <span class="n">PREFIX</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">haproxy</span>
+</pre></div>
+</div>
+<div class="figure align-default">
+<img alt="安装.png" src="https://i.loli.net/2019/07/21/5d340797a5b5d68902.png" />
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>参数说明：
+TARGET=linux26
+#使用uname -r查看内核，如：2.6.18-371.el5，此时该参数就为linux26
+#kernel 大于2.6.28的用：TARGET=linux2628
+CPU=x86_64   #使用uname -r查看系统信息，如x86_64 x86_64 x86_64 GNU/Linux，此时该参数就为x86_64
+PREFIX=/usr/local/haprpxy   #/usr/local/haprpxy为haprpxy安装路径
+</pre></div>
+</div>
+</div>
+<div class="section" id="id2">
+<h2>1.3.2 设置HAproxy<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">haproxy的配置文件需要自己创建</span>
+<span class="n">mkdir</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">haproxy</span><span class="o">/</span><span class="n">conf</span><span class="o">/</span>
+<span class="n">mkdir</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">haproxy</span><span class="o">/</span><span class="n">logs</span>
+
+<span class="n">vim</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">haproxy</span><span class="o">/</span><span class="n">haproxy</span><span class="o">.</span><span class="n">cfg</span>
+</pre></div>
+</div>
+<p>填写以下内容：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">global</span>
+    <span class="n">log</span>    <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span> <span class="n">local3</span>
+    <span class="n">chroot</span>  <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">haproxy</span>
+    <span class="n">pidfile</span>  <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">haproxy</span><span class="o">/</span><span class="n">logs</span><span class="o">/</span><span class="n">haproxy</span><span class="o">.</span><span class="n">pid</span>
+    <span class="n">maxconn</span>  <span class="mi">4000</span>
+    <span class="n">uid</span> <span class="mi">99</span>
+    <span class="n">gid</span> <span class="mi">99</span>
+    <span class="n">daemon</span>
+    <span class="n">nbproc</span> <span class="mi">1</span>
+    <span class="n">stats</span> <span class="n">socket</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">haproxy</span><span class="o">/</span><span class="n">haproxy</span><span class="o">.</span><span class="n">sock</span> <span class="n">level</span> <span class="n">admin</span>
+<span class="c1">#---------------------------------------------------------------------</span>
+<span class="c1"># common defaults that all the &#39;listen&#39; and &#39;backend&#39; sections will</span>
+<span class="c1"># use if not designated in their block</span>
+<span class="c1">#---------------------------------------------------------------------</span>
+<span class="n">defaults</span>
+        <span class="n">log</span>     <span class="k">global</span>
+        <span class="n">option</span> <span class="n">dontlognull</span>
+        <span class="n">option</span> <span class="n">redispatch</span>
+        <span class="n">mode</span> <span class="n">http</span>
+        <span class="n">timeout</span> <span class="n">connect</span>      <span class="mi">5000</span>
+        <span class="n">timeout</span> <span class="n">client</span>      <span class="mi">50000</span>
+        <span class="n">timeout</span> <span class="n">server</span>      <span class="mi">50000</span>
+<span class="n">listen</span> <span class="n">stats</span>
+        <span class="n">mode</span> <span class="n">http</span>
+        <span class="n">bind</span> <span class="mf">172.31</span><span class="o">.</span><span class="mf">8.102</span><span class="p">:</span><span class="mi">8888</span>
+        <span class="n">stats</span> <span class="n">enable</span>
+        <span class="n">stats</span>   <span class="n">uri</span>    <span class="o">/</span><span class="n">haproxy</span><span class="o">-</span><span class="n">status</span>
+        <span class="n">stats</span>  <span class="n">auth</span> <span class="n">haproxy</span><span class="p">:</span><span class="n">haproxy</span>
+            <span class="n">stats</span> <span class="n">hide</span><span class="o">-</span><span class="n">version</span>
+        <span class="n">stats</span> <span class="n">admin</span> <span class="k">if</span> <span class="n">TRUE</span>
+<span class="c1">########################################################################</span>
+<span class="n">backend</span> <span class="n">test</span><span class="o">-</span><span class="n">web</span>
+        <span class="n">mode</span> <span class="n">http</span>
+        <span class="n">acl</span> <span class="n">being_scanned</span> <span class="n">be_conn</span> <span class="n">gt</span> <span class="mi">1500</span>
+        <span class="n">http</span><span class="o">-</span><span class="n">request</span> <span class="n">deny</span> <span class="k">if</span> <span class="n">being_scanned</span>
+        <span class="n">option</span> <span class="n">httplog</span>
+        <span class="n">option</span> <span class="n">httpclose</span>
+        <span class="n">option</span> <span class="n">forwardfor</span>
+        <span class="n">log</span> <span class="k">global</span>
+
+        <span class="n">server</span> <span class="n">mobile</span><span class="o">-</span><span class="n">node9</span>  <span class="mf">172.31</span><span class="o">.</span><span class="mf">8.24</span><span class="p">:</span><span class="mi">80</span> <span class="n">cookie</span> <span class="n">web1</span> <span class="n">check</span> <span class="n">inter</span> <span class="mi">500</span> <span class="n">rise</span> <span class="mi">3</span> <span class="n">fall</span> <span class="mi">3</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>1.3.3 启动haproxy<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">haproxy</span><span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">haproxy</span> <span class="o">-</span><span class="n">f</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">haproxy</span><span class="o">/</span><span class="n">haproxy</span><span class="o">.</span><span class="n">cfg</span>
+</pre></div>
+</div>
+<p>查看haproxy启动进程 <img alt="进程.png" src="https://i.loli.net/2019/07/21/5d340858bac9086754.png" />
+配置文件设置的访问用户名和密码为haproxy，web访问IP为172.31.8.102端口号为8888</p>
+</div>
+<div class="section" id="id4">
+<h2>1.3.4 使用浏览器进行访问测试<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">172.31</span><span class="o">.</span><span class="mf">8.102</span><span class="p">:</span><span class="mi">8888</span><span class="o">/</span><span class="n">haproxy</span><span class="o">-</span><span class="n">status</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id5">
+<h2>1.3.5 测试<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
+<p><img alt="控制台.png" src="https://i.loli.net/2019/07/21/5d3408895571b49377.png" /> 停掉nginx服务，检测到的状态为DOWN <img alt="状态检测.png" src="https://i.loli.net/2019/07/21/5d3408b0e8b1382259.png" /></p>
+</div>
+<div class="section" id="id6">
+<h2>1.3.6 编写haproxy启动脚本<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">vim</span> <span class="n">haproxy</span><span class="o">.</span><span class="n">sh</span>
+</pre></div>
+</div>
+<p>填写入以下内容：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#!/bin/bash
+BASE_DIR=&quot;/usr/local/haproxy&quot;
+ARGV=&quot;$@&quot;
+pp=`ps -fe |grep haproxy |grep -v &quot;grep&quot; |grep -v &quot;haproxy.sh&quot;|awk &#39;{print $2}&#39;`
+
+start()
+{
+echo &quot;START HAPoxy SERVERS OK&quot;
+$BASE_DIR/sbin/haproxy -f /usr/local/haproxy/haproxy.cfg
+}
+
+stop()
+{
+kill -9 $pp
+echo &quot;STOP HAPoxy Listen OK&quot;
+}
+case $ARGV in
+
+start)
+start
+ERROR=$?
+;;
+
+stop)
+stop
+ERROR=$?
+;;
+
+restart)
+stop
+start
+ERROR=$?
+;;
+
+*)
+echo &quot;haproxy.sh [start|restart|stop]&quot;
+esac
+exit $ERROR
+
+chmod +x haproxy.sh
+</pre></div>
+</div>
+<p><img alt="验证.png" src="https://i.loli.net/2019/07/21/5d340907c31e758930.png" />
+安装验证正常，HAproxy安装完毕（以上为haproxy单节点安装，启动脚本、haproxy.cfg配置文件可看下面汇总内容）</p>
+</div>
+<div class="section" id="haproxy-cfg">
+<h2>1.3.7 haproxy.cfg 配置文件<a class="headerlink" href="#haproxy-cfg" title="永久链接至标题">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">global</span>
+    <span class="n">log</span>    <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span> <span class="n">local3</span>
+    <span class="n">chroot</span>  <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">haproxy</span>
+    <span class="n">pidfile</span>  <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">haproxy</span><span class="o">/</span><span class="n">logs</span><span class="o">/</span><span class="n">haproxy</span><span class="o">.</span><span class="n">pid</span>
+    <span class="n">maxconn</span>  <span class="mi">4000</span>
+    <span class="n">uid</span> <span class="mi">99</span>
+    <span class="n">gid</span> <span class="mi">99</span>
+    <span class="n">daemon</span>
+    <span class="n">nbproc</span> <span class="mi">1</span>
+    <span class="n">stats</span> <span class="n">socket</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">haproxy</span><span class="o">/</span><span class="n">haproxy</span><span class="o">.</span><span class="n">sock</span> <span class="n">level</span> <span class="n">admin</span>
+<span class="c1">#---------------------------------------------------------------------</span>
+<span class="c1"># common defaults that all the &#39;listen&#39; and &#39;backend&#39; sections will</span>
+<span class="c1"># use if not designated in their block</span>
+<span class="c1">#---------------------------------------------------------------------</span>
+<span class="n">defaults</span>
+        <span class="n">log</span>     <span class="k">global</span>
+        <span class="n">option</span> <span class="n">dontlognull</span>
+        <span class="n">option</span> <span class="n">redispatch</span>
+        <span class="n">mode</span> <span class="n">http</span>
+        <span class="n">timeout</span> <span class="n">connect</span>      <span class="mi">5000</span>
+        <span class="n">timeout</span> <span class="n">client</span>      <span class="mi">50000</span>
+        <span class="n">timeout</span> <span class="n">server</span>      <span class="mi">50000</span>
+<span class="n">listen</span> <span class="n">stats</span>
+        <span class="n">mode</span> <span class="n">http</span>
+        <span class="n">bind</span> <span class="mf">172.31</span><span class="o">.</span><span class="mf">8.102</span><span class="p">:</span><span class="mi">8888</span>
+        <span class="n">stats</span> <span class="n">enable</span>
+        <span class="n">stats</span>   <span class="n">uri</span>    <span class="o">/</span><span class="n">haproxy</span><span class="o">-</span><span class="n">status</span>
+        <span class="n">stats</span>  <span class="n">auth</span> <span class="n">haproxy</span><span class="p">:</span><span class="n">haproxy</span>
+            <span class="n">stats</span> <span class="n">hide</span><span class="o">-</span><span class="n">version</span>
+        <span class="n">stats</span> <span class="n">admin</span> <span class="k">if</span> <span class="n">TRUE</span>
+<span class="c1">########################################################################</span>
+<span class="n">backend</span> <span class="n">test</span><span class="o">-</span><span class="n">web</span>
+        <span class="n">mode</span> <span class="n">http</span>
+        <span class="n">acl</span> <span class="n">being_scanned</span> <span class="n">be_conn</span> <span class="n">gt</span> <span class="mi">1500</span>
+        <span class="n">http</span><span class="o">-</span><span class="n">request</span> <span class="n">deny</span> <span class="k">if</span> <span class="n">being_scanned</span>
+        <span class="n">option</span> <span class="n">httplog</span>
+        <span class="n">option</span> <span class="n">httpclose</span>
+        <span class="n">option</span> <span class="n">forwardfor</span>
+        <span class="n">log</span> <span class="k">global</span>
+
+        <span class="n">server</span> <span class="n">mobile</span><span class="o">-</span><span class="n">node9</span>  <span class="mf">172.31</span><span class="o">.</span><span class="mf">8.24</span><span class="p">:</span><span class="mi">80</span> <span class="n">cookie</span> <span class="n">web1</span> <span class="n">check</span> <span class="n">inter</span> <span class="mi">500</span> <span class="n">rise</span> <span class="mi">3</span> <span class="n">fall</span> <span class="mi">3</span>
+        <span class="n">server</span> <span class="n">mobile</span><span class="o">-</span><span class="n">node8</span>  <span class="mf">172.31</span><span class="o">.</span><span class="mf">8.102</span><span class="p">:</span><span class="mi">80</span> <span class="n">cookie</span> <span class="n">web1</span> <span class="n">check</span> <span class="n">inter</span> <span class="mi">500</span> <span class="n">rise</span> <span class="mi">3</span> <span class="n">fall</span> <span class="mi">3</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="haproxy-sh">
+<h2>1.3.8 haproxy.sh 启动脚本：<a class="headerlink" href="#haproxy-sh" title="永久链接至标题">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#!/bin/bash
+BASE_DIR=&quot;/usr/local/haproxy&quot;
+ARGV=&quot;$@&quot;
+pp=`ps -fe |grep haproxy |grep -v &quot;grep&quot; |grep -v &quot;haproxy.sh&quot;|awk &#39;{print $2}&#39;`
+
+start()
+{
+echo &quot;START HAPoxy SERVERS OK&quot;
+$BASE_DIR/sbin/haproxy -f /usr/local/haproxy/haproxy.cfg
+}
+
+stop()
+{
+kill -9 $pp
+echo &quot;STOP HAPoxy Listen OK&quot;
+}
+case $ARGV in
+
+start)
+start
+ERROR=$?
+;;
+
+stop)
+stop
+ERROR=$?
+;;
+
+restart)
+stop
+start
+ERROR=$?
+;;
+
+*)
+echo &quot;haproxy.sh [start|restart|stop]&quot;
+esac
+exit $ERROR
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="p01_04-zabbix%E7%9B%91%E6%8E%A7%E5%8E%86%E5%8F%B2%E6%95%B0%E6%8D%AE%E6%B8%85%E7%90%86%E6%93%8D%E4%BD%9C%E6%96%B9%E6%A1%88.html" class="btn btn-neutral float-right" title="1.4 zabbix监控历史数据清理操作方案" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="p01_02-Rabbitmq-%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85.html" class="btn btn-neutral float-left" title="1.2 Rabbitmq 入门(集群安装篇)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; 版权所有 2020, Architectang
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

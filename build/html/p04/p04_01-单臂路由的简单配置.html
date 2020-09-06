@@ -1,0 +1,381 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>4.1 单臂路由的简单配置 &mdash; ArchitecTang’Blog 2.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="第五章 安全相关" href="../chapters/p05.html" />
+    <link rel="prev" title="第四章 网络相关" href="../chapters/p04.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> ArchitecTang’Blog
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../preface.html">前言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p01.html">第一章 Linux 使用笔记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p02.html">第二章 Python 学习笔记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p03.html">第三章 微服务入门</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../chapters/p04.html">第四章 网络相关</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.1 单臂路由的简单配置</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">4.1.1 操作步骤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">4.1.2 测试</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">4.1.3 参数说明</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p05.html">第五章 安全相关</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p06.html">第六章 shell脚本学习笔记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p07.html">第七章 开发工具</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p08.html">第八章 数据库学习笔记</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ArchitecTang’Blog</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../chapters/p04.html">第四章 网络相关</a> &raquo;</li>
+        
+      <li>4.1 单臂路由的简单配置</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/p04/p04_01-单臂路由的简单配置.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="contents topic" id="id1">
+<p class="topic-title">目录</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#id2" id="id9">4.1 单臂路由的简单配置</a></p>
+<ul>
+<li><p><a class="reference internal" href="#id3" id="id10">4.1.1 操作步骤</a></p></li>
+<li><p><a class="reference internal" href="#id4" id="id11">4.1.2 测试</a></p></li>
+<li><p><a class="reference internal" href="#id5" id="id12">4.1.3 参数说明</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h1><a class="toc-backref" href="#id9">4.1 单臂路由的简单配置</a><a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h1>
+<div class="figure align-default" id="id6">
+<img alt="拓扑图.png" src="https://i.loli.net/2019/10/06/TYtEyg9u7UbvNHn.png" />
+<p class="caption"><span class="caption-text">拓扑图</span><a class="headerlink" href="#id6" title="永久链接至图片">¶</a></p>
+</div>
+<div class="section" id="id3">
+<h2><a class="toc-backref" href="#id10">4.1.1 操作步骤</a><a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>路由器配置：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Router</span><span class="o">&gt;</span><span class="n">en</span>
+<span class="n">Router</span><span class="c1">#config t</span>
+<span class="n">Enter</span> <span class="n">configuration</span> <span class="n">commands</span><span class="p">,</span> <span class="n">one</span> <span class="n">per</span> <span class="n">line</span><span class="o">.</span> <span class="n">End</span> <span class="k">with</span> <span class="n">CNTL</span><span class="o">/</span><span class="n">Z</span><span class="o">.</span>
+<span class="n">Router</span><span class="p">(</span><span class="n">config</span><span class="p">)</span><span class="c1">#no ip domain-lookup</span>
+<span class="n">Router</span><span class="p">(</span><span class="n">config</span><span class="p">)</span><span class="c1">#line console 0</span>
+<span class="n">Router</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="n">line</span><span class="p">)</span><span class="c1">#exec-timeout 0 0</span>
+<span class="n">Router</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="n">line</span><span class="p">)</span><span class="c1">#logging synchronous</span>
+<span class="n">Router</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="n">line</span><span class="p">)</span><span class="c1">#exit</span>
+<span class="n">Router</span><span class="p">(</span><span class="n">config</span><span class="p">)</span><span class="c1">#int f0/0.1</span>
+<span class="n">Router</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="n">subif</span><span class="p">)</span><span class="c1">#encapsulation dot1Q 20</span>
+<span class="n">Router</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="n">subif</span><span class="p">)</span><span class="c1">#ip address 192.168.10.1 255.255.255.0</span>
+<span class="n">Router</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="n">subif</span><span class="p">)</span><span class="c1">#no shutdown</span>
+<span class="n">Router</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="n">subif</span><span class="p">)</span><span class="c1">#exit</span>
+<span class="n">Router</span><span class="p">(</span><span class="n">config</span><span class="p">)</span><span class="c1">#int f0/0.2</span>
+<span class="n">Router</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="n">subif</span><span class="p">)</span><span class="c1">#encapsulation dot1Q 10</span>
+<span class="n">Router</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="n">subif</span><span class="p">)</span><span class="c1">#ip address 172.18.74.1 255.255.255.0</span>
+<span class="n">Router</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="n">subif</span><span class="p">)</span><span class="c1">#no shutdown</span>
+<span class="n">Router</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="n">subif</span><span class="p">)</span><span class="c1">#int f0/0</span>
+<span class="n">Router</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="k">if</span><span class="p">)</span><span class="c1">#no shut</span>
+
+<span class="n">Router</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="k">if</span><span class="p">)</span><span class="c1">#</span>
+<span class="o">%</span><span class="n">LINK</span><span class="o">-</span><span class="mi">5</span><span class="o">-</span><span class="n">CHANGED</span><span class="p">:</span> <span class="n">Interface</span> <span class="n">FastEthernet0</span><span class="o">/</span><span class="mi">0</span><span class="p">,</span> <span class="n">changed</span> <span class="n">state</span> <span class="n">to</span> <span class="n">up</span>
+
+<span class="o">%</span><span class="n">LINEPROTO</span><span class="o">-</span><span class="mi">5</span><span class="o">-</span><span class="n">UPDOWN</span><span class="p">:</span> <span class="n">Line</span> <span class="n">protocol</span> <span class="n">on</span> <span class="n">Interface</span> <span class="n">FastEthernet0</span><span class="o">/</span><span class="mi">0</span><span class="p">,</span> <span class="n">changed</span> <span class="n">state</span> <span class="n">to</span> <span class="n">up</span>
+
+<span class="o">%</span><span class="n">LINK</span><span class="o">-</span><span class="mi">5</span><span class="o">-</span><span class="n">CHANGED</span><span class="p">:</span> <span class="n">Interface</span> <span class="n">FastEthernet0</span><span class="o">/</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">changed</span> <span class="n">state</span> <span class="n">to</span> <span class="n">up</span>
+
+<span class="o">%</span><span class="n">LINEPROTO</span><span class="o">-</span><span class="mi">5</span><span class="o">-</span><span class="n">UPDOWN</span><span class="p">:</span> <span class="n">Line</span> <span class="n">protocol</span> <span class="n">on</span> <span class="n">Interface</span> <span class="n">FastEthernet0</span><span class="o">/</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">changed</span> <span class="n">state</span> <span class="n">to</span> <span class="n">up</span>
+
+<span class="o">%</span><span class="n">LINK</span><span class="o">-</span><span class="mi">5</span><span class="o">-</span><span class="n">CHANGED</span><span class="p">:</span> <span class="n">Interface</span> <span class="n">FastEthernet0</span><span class="o">/</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">changed</span> <span class="n">state</span> <span class="n">to</span> <span class="n">up</span>
+
+<span class="o">%</span><span class="n">LINEPROTO</span><span class="o">-</span><span class="mi">5</span><span class="o">-</span><span class="n">UPDOWN</span><span class="p">:</span> <span class="n">Line</span> <span class="n">protocol</span> <span class="n">on</span> <span class="n">Interface</span> <span class="n">FastEthernet0</span><span class="o">/</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">changed</span> <span class="n">state</span> <span class="n">to</span> <span class="n">up</span>
+
+<span class="n">Router</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="k">if</span><span class="p">)</span><span class="c1">#</span>
+</pre></div>
+</div>
+<p>SwitchA 配置：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SwitchA</span><span class="o">&gt;</span><span class="n">en</span>
+<span class="n">SwitchA</span><span class="c1">#config t</span>
+<span class="n">Enter</span> <span class="n">configuration</span> <span class="n">commands</span><span class="p">,</span> <span class="n">one</span> <span class="n">per</span> <span class="n">line</span><span class="o">.</span> <span class="n">End</span> <span class="k">with</span> <span class="n">CNTL</span><span class="o">/</span><span class="n">Z</span><span class="o">.</span>
+<span class="n">SwitchA</span><span class="p">(</span><span class="n">config</span><span class="p">)</span><span class="c1">#no ip domain-lookup</span>
+<span class="n">SwitchA</span><span class="p">(</span><span class="n">config</span><span class="p">)</span><span class="c1">#line console 0</span>
+<span class="n">SwitchA</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="n">line</span><span class="p">)</span><span class="c1">#exec-timeout 0 0</span>
+<span class="n">SwitchA</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="n">line</span><span class="p">)</span><span class="c1">#logging synchronous</span>
+<span class="n">SwitchA</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="n">line</span><span class="p">)</span><span class="c1">#exit</span>
+<span class="n">SwitchA</span><span class="p">(</span><span class="n">config</span><span class="p">)</span><span class="c1">#int f0/1</span>
+<span class="n">SwitchA</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="k">if</span><span class="p">)</span><span class="c1">#switchport mode trunk</span>
+
+<span class="n">SwitchA</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="k">if</span><span class="p">)</span><span class="c1">#</span>
+<span class="o">%</span><span class="n">LINEPROTO</span><span class="o">-</span><span class="mi">5</span><span class="o">-</span><span class="n">UPDOWN</span><span class="p">:</span> <span class="n">Line</span> <span class="n">protocol</span> <span class="n">on</span> <span class="n">Interface</span> <span class="n">FastEthernet0</span><span class="o">/</span><span class="mi">1</span><span class="p">,</span> <span class="n">changed</span> <span class="n">state</span> <span class="n">to</span> <span class="n">down</span>
+
+<span class="o">%</span><span class="n">LINEPROTO</span><span class="o">-</span><span class="mi">5</span><span class="o">-</span><span class="n">UPDOWN</span><span class="p">:</span> <span class="n">Line</span> <span class="n">protocol</span> <span class="n">on</span> <span class="n">Interface</span> <span class="n">FastEthernet0</span><span class="o">/</span><span class="mi">1</span><span class="p">,</span> <span class="n">changed</span> <span class="n">state</span> <span class="n">to</span> <span class="n">up</span>
+
+<span class="n">SwitchA</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="k">if</span><span class="p">)</span><span class="c1">#exit</span>
+<span class="n">SwitchA</span><span class="p">(</span><span class="n">config</span><span class="p">)</span><span class="c1">#int f0/2</span>
+<span class="n">SwitchA</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="k">if</span><span class="p">)</span><span class="c1">#switchport mode trunk</span>
+
+<span class="n">SwitchA</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="k">if</span><span class="p">)</span><span class="c1">#</span>
+<span class="o">%</span><span class="n">LINEPROTO</span><span class="o">-</span><span class="mi">5</span><span class="o">-</span><span class="n">UPDOWN</span><span class="p">:</span> <span class="n">Line</span> <span class="n">protocol</span> <span class="n">on</span> <span class="n">Interface</span> <span class="n">FastEthernet0</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">changed</span> <span class="n">state</span> <span class="n">to</span> <span class="n">down</span>
+
+<span class="o">%</span><span class="n">LINEPROTO</span><span class="o">-</span><span class="mi">5</span><span class="o">-</span><span class="n">UPDOWN</span><span class="p">:</span> <span class="n">Line</span> <span class="n">protocol</span> <span class="n">on</span> <span class="n">Interface</span> <span class="n">FastEthernet0</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">changed</span> <span class="n">state</span> <span class="n">to</span> <span class="n">up</span>
+
+<span class="n">SwitchA</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="k">if</span><span class="p">)</span><span class="c1">#exit</span>
+<span class="n">SwitchA</span><span class="p">(</span><span class="n">config</span><span class="p">)</span><span class="c1">#vlan 10</span>
+<span class="n">SwitchA</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="n">vlan</span><span class="p">)</span><span class="c1">#exit</span>
+<span class="n">SwitchA</span><span class="p">(</span><span class="n">config</span><span class="p">)</span><span class="c1">#vlan 20</span>
+<span class="n">SwitchA</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="n">vlan</span><span class="p">)</span><span class="c1">#exit</span>
+<span class="n">SwitchA</span><span class="p">(</span><span class="n">config</span><span class="p">)</span><span class="c1">#int f0/3</span>
+<span class="n">SwitchA</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="k">if</span><span class="p">)</span><span class="c1">#switchport access vlan 10</span>
+<span class="n">SwitchA</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="k">if</span><span class="p">)</span><span class="c1">#exit</span>
+<span class="n">SwitchA</span><span class="p">(</span><span class="n">config</span><span class="p">)</span><span class="c1">#int f0/4</span>
+<span class="n">SwitchA</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="k">if</span><span class="p">)</span><span class="c1">#switchport access vlan 20</span>
+<span class="n">SwitchA</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="k">if</span><span class="p">)</span><span class="c1">#</span>
+</pre></div>
+</div>
+<p>SwitchB 配置:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SwitchB</span><span class="o">&gt;</span><span class="n">en</span>
+<span class="n">SwitchB</span><span class="c1">#config t</span>
+<span class="n">Enter</span> <span class="n">configuration</span> <span class="n">commands</span><span class="p">,</span> <span class="n">one</span> <span class="n">per</span> <span class="n">line</span><span class="o">.</span> <span class="n">End</span> <span class="k">with</span> <span class="n">CNTL</span><span class="o">/</span><span class="n">Z</span><span class="o">.</span>
+<span class="n">SwitchB</span><span class="p">(</span><span class="n">config</span><span class="p">)</span><span class="c1">#line console 0</span>
+<span class="n">SwitchB</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="n">line</span><span class="p">)</span><span class="c1">#exec-timeout 0 0</span>
+<span class="n">SwitchB</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="n">line</span><span class="p">)</span><span class="c1">#logging synchronous</span>
+<span class="n">SwitchB</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="n">line</span><span class="p">)</span><span class="c1">#exit</span>
+<span class="n">SwitchB</span><span class="p">(</span><span class="n">config</span><span class="p">)</span><span class="c1">#no ip domain-lookup</span>
+<span class="n">SwitchB</span><span class="p">(</span><span class="n">config</span><span class="p">)</span><span class="c1">#int f0/1</span>
+<span class="n">SwitchB</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="k">if</span><span class="p">)</span><span class="c1">#switchport mode trunk</span>
+<span class="n">SwitchB</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="k">if</span><span class="p">)</span><span class="c1">#exit</span>
+<span class="n">SwitchB</span><span class="p">(</span><span class="n">config</span><span class="p">)</span><span class="c1">#vlan 10</span>
+<span class="n">SwitchB</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="n">vlan</span><span class="p">)</span><span class="c1">#exit</span>
+<span class="n">SwitchB</span><span class="p">(</span><span class="n">config</span><span class="p">)</span><span class="c1">#vlan 20</span>
+<span class="n">SwitchB</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="n">vlan</span><span class="p">)</span><span class="c1">#exit</span>
+<span class="n">SwitchB</span><span class="p">(</span><span class="n">config</span><span class="p">)</span><span class="c1">#int f0/2</span>
+<span class="n">SwitchB</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="k">if</span><span class="p">)</span><span class="c1">#switchport access vlan 10</span>
+<span class="n">SwitchB</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="k">if</span><span class="p">)</span><span class="c1">#exit</span>
+<span class="n">SwitchB</span><span class="p">(</span><span class="n">config</span><span class="p">)</span><span class="c1">#int f0/3</span>
+<span class="n">SwitchB</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="k">if</span><span class="p">)</span><span class="c1">#switchport access vlan 20</span>
+<span class="n">SwitchB</span><span class="p">(</span><span class="n">config</span><span class="o">-</span><span class="k">if</span><span class="p">)</span><span class="c1">#</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h2><a class="toc-backref" href="#id11">4.1.2 测试</a><a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<p>在PC3 ping PC0、1、2</p>
+<div class="figure align-default" id="id7">
+<img alt="PC0.png" src="https://i.loli.net/2019/10/06/mysGUiRHXrfPjb5.png" />
+<p class="caption"><span class="caption-text">PC0</span><a class="headerlink" href="#id7" title="永久链接至图片">¶</a></p>
+</div>
+<p>在PC0 ping pc1、2、3</p>
+<div class="figure align-default" id="id8">
+<img alt="PC3.png" src="https://i.loli.net/2019/10/06/CLRnMmxcWJvqyAp.png" />
+<p class="caption"><span class="caption-text">PC3</span><a class="headerlink" href="#id8" title="永久链接至图片">¶</a></p>
+</div>
+</div>
+<div class="section" id="id5">
+<h2><a class="toc-backref" href="#id12">4.1.3 参数说明</a><a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>config t   进入全局配置模式
+no ip domain-lookup   禁用DNS查找功能
+line console 0  进入console #配置模式
+exec-timeout 0 0 配置控制台会话永不超时
+logging synchronous  配置控制台输出日志同步
+int f0/0.1 进入子接口
+encapsulation dot1Q 20  设置该接口的封装模式为802.1q，并配置vlan20服务
+ip address 192.168.10.1 255.255.255.0 配置IP地址和子网掩码
+no shutdown  开启子接口
+switchport mode trunk 把端口设置为trunk模式
+vlan 10 创建vlan10
+switchport access vlan 10 把端口加入到vlan当中
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../chapters/p05.html" class="btn btn-neutral float-right" title="第五章 安全相关" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../chapters/p04.html" class="btn btn-neutral float-left" title="第四章 网络相关" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; 版权所有 2020, Architectang
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
