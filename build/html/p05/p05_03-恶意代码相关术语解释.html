@@ -1,0 +1,374 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>5.3 恶意代码相关术语解释 &mdash; ArchitecTang’Blog 2.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="第六章 shell 笔记" href="../chapters/p06.html" />
+    <link rel="prev" title="5.2 系统蜜罐opencanary部署" href="p05_02-%E7%B3%BB%E7%BB%9F%E8%9C%9C%E7%BD%90opencanary%E9%83%A8%E7%BD%B2.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> ArchitecTang’Blog
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../preface.html">前言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p01.html">第一章 Linux 笔记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p02.html">第二章 Python 笔记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p03.html">第三章 微服务笔记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p04.html">第四章 网络相关笔记</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../chapters/p05.html">第五章 安全相关笔记</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="p05_01-BetterBackdoor_%E5%A4%9A%E5%8A%9F%E8%83%BD%E5%90%8E%E9%97%A8%E5%B7%A5%E5%85%B7.html">5.1 BetterBackdoor 多功能后门工具</a></li>
+<li class="toctree-l2"><a class="reference internal" href="p05_02-%E7%B3%BB%E7%BB%9F%E8%9C%9C%E7%BD%90opencanary%E9%83%A8%E7%BD%B2.html">5.2 系统蜜罐opencanary部署</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5.3 恶意代码相关术语解释</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">5.3.1 什么是信息系统、漏洞、恶意代码?</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id4">信息系统</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">漏洞</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">恶意代码</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trojan-horse">特洛伊木马（Trojan Horse）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bot">僵尸程序（Bot）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#worm">蠕虫（Worm）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#virus">病毒（Virus）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">5.3.2 其它</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id8">僵尸网络</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id9">拒绝服务攻击</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id10">网页篡改</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id11">网页仿冒</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id12">网页挂马</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id13">网站后门</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id14">垃圾邮件</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id15">域名劫持</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id16">非授权访问</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id17">路由劫持</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p06.html">第六章 shell 笔记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p07.html">第七章 工具相关</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p08.html">第八章 数据库相关笔记</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ArchitecTang’Blog</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../chapters/p05.html">第五章 安全相关笔记</a> &raquo;</li>
+        
+      <li>5.3 恶意代码相关术语解释</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/p05/p05_03-恶意代码相关术语解释.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="contents topic" id="id1">
+<p class="topic-title">目录</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#id2" id="id18">5.3 恶意代码相关术语解释</a></p>
+<ul>
+<li><p><a class="reference internal" href="#id3" id="id19">5.3.1 什么是信息系统、漏洞、恶意代码?</a></p>
+<ul>
+<li><p><a class="reference internal" href="#id4" id="id20">信息系统</a></p></li>
+<li><p><a class="reference internal" href="#id5" id="id21">漏洞</a></p></li>
+<li><p><a class="reference internal" href="#id6" id="id22">恶意代码</a></p></li>
+<li><p><a class="reference internal" href="#trojan-horse" id="id23">特洛伊木马（Trojan Horse）</a></p></li>
+<li><p><a class="reference internal" href="#bot" id="id24">僵尸程序（Bot）</a></p></li>
+<li><p><a class="reference internal" href="#worm" id="id25">蠕虫（Worm）</a></p></li>
+<li><p><a class="reference internal" href="#virus" id="id26">病毒（Virus）</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#id7" id="id27">5.3.2 其它</a></p>
+<ul>
+<li><p><a class="reference internal" href="#id8" id="id28">僵尸网络</a></p></li>
+<li><p><a class="reference internal" href="#id9" id="id29">拒绝服务攻击</a></p></li>
+<li><p><a class="reference internal" href="#id10" id="id30">网页篡改</a></p></li>
+<li><p><a class="reference internal" href="#id11" id="id31">网页仿冒</a></p></li>
+<li><p><a class="reference internal" href="#id12" id="id32">网页挂马</a></p></li>
+<li><p><a class="reference internal" href="#id13" id="id33">网站后门</a></p></li>
+<li><p><a class="reference internal" href="#id14" id="id34">垃圾邮件</a></p></li>
+<li><p><a class="reference internal" href="#id15" id="id35">域名劫持</a></p></li>
+<li><p><a class="reference internal" href="#id16" id="id36">非授权访问</a></p></li>
+<li><p><a class="reference internal" href="#id17" id="id37">路由劫持</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h1><a class="toc-backref" href="#id18">5.3 恶意代码相关术语解释</a><a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id3">
+<h2><a class="toc-backref" href="#id19">5.3.1 什么是信息系统、漏洞、恶意代码?</a><a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id4">
+<h3><a class="toc-backref" href="#id20">信息系统</a><a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<p>信息系统是指由计算机硬件、软件、网络和通信设备等组成的以处理信息和数据为目的的系统。</p>
+</div>
+<div class="section" id="id5">
+<h3><a class="toc-backref" href="#id21">漏洞</a><a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<p>漏洞是指信息系统中的软件、硬件或通信协议中存在缺陷或不适当的配置，从而可使攻击者在未授权的情况下访问或破坏系统，导致信息系统面临安全风险。</p>
+</div>
+<div class="section" id="id6">
+<h3><a class="toc-backref" href="#id22">恶意代码</a><a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<p>恶意代码是指在未经授权的情况下，在信息系统中安装、执行以达到不正当目的的程序。恶意代码分类说明如下：</p>
+</div>
+<div class="section" id="trojan-horse">
+<h3><a class="toc-backref" href="#id23">特洛伊木马（Trojan Horse）</a><a class="headerlink" href="#trojan-horse" title="永久链接至标题">¶</a></h3>
+<p>特洛伊木马（简称木马）是以盗取用户个人信息，甚至是远程控制用户计算机为主要目的的恶意代码。由于它像间谍一样潜入用户的电脑，与战争中的“木马”战术十分相似，因而得名木马。按照功能，木马程序可进一步分为：盗号木马7、网银木马8、窃密木马9、远程控制木马10、流量劫持木马11、下载者木马12和其它木马六类。</p>
+<p>注：盗号木马是用于窃取用户电子邮箱、网络游戏等账号的木马。
+注8：网银木马是用于窃取用户网银、证券等账号的木马。
+注9：窃密木马是用于窃取用户主机中敏感文件或数据的木马。
+注10：远程控制木马是以不正当手段获得主机管理员权限，并能够通过网络操控用户主机的木马。
+注11：流量劫持木马是用于劫持用户网络浏览的流量到攻击者指定站点的木马。
+注12：下载者木马是用于下载更多恶意代码到用户主机并运行，以进一步操控用户主机的木马。</p>
+</div>
+<div class="section" id="bot">
+<h3><a class="toc-backref" href="#id24">僵尸程序（Bot）</a><a class="headerlink" href="#bot" title="永久链接至标题">¶</a></h3>
+<p>僵尸程序是用于构建大规模攻击平台的恶意代码。按照使用的通信协议，僵尸程序可进一步分为：IRC僵尸程序、Http僵尸程序、P2P僵尸程序和其它僵尸程序四类。</p>
+</div>
+<div class="section" id="worm">
+<h3><a class="toc-backref" href="#id25">蠕虫（Worm）</a><a class="headerlink" href="#worm" title="永久链接至标题">¶</a></h3>
+<p>蠕虫是指能自我复制和广泛传播，以占用系统和网络资源为主要目的的恶意代码。按照传播途径，蠕虫可进一步分为：邮件蠕虫、即时消息蠕虫、U盘蠕虫、漏洞利用蠕虫和其它蠕虫五类。</p>
+</div>
+<div class="section" id="virus">
+<h3><a class="toc-backref" href="#id26">病毒（Virus）</a><a class="headerlink" href="#virus" title="永久链接至标题">¶</a></h3>
+<p>病毒是通过感染计算机文件进行传播，以破坏或篡改用户数据，影响信息系统正常运行为主要目的恶意代码。</p>
+</div>
+</div>
+<div class="section" id="id7">
+<h2><a class="toc-backref" href="#id27">5.3.2 其它</a><a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h2>
+<p>上述分类未包含的其它恶意代码。
+随着黑客地下产业链的发展，互联网上出现的一些恶意代码还具有上述分类中的多重功能属性和技术特点，并不断发展。对此，我们将按照恶意代码的主要用途参照上述定义进行归类。</p>
+<div class="section" id="id8">
+<h3><a class="toc-backref" href="#id28">僵尸网络</a><a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h3>
+<p>僵尸网络是被黑客集中控制的计算机群，其核心特点是黑客能够通过一对多的命令与控制信道操纵感染木马或僵尸程序的主机执行相同的恶意行为，如可同时对某目标网站进行分布式拒绝服务攻击，或发送大量的垃圾邮件等。</p>
+</div>
+<div class="section" id="id9">
+<h3><a class="toc-backref" href="#id29">拒绝服务攻击</a><a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h3>
+<p>拒绝服务攻击是向某一目标信息系统发送密集的攻击包，或执行特定攻击操作，以期致使目标系统停止提供服务。</p>
+</div>
+<div class="section" id="id10">
+<h3><a class="toc-backref" href="#id30">网页篡改</a><a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h3>
+<p>网页篡改是恶意破坏或更改网页内容，使网站无法正常工作或出现黑客插入的非正常网页内容。</p>
+</div>
+<div class="section" id="id11">
+<h3><a class="toc-backref" href="#id31">网页仿冒</a><a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h3>
+<p>网页仿冒是通过构造与某一目标网站高度相似的页面（俗称钓鱼网站），并通常以垃圾邮件、即时聊天、手机短信或网页虚假广告等方式发送声称来自于被仿冒机构的欺骗性消息，诱骗用户访问钓鱼网站，以获取用户个人秘密信息（如银行帐号和帐户密码）。</p>
+</div>
+<div class="section" id="id12">
+<h3><a class="toc-backref" href="#id32">网页挂马</a><a class="headerlink" href="#id12" title="永久链接至标题">¶</a></h3>
+<p>网页挂马是通过在网页中嵌入恶意代码或链接，致使用户计算机在访问该页面时被植入恶意代码。</p>
+</div>
+<div class="section" id="id13">
+<h3><a class="toc-backref" href="#id33">网站后门</a><a class="headerlink" href="#id13" title="永久链接至标题">¶</a></h3>
+<p>网站后门事件是指黑客在网站的特定目录中上传远程控制页面从而能够通过该页面秘密远程控制网站服务器的攻击事件。</p>
+</div>
+<div class="section" id="id14">
+<h3><a class="toc-backref" href="#id34">垃圾邮件</a><a class="headerlink" href="#id14" title="永久链接至标题">¶</a></h3>
+<p>垃圾邮件是将不需要的消息（通常是未经请求的广告）发送给众多收件人。包括：</p>
+<p>（一）收件人事先没有提出要求或者同意接收的广告、电子刊物、各种形式的宣传品等宣传性的电子邮件；</p>
+<p>（二）收件人无法拒收的电子邮件；</p>
+<p>（三）隐藏发件人身份、地址、标题等信息的电子邮件；</p>
+<p>（四）含有虚假的信息源、发件人、路由等信息的电子邮件。</p>
+</div>
+<div class="section" id="id15">
+<h3><a class="toc-backref" href="#id35">域名劫持</a><a class="headerlink" href="#id15" title="永久链接至标题">¶</a></h3>
+<p>域名劫持是通过拦截域名解析请求或篡改域名服务器上的数据，使得用户在访问相关域名时返回虚假IP地址或使用户的请求失败。</p>
+</div>
+<div class="section" id="id16">
+<h3><a class="toc-backref" href="#id36">非授权访问</a><a class="headerlink" href="#id16" title="永久链接至标题">¶</a></h3>
+<p>非授权访问是没有访问权限的用户以非正当的手段访问数据信息。非授权访问事件一般发生在存在漏洞的信息系统中，黑客利用专门的漏洞利用程序（Exploit）来获取信息系统访问权限。</p>
+</div>
+<div class="section" id="id17">
+<h3><a class="toc-backref" href="#id37">路由劫持</a><a class="headerlink" href="#id17" title="永久链接至标题">¶</a></h3>
+<p>路由劫持是通过欺骗方式更改路由信息，以导致用户无法访问正确的目标，或导致用户的访问流量绕行黑客设定的路径，以达到不正当的目的。</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../chapters/p06.html" class="btn btn-neutral float-right" title="第六章 shell 笔记" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="p05_02-%E7%B3%BB%E7%BB%9F%E8%9C%9C%E7%BD%90opencanary%E9%83%A8%E7%BD%B2.html" class="btn btn-neutral float-left" title="5.2 系统蜜罐opencanary部署" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; 版权所有 2020, Architectang
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
