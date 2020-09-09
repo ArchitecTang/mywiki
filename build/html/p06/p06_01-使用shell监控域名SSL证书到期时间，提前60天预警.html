@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>6.1 使用shell监控域名SSL证书到期时间，提前60天预警 &mdash; ArchitecTang’Blog 2.0 文档</title>
+  <title>6.1 使用shell监控域名SSL证书到期时间 &mdash; ArchitecTang’Blog 2.0 文档</title>
   
 
   
@@ -92,7 +92,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapters/p04.html">第四章 网络相关笔记</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapters/p05.html">第五章 安全相关笔记</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../chapters/p06.html">第六章 shell 笔记</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">6.1 使用shell监控域名SSL证书到期时间，提前60天预警</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">6.1 使用shell监控域名SSL证书到期时间</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#id1">6.1.1 脚本内容</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#zabbix">6.1.2 配置zabbix监控：</a></li>
 </ul>
@@ -149,7 +149,7 @@
         
           <li><a href="../chapters/p06.html">第六章 shell 笔记</a> &raquo;</li>
         
-      <li>6.1 使用shell监控域名SSL证书到期时间，提前60天预警</li>
+      <li>6.1 使用shell监控域名SSL证书到期时间</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -168,9 +168,9 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="shellssl-60">
-<h1>6.1 使用shell监控域名SSL证书到期时间，提前60天预警<a class="headerlink" href="#shellssl-60" title="永久链接至标题">¶</a></h1>
-<p>最近遇到一个因为我们运营的域名太多，在管理过程中出现一个域名证书到期没有及时更换导致网站访问提示不安全的问题，所以需要写一个脚本进行监控，并通过zabbix进行预警，不多说直接上脚本内容：</p>
+  <div class="section" id="shellssl">
+<h1>6.1 使用shell监控域名SSL证书到期时间<a class="headerlink" href="#shellssl" title="永久链接至标题">¶</a></h1>
+<p>最近遇到一个因为我们运营的域名太多，在管理过程中出现一个域名证书到期没有及时更换导致网站访问提示不安全的问题，所以需要写一个脚本对域名的SSL证书进行监控，配合zabbix进行预警(提前60天)，不多说直接上脚本内容：</p>
 <div class="section" id="id1">
 <h2>6.1.1 脚本内容<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#!/bin/bash
