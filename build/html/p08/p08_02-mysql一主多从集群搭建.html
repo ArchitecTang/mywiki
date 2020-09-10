@@ -1,0 +1,576 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>8.2 Mysql 一主多从集群搭建 &mdash; ArchitecTang’Blog 2.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="第九章 大数据相关笔记" href="../chapters/p09.html" />
+    <link rel="prev" title="8.1 Mysql 数据库备份命令" href="p08_01-%E5%A4%87%E4%BB%BDMySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%91%BD%E4%BB%A4.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> ArchitecTang’Blog
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../preface.html">前言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p01.html">第一章 Linux 笔记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p02.html">第二章 Python 笔记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p03.html">第三章 微服务笔记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p04.html">第四章 网络相关笔记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p05.html">第五章 安全相关笔记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p06.html">第六章 shell 笔记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p07.html">第七章 工具相关</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../chapters/p08.html">第八章 数据库相关笔记</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="p08_01-%E5%A4%87%E4%BB%BDMySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%91%BD%E4%BB%A4.html">8.1 Mysql 数据库备份命令</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">8.2 Mysql 一主多从集群搭建</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">8.2.1 主从配置</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">8.2.2 同步状态异常情况处理</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p09.html">第九章 大数据相关笔记</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ArchitecTang’Blog</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../chapters/p08.html">第八章 数据库相关笔记</a> &raquo;</li>
+        
+      <li>8.2 Mysql 一主多从集群搭建</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/p08/p08_02-mysql一主多从集群搭建.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="contents topic" id="id1">
+<p class="topic-title">目录</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#mysql" id="id4">8.2 Mysql 一主多从集群搭建</a></p>
+<ul>
+<li><p><a class="reference internal" href="#id2" id="id5">8.2.1 主从配置</a></p></li>
+<li><p><a class="reference internal" href="#id3" id="id6">8.2.2 同步状态异常情况处理</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="mysql">
+<h1><a class="toc-backref" href="#id4">8.2 Mysql 一主多从集群搭建</a><a class="headerlink" href="#mysql" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id2">
+<h2><a class="toc-backref" href="#id5">8.2.1 主从配置</a><a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>Mysql安装可以使用yum或编译安装<a class="reference external" href="https://architectang.github.io/2018/06/22/Mysql-编译安装/">编译安装可参考</a></p>
+<p>新建以下三台mysql服务器，数据库为编译安装。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>master：192.168.1.105
+slave1：192.168.1.79
+slave2：192.168.1.111
+</pre></div>
+</div>
+<p>（如果是新增从库，需要先在master节点进行锁表，禁止数据写入，然后备份master节点的mysql数据，在slave节点导入备份的mysql数据后，再把master节点的锁表关闭，我这里是新建数据库所以就不做以上操作了）</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>锁表sql
+flush tables with read lock;
+在从库导入数据，slave状态正常以后，再回到master节点解锁
+unlock tables;
+</pre></div>
+</div>
+<p>mysql默认是不允许远程连接的，所以需要打开所有服务器的远程访问权限</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">创建远程访问用户</span>
+<span class="n">grant</span> <span class="nb">all</span> <span class="n">on</span> <span class="o">*.*</span> <span class="n">to</span> <span class="s1">&#39;devsync&#39;</span><span class="o">@</span><span class="s1">&#39;192.168.1.%&#39;</span> <span class="n">identified</span> <span class="n">by</span> <span class="s1">&#39;123456&#39;</span> <span class="k">with</span> <span class="n">grant</span> <span class="n">option</span><span class="p">;</span>
+<span class="n">刷新权限</span>
+<span class="n">flush</span> <span class="n">privileges</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>修改master节点的配置文件</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">vim</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">my</span><span class="o">.</span><span class="n">cnf</span>
+</pre></div>
+</div>
+<p>增加以下内容：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">server</span><span class="o">-</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span>    <span class="c1">#server的唯一标识</span>
+<span class="n">auto_increment_offset</span><span class="o">=</span><span class="mi">1</span> <span class="c1">#自增id起始值</span>
+<span class="n">auto_increment_increment</span><span class="o">=</span><span class="mi">2</span> <span class="c1">#每次自增数字</span>
+
+<span class="n">log</span><span class="o">-</span><span class="nb">bin</span><span class="o">=</span><span class="n">master</span><span class="o">-</span><span class="nb">bin</span>
+<span class="n">max_binlog_size</span><span class="o">=</span><span class="mi">1024</span><span class="n">M</span> <span class="c1">#binlog单文件最大值</span>
+<span class="n">binlog_format</span><span class="o">=</span><span class="n">mixed</span> <span class="c1">#指定mysql的binlog日志的格式，mixed是混合模式</span>
+<span class="n">log</span><span class="o">-</span><span class="nb">bin</span><span class="o">-</span><span class="n">index</span><span class="o">=</span><span class="n">master</span><span class="o">-</span><span class="nb">bin</span><span class="o">.</span><span class="n">index</span>
+<span class="c1">#只同步test数据库(可选配置)</span>
+<span class="c1">#binlog-do-db=test</span>
+<span class="n">replicate</span><span class="o">-</span><span class="n">ignore</span><span class="o">-</span><span class="n">db</span> <span class="o">=</span> <span class="n">mysql</span> <span class="c1">#忽略不同步主从的数据库</span>
+</pre></div>
+</div>
+<p>保存退出后重启master节点的mysql服务</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">restart</span> <span class="n">mysqld</span>
+</pre></div>
+</div>
+<p>查看master的信息</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+-------------------+----------+--------------+------------------+-------------------+</span>
+<span class="o">|</span> <span class="n">File</span>              <span class="o">|</span> <span class="n">Position</span> <span class="o">|</span> <span class="n">Binlog_Do_DB</span> <span class="o">|</span> <span class="n">Binlog_Ignore_DB</span> <span class="o">|</span> <span class="n">Executed_Gtid_Set</span> <span class="o">|</span>
+<span class="o">+-------------------+----------+--------------+------------------+-------------------+</span>
+<span class="o">|</span> <span class="n">master</span><span class="o">-</span><span class="nb">bin</span><span class="o">.</span><span class="mi">000001</span> <span class="o">|</span>  <span class="mi">159</span>     <span class="o">|</span>              <span class="o">|</span>                  <span class="o">|</span>                   <span class="o">|</span>
+<span class="o">+-------------------+----------+--------------+------------------+-------------------+</span>
+<span class="mi">1</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">set</span> <span class="p">(</span><span class="mf">0.00</span> <span class="n">sec</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>到这里，master节点就已经配置完成了</p>
+<p>配置slave节点，修改/etc/my.cnf文件</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">vim</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">my</span><span class="o">.</span><span class="n">cnf</span>
+</pre></div>
+</div>
+<p>在[mysqld]中添加以下内容：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">server</span><span class="o">-</span><span class="nb">id</span><span class="o">=</span><span class="mi">74</span>
+<span class="n">log</span><span class="o">-</span><span class="nb">bin</span><span class="o">=</span><span class="n">master</span><span class="o">-</span><span class="nb">bin</span>
+<span class="n">log</span><span class="o">-</span><span class="nb">bin</span><span class="o">-</span><span class="n">index</span><span class="o">=</span><span class="n">master</span><span class="o">-</span><span class="nb">bin</span><span class="o">.</span><span class="n">index</span>
+</pre></div>
+</div>
+<p>重启slave 节点的mysql数据库</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">restart</span> <span class="n">mysqld</span>
+</pre></div>
+</div>
+<p>连接slave节点的的数据库，配置master节点的信息，开启slave</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">change</span> <span class="n">master</span> <span class="n">to</span>
+<span class="n">master_host</span><span class="o">=</span><span class="s1">&#39;192.168.1.105&#39;</span>
+<span class="p">,</span><span class="n">master_user</span><span class="o">=</span><span class="s1">&#39;devsync&#39;</span>
+<span class="p">,</span><span class="n">master_password</span><span class="o">=</span><span class="s1">&#39;123456&#39;</span>
+<span class="p">,</span><span class="n">master_log_file</span><span class="o">=</span><span class="s1">&#39;master-bin.000001&#39;</span>
+<span class="p">,</span><span class="n">master_log_pos</span><span class="o">=</span><span class="mi">159</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>开启slave</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>start slave；
+</pre></div>
+</div>
+<p>查看slave状态：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mysql</span><span class="o">&gt;</span> <span class="n">show</span> <span class="n">slave</span> <span class="n">status</span> \<span class="n">G</span><span class="p">;</span>
+<span class="o">***************************</span> <span class="mf">1.</span> <span class="n">row</span> <span class="o">***************************</span>
+               <span class="n">Slave_IO_State</span><span class="p">:</span> <span class="n">Waiting</span> <span class="k">for</span> <span class="n">master</span> <span class="n">to</span> <span class="n">send</span> <span class="n">event</span>
+                  <span class="n">Master_Host</span><span class="p">:</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.105</span>
+                  <span class="n">Master_User</span><span class="p">:</span> <span class="n">devsync</span>
+                  <span class="n">Master_Port</span><span class="p">:</span> <span class="mi">3306</span>
+                <span class="n">Connect_Retry</span><span class="p">:</span> <span class="mi">60</span>
+              <span class="n">Master_Log_File</span><span class="p">:</span> <span class="n">master</span><span class="o">-</span><span class="nb">bin</span><span class="o">.</span><span class="mi">000003</span>
+          <span class="n">Read_Master_Log_Pos</span><span class="p">:</span> <span class="mi">5584496</span>
+               <span class="n">Relay_Log_File</span><span class="p">:</span> <span class="n">bogon</span><span class="o">-</span><span class="n">relay</span><span class="o">-</span><span class="nb">bin</span><span class="o">.</span><span class="mi">000002</span>
+                <span class="n">Relay_Log_Pos</span><span class="p">:</span> <span class="mi">5584663</span>
+        <span class="n">Relay_Master_Log_File</span><span class="p">:</span> <span class="n">master</span><span class="o">-</span><span class="nb">bin</span><span class="o">.</span><span class="mi">000003</span>
+             <span class="n">Slave_IO_Running</span><span class="p">:</span> <span class="n">Yes</span>
+            <span class="n">Slave_SQL_Running</span><span class="p">:</span> <span class="n">Yes</span>
+              <span class="n">Replicate_Do_DB</span><span class="p">:</span>
+          <span class="n">Replicate_Ignore_DB</span><span class="p">:</span>
+           <span class="n">Replicate_Do_Table</span><span class="p">:</span>
+       <span class="n">Replicate_Ignore_Table</span><span class="p">:</span>
+      <span class="n">Replicate_Wild_Do_Table</span><span class="p">:</span>
+  <span class="n">Replicate_Wild_Ignore_Table</span><span class="p">:</span>
+                   <span class="n">Last_Errno</span><span class="p">:</span> <span class="mi">0</span>
+                   <span class="n">Last_Error</span><span class="p">:</span>
+                 <span class="n">Skip_Counter</span><span class="p">:</span> <span class="mi">0</span>
+          <span class="n">Exec_Master_Log_Pos</span><span class="p">:</span> <span class="mi">5584496</span>
+              <span class="n">Relay_Log_Space</span><span class="p">:</span> <span class="mi">5584870</span>
+              <span class="n">Until_Condition</span><span class="p">:</span> <span class="kc">None</span>
+               <span class="n">Until_Log_File</span><span class="p">:</span>
+                <span class="n">Until_Log_Pos</span><span class="p">:</span> <span class="mi">0</span>
+           <span class="n">Master_SSL_Allowed</span><span class="p">:</span> <span class="n">No</span>
+           <span class="n">Master_SSL_CA_File</span><span class="p">:</span>
+           <span class="n">Master_SSL_CA_Path</span><span class="p">:</span>
+              <span class="n">Master_SSL_Cert</span><span class="p">:</span>
+            <span class="n">Master_SSL_Cipher</span><span class="p">:</span>
+               <span class="n">Master_SSL_Key</span><span class="p">:</span>
+        <span class="n">Seconds_Behind_Master</span><span class="p">:</span> <span class="mi">0</span>
+<span class="n">Master_SSL_Verify_Server_Cert</span><span class="p">:</span> <span class="n">No</span>
+                <span class="n">Last_IO_Errno</span><span class="p">:</span> <span class="mi">0</span>
+                <span class="n">Last_IO_Error</span><span class="p">:</span>
+               <span class="n">Last_SQL_Errno</span><span class="p">:</span> <span class="mi">0</span>
+               <span class="n">Last_SQL_Error</span><span class="p">:</span>
+  <span class="n">Replicate_Ignore_Server_Ids</span><span class="p">:</span>
+             <span class="n">Master_Server_Id</span><span class="p">:</span> <span class="mi">1</span>
+                  <span class="n">Master_UUID</span><span class="p">:</span> <span class="mi">5</span><span class="n">d8b6583</span><span class="o">-</span><span class="mi">2546</span><span class="o">-</span><span class="mi">11</span><span class="n">ea</span><span class="o">-</span><span class="n">a678</span><span class="o">-</span><span class="mi">000</span><span class="n">c29128652</span>
+             <span class="n">Master_Info_File</span><span class="p">:</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">mysql</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">master</span><span class="o">.</span><span class="n">info</span>
+                    <span class="n">SQL_Delay</span><span class="p">:</span> <span class="mi">0</span>
+          <span class="n">SQL_Remaining_Delay</span><span class="p">:</span> <span class="n">NULL</span>
+      <span class="n">Slave_SQL_Running_State</span><span class="p">:</span> <span class="n">Slave</span> <span class="n">has</span> <span class="n">read</span> <span class="nb">all</span> <span class="n">relay</span> <span class="n">log</span><span class="p">;</span> <span class="n">waiting</span> <span class="k">for</span> <span class="n">more</span> <span class="n">updates</span>
+           <span class="n">Master_Retry_Count</span><span class="p">:</span> <span class="mi">86400</span>
+                  <span class="n">Master_Bind</span><span class="p">:</span>
+      <span class="n">Last_IO_Error_Timestamp</span><span class="p">:</span>
+     <span class="n">Last_SQL_Error_Timestamp</span><span class="p">:</span>
+               <span class="n">Master_SSL_Crl</span><span class="p">:</span>
+           <span class="n">Master_SSL_Crlpath</span><span class="p">:</span>
+           <span class="n">Retrieved_Gtid_Set</span><span class="p">:</span>
+            <span class="n">Executed_Gtid_Set</span><span class="p">:</span>
+                <span class="n">Auto_Position</span><span class="p">:</span> <span class="mi">0</span>
+         <span class="n">Replicate_Rewrite_DB</span><span class="p">:</span>
+                 <span class="n">Channel_Name</span><span class="p">:</span>
+           <span class="n">Master_TLS_Version</span><span class="p">:</span>
+<span class="mi">1</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">set</span> <span class="p">(</span><span class="mf">0.00</span> <span class="n">sec</span><span class="p">)</span>
+
+<span class="n">ERROR</span><span class="p">:</span>
+<span class="n">No</span> <span class="n">query</span> <span class="n">specified</span>
+</pre></div>
+</div>
+<p>特别需要注意的参数是：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Slave_IO_Running: Yes
+Slave_SQL_Running: Yes
+需要全部都为Yes，同步状态才是正常的
+</pre></div>
+</div>
+<p>在另一个slave节点做同样的操作，需要注意server-id不能一样</p>
+<p>主从同步配置 END</p>
+</div>
+<div class="section" id="id3">
+<h2><a class="toc-backref" href="#id6">8.2.2 同步状态异常情况处理</a><a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>Slave_IO_Running:或 Slave_SQL_Running: 为No</p>
+<p>查看slave状态</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mysql</span><span class="o">&gt;</span> <span class="n">show</span> <span class="n">slave</span> <span class="n">status</span> \<span class="n">G</span><span class="p">;</span>
+<span class="o">***************************</span> <span class="mf">1.</span> <span class="n">row</span> <span class="o">***************************</span>
+               <span class="n">Slave_IO_State</span><span class="p">:</span> <span class="n">Waiting</span> <span class="k">for</span> <span class="n">master</span> <span class="n">to</span> <span class="n">send</span> <span class="n">event</span>
+                  <span class="n">Master_Host</span><span class="p">:</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.105</span>
+                  <span class="n">Master_User</span><span class="p">:</span> <span class="n">devsync</span>
+                  <span class="n">Master_Port</span><span class="p">:</span> <span class="mi">3306</span>
+                <span class="n">Connect_Retry</span><span class="p">:</span> <span class="mi">60</span>
+              <span class="n">Master_Log_File</span><span class="p">:</span> <span class="n">master</span><span class="o">-</span><span class="nb">bin</span><span class="o">.</span><span class="mi">000003</span>
+          <span class="n">Read_Master_Log_Pos</span><span class="p">:</span> <span class="mi">5584496</span>
+               <span class="n">Relay_Log_File</span><span class="p">:</span> <span class="n">bogon</span><span class="o">-</span><span class="n">relay</span><span class="o">-</span><span class="nb">bin</span><span class="o">.</span><span class="mi">000002</span>
+                <span class="n">Relay_Log_Pos</span><span class="p">:</span> <span class="mi">5584663</span>
+        <span class="n">Relay_Master_Log_File</span><span class="p">:</span> <span class="n">master</span><span class="o">-</span><span class="nb">bin</span><span class="o">.</span><span class="mi">000003</span>
+             <span class="n">Slave_IO_Running</span><span class="p">:</span> <span class="n">No</span>
+            <span class="n">Slave_SQL_Running</span><span class="p">:</span> <span class="n">Yes</span>
+              <span class="n">Replicate_Do_DB</span><span class="p">:</span>
+          <span class="n">Replicate_Ignore_DB</span><span class="p">:</span>
+           <span class="n">Replicate_Do_Table</span><span class="p">:</span>
+       <span class="n">Replicate_Ignore_Table</span><span class="p">:</span>
+      <span class="n">Replicate_Wild_Do_Table</span><span class="p">:</span>
+  <span class="n">Replicate_Wild_Ignore_Table</span><span class="p">:</span>
+                   <span class="n">Last_Errno</span><span class="p">:</span> <span class="mi">0</span>
+                   <span class="n">Last_Error</span><span class="p">:</span>
+                 <span class="n">Skip_Counter</span><span class="p">:</span> <span class="mi">0</span>
+          <span class="n">Exec_Master_Log_Pos</span><span class="p">:</span> <span class="mi">5584496</span>
+              <span class="n">Relay_Log_Space</span><span class="p">:</span> <span class="mi">5584870</span>
+              <span class="n">Until_Condition</span><span class="p">:</span> <span class="kc">None</span>
+               <span class="n">Until_Log_File</span><span class="p">:</span>
+                <span class="n">Until_Log_Pos</span><span class="p">:</span> <span class="mi">0</span>
+           <span class="n">Master_SSL_Allowed</span><span class="p">:</span> <span class="n">No</span>
+           <span class="n">Master_SSL_CA_File</span><span class="p">:</span>
+           <span class="n">Master_SSL_CA_Path</span><span class="p">:</span>
+              <span class="n">Master_SSL_Cert</span><span class="p">:</span>
+            <span class="n">Master_SSL_Cipher</span><span class="p">:</span>
+               <span class="n">Master_SSL_Key</span><span class="p">:</span>
+        <span class="n">Seconds_Behind_Master</span><span class="p">:</span> <span class="mi">0</span>
+<span class="n">Master_SSL_Verify_Server_Cert</span><span class="p">:</span> <span class="n">No</span>
+                <span class="n">Last_IO_Errno</span><span class="p">:</span> <span class="mi">0</span>
+                <span class="n">Last_IO_Error</span><span class="p">:</span>
+               <span class="n">Last_SQL_Errno</span><span class="p">:</span> <span class="mi">0</span>
+               <span class="n">Last_SQL_Error</span><span class="p">:</span>
+  <span class="n">Replicate_Ignore_Server_Ids</span><span class="p">:</span>
+             <span class="n">Master_Server_Id</span><span class="p">:</span> <span class="mi">1</span>
+                  <span class="n">Master_UUID</span><span class="p">:</span> <span class="mi">5</span><span class="n">d8b6583</span><span class="o">-</span><span class="mi">2546</span><span class="o">-</span><span class="mi">11</span><span class="n">ea</span><span class="o">-</span><span class="n">a678</span><span class="o">-</span><span class="mi">000</span><span class="n">c29128652</span>
+             <span class="n">Master_Info_File</span><span class="p">:</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">mysql</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">master</span><span class="o">.</span><span class="n">info</span>
+                    <span class="n">SQL_Delay</span><span class="p">:</span> <span class="mi">0</span>
+          <span class="n">SQL_Remaining_Delay</span><span class="p">:</span> <span class="n">NULL</span>
+      <span class="n">Slave_SQL_Running_State</span><span class="p">:</span> <span class="n">Slave</span> <span class="n">has</span> <span class="n">read</span> <span class="nb">all</span> <span class="n">relay</span> <span class="n">log</span><span class="p">;</span> <span class="n">waiting</span> <span class="k">for</span> <span class="n">more</span> <span class="n">updates</span>
+           <span class="n">Master_Retry_Count</span><span class="p">:</span> <span class="mi">86400</span>
+                  <span class="n">Master_Bind</span><span class="p">:</span>
+      <span class="n">Last_IO_Error_Timestamp</span><span class="p">:</span>
+     <span class="n">Last_SQL_Error_Timestamp</span><span class="p">:</span>
+               <span class="n">Master_SSL_Crl</span><span class="p">:</span>
+           <span class="n">Master_SSL_Crlpath</span><span class="p">:</span>
+           <span class="n">Retrieved_Gtid_Set</span><span class="p">:</span>
+            <span class="n">Executed_Gtid_Set</span><span class="p">:</span>
+                <span class="n">Auto_Position</span><span class="p">:</span> <span class="mi">0</span>
+         <span class="n">Replicate_Rewrite_DB</span><span class="p">:</span>
+                 <span class="n">Channel_Name</span><span class="p">:</span>
+           <span class="n">Master_TLS_Version</span><span class="p">:</span>
+<span class="mi">1</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">set</span> <span class="p">(</span><span class="mf">0.00</span> <span class="n">sec</span><span class="p">)</span>
+
+<span class="n">ERROR</span><span class="p">:</span>
+<span class="n">No</span> <span class="n">query</span> <span class="n">specified</span>
+</pre></div>
+</div>
+<p>处理过程： 在slave节点操作：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>stop slave；
+</pre></div>
+</div>
+<p>在master节点操作：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mysql</span><span class="o">&gt;</span> <span class="n">show</span> <span class="n">master</span> <span class="n">status</span><span class="p">;</span>
+<span class="o">+-------------------+----------+--------------+------------------+-------------------+</span>
+<span class="o">|</span> <span class="n">File</span>              <span class="o">|</span> <span class="n">Position</span> <span class="o">|</span> <span class="n">Binlog_Do_DB</span> <span class="o">|</span> <span class="n">Binlog_Ignore_DB</span> <span class="o">|</span> <span class="n">Executed_Gtid_Set</span> <span class="o">|</span>
+<span class="o">+-------------------+----------+--------------+------------------+-------------------+</span>
+<span class="o">|</span> <span class="n">master</span><span class="o">-</span><span class="nb">bin</span><span class="o">.</span><span class="mi">000003</span> <span class="o">|</span>  <span class="mi">5584496</span> <span class="o">|</span>              <span class="o">|</span>                  <span class="o">|</span>                   <span class="o">|</span>
+<span class="o">+-------------------+----------+--------------+------------------+-------------------+</span>
+<span class="mi">1</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">set</span> <span class="p">(</span><span class="mf">0.01</span> <span class="n">sec</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>切换到slave节点执行以下sql：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">change</span> <span class="n">master</span> <span class="n">to</span>
+<span class="n">master_host</span><span class="o">=</span><span class="s1">&#39;192.168.1.105&#39;</span><span class="p">,</span>    <span class="c1">#master节点IP</span>
+<span class="n">master_user</span><span class="o">=</span><span class="s1">&#39;devsync&#39;</span><span class="p">,</span>          <span class="c1">#同步账号</span>
+<span class="n">master_password</span><span class="o">=</span><span class="s1">&#39;123456&#39;</span><span class="p">,</span>       <span class="c1">#密码</span>
+<span class="n">master_port</span><span class="o">=</span><span class="mi">3306</span><span class="p">,</span>               <span class="c1">#master节点服务端口</span>
+<span class="n">master_log_file</span><span class="o">=</span><span class="s1">&#39;master-bin.000003&#39;</span><span class="p">,</span>  <span class="c1">#master节点的File</span>
+<span class="n">master_log_pos</span><span class="o">=</span><span class="mi">5584496</span><span class="p">;</span>               <span class="c1"># master节点的Position值</span>
+</pre></div>
+</div>
+<p>启动slave</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>start slave；
+</pre></div>
+</div>
+<p>查看同步状态：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mysql</span><span class="o">&gt;</span> <span class="n">show</span> <span class="n">slave</span> <span class="n">status</span> \<span class="n">G</span><span class="p">;</span>
+<span class="o">***************************</span> <span class="mf">1.</span> <span class="n">row</span> <span class="o">***************************</span>
+               <span class="n">Slave_IO_State</span><span class="p">:</span> <span class="n">Waiting</span> <span class="k">for</span> <span class="n">master</span> <span class="n">to</span> <span class="n">send</span> <span class="n">event</span>
+                  <span class="n">Master_Host</span><span class="p">:</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.105</span>
+                  <span class="n">Master_User</span><span class="p">:</span> <span class="n">devsync</span>
+                  <span class="n">Master_Port</span><span class="p">:</span> <span class="mi">3306</span>
+                <span class="n">Connect_Retry</span><span class="p">:</span> <span class="mi">60</span>
+              <span class="n">Master_Log_File</span><span class="p">:</span> <span class="n">master</span><span class="o">-</span><span class="nb">bin</span><span class="o">.</span><span class="mi">000003</span>
+          <span class="n">Read_Master_Log_Pos</span><span class="p">:</span> <span class="mi">5584496</span>
+               <span class="n">Relay_Log_File</span><span class="p">:</span> <span class="n">bogon</span><span class="o">-</span><span class="n">relay</span><span class="o">-</span><span class="nb">bin</span><span class="o">.</span><span class="mi">000002</span>
+                <span class="n">Relay_Log_Pos</span><span class="p">:</span> <span class="mi">5584663</span>
+        <span class="n">Relay_Master_Log_File</span><span class="p">:</span> <span class="n">master</span><span class="o">-</span><span class="nb">bin</span><span class="o">.</span><span class="mi">000003</span>
+             <span class="n">Slave_IO_Running</span><span class="p">:</span> <span class="n">Yes</span>
+            <span class="n">Slave_SQL_Running</span><span class="p">:</span> <span class="n">Yes</span>
+              <span class="n">Replicate_Do_DB</span><span class="p">:</span>
+          <span class="n">Replicate_Ignore_DB</span><span class="p">:</span>
+           <span class="n">Replicate_Do_Table</span><span class="p">:</span>
+       <span class="n">Replicate_Ignore_Table</span><span class="p">:</span>
+      <span class="n">Replicate_Wild_Do_Table</span><span class="p">:</span>
+  <span class="n">Replicate_Wild_Ignore_Table</span><span class="p">:</span>
+                   <span class="n">Last_Errno</span><span class="p">:</span> <span class="mi">0</span>
+                   <span class="n">Last_Error</span><span class="p">:</span>
+                 <span class="n">Skip_Counter</span><span class="p">:</span> <span class="mi">0</span>
+          <span class="n">Exec_Master_Log_Pos</span><span class="p">:</span> <span class="mi">5584496</span>
+              <span class="n">Relay_Log_Space</span><span class="p">:</span> <span class="mi">5584870</span>
+              <span class="n">Until_Condition</span><span class="p">:</span> <span class="kc">None</span>
+               <span class="n">Until_Log_File</span><span class="p">:</span>
+                <span class="n">Until_Log_Pos</span><span class="p">:</span> <span class="mi">0</span>
+           <span class="n">Master_SSL_Allowed</span><span class="p">:</span> <span class="n">No</span>
+           <span class="n">Master_SSL_CA_File</span><span class="p">:</span>
+           <span class="n">Master_SSL_CA_Path</span><span class="p">:</span>
+              <span class="n">Master_SSL_Cert</span><span class="p">:</span>
+            <span class="n">Master_SSL_Cipher</span><span class="p">:</span>
+               <span class="n">Master_SSL_Key</span><span class="p">:</span>
+        <span class="n">Seconds_Behind_Master</span><span class="p">:</span> <span class="mi">0</span>
+<span class="n">Master_SSL_Verify_Server_Cert</span><span class="p">:</span> <span class="n">No</span>
+                <span class="n">Last_IO_Errno</span><span class="p">:</span> <span class="mi">0</span>
+                <span class="n">Last_IO_Error</span><span class="p">:</span>
+               <span class="n">Last_SQL_Errno</span><span class="p">:</span> <span class="mi">0</span>
+               <span class="n">Last_SQL_Error</span><span class="p">:</span>
+  <span class="n">Replicate_Ignore_Server_Ids</span><span class="p">:</span>
+             <span class="n">Master_Server_Id</span><span class="p">:</span> <span class="mi">1</span>
+                  <span class="n">Master_UUID</span><span class="p">:</span> <span class="mi">5</span><span class="n">d8b6583</span><span class="o">-</span><span class="mi">2546</span><span class="o">-</span><span class="mi">11</span><span class="n">ea</span><span class="o">-</span><span class="n">a678</span><span class="o">-</span><span class="mi">000</span><span class="n">c29128652</span>
+             <span class="n">Master_Info_File</span><span class="p">:</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">mysql</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">master</span><span class="o">.</span><span class="n">info</span>
+                    <span class="n">SQL_Delay</span><span class="p">:</span> <span class="mi">0</span>
+          <span class="n">SQL_Remaining_Delay</span><span class="p">:</span> <span class="n">NULL</span>
+      <span class="n">Slave_SQL_Running_State</span><span class="p">:</span> <span class="n">Slave</span> <span class="n">has</span> <span class="n">read</span> <span class="nb">all</span> <span class="n">relay</span> <span class="n">log</span><span class="p">;</span> <span class="n">waiting</span> <span class="k">for</span> <span class="n">more</span> <span class="n">updates</span>
+           <span class="n">Master_Retry_Count</span><span class="p">:</span> <span class="mi">86400</span>
+                  <span class="n">Master_Bind</span><span class="p">:</span>
+      <span class="n">Last_IO_Error_Timestamp</span><span class="p">:</span>
+     <span class="n">Last_SQL_Error_Timestamp</span><span class="p">:</span>
+               <span class="n">Master_SSL_Crl</span><span class="p">:</span>
+           <span class="n">Master_SSL_Crlpath</span><span class="p">:</span>
+           <span class="n">Retrieved_Gtid_Set</span><span class="p">:</span>
+            <span class="n">Executed_Gtid_Set</span><span class="p">:</span>
+                <span class="n">Auto_Position</span><span class="p">:</span> <span class="mi">0</span>
+         <span class="n">Replicate_Rewrite_DB</span><span class="p">:</span>
+                 <span class="n">Channel_Name</span><span class="p">:</span>
+           <span class="n">Master_TLS_Version</span><span class="p">:</span>
+<span class="mi">1</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">set</span> <span class="p">(</span><span class="mf">0.00</span> <span class="n">sec</span><span class="p">)</span>
+
+<span class="n">ERROR</span><span class="p">:</span>
+<span class="n">No</span> <span class="n">query</span> <span class="n">specified</span>
+</pre></div>
+</div>
+<p>主从同步已经正常</p>
+<p>Slave_IO_Running 或 Slave_SQL_Running: 为Connecting</p>
+<p>可能的原因有：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>1.网络不通
+2.账户密码错误
+3.防火墙没有关闭或放行端口
+4.mysql配置文件异常
+5.连接服务器时语法错误（一般为master节点的IP配置有问题，比较少见）
+6.主服务器mysql权限
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../chapters/p09.html" class="btn btn-neutral float-right" title="第九章 大数据相关笔记" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="p08_01-%E5%A4%87%E4%BB%BDMySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%91%BD%E4%BB%A4.html" class="btn btn-neutral float-left" title="8.1 Mysql 数据库备份命令" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; 版权所有 2020, Architectang
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
