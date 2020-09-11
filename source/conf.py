@@ -20,7 +20,7 @@ import sphinx_rtd_theme
 
 # -- Project information -----------------------------------------------------
 
-project = u'ArchitecTang’Blog'
+project = u'ArchitecTang’Wiki'
 copyright = u'2020, Architectang'
 author = u'Architectang'
 
