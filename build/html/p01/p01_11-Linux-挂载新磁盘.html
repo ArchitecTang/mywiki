@@ -103,6 +103,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#id4">1.11.3 添加新分区</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id5">1.11.4 格式化分区</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id6">1.11.5 挂载新硬盘</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">1.11.6 让系统开机自动挂载这块硬盘</a></li>
 </ul>
 </li>
 </ul>
@@ -185,50 +186,53 @@
   <div class="contents topic" id="id1">
 <p class="topic-title">目录</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#linux" id="id7">1.11 Linux下挂载新磁盘</a></p>
+<li><p><a class="reference internal" href="#linux" id="id8">1.11 Linux下挂载新磁盘</a></p>
 <ul>
-<li><p><a class="reference internal" href="#id2" id="id8">1.11.1 查看现在已有的分区状态</a></p></li>
-<li><p><a class="reference internal" href="#id3" id="id9">1.11.2 查看服务器安装的硬盘状态（包括格式化和未格式化的）</a></p></li>
-<li><p><a class="reference internal" href="#id4" id="id10">1.11.3 添加新分区</a></p></li>
-<li><p><a class="reference internal" href="#id5" id="id11">1.11.4 格式化分区</a></p></li>
-<li><p><a class="reference internal" href="#id6" id="id12">1.11.5 挂载新硬盘</a></p></li>
+<li><p><a class="reference internal" href="#id2" id="id9">1.11.1 查看现在已有的分区状态</a></p></li>
+<li><p><a class="reference internal" href="#id3" id="id10">1.11.2 查看服务器安装的硬盘状态（包括格式化和未格式化的）</a></p></li>
+<li><p><a class="reference internal" href="#id4" id="id11">1.11.3 添加新分区</a></p></li>
+<li><p><a class="reference internal" href="#id5" id="id12">1.11.4 格式化分区</a></p></li>
+<li><p><a class="reference internal" href="#id6" id="id13">1.11.5 挂载新硬盘</a></p></li>
+<li><p><a class="reference internal" href="#id7" id="id14">1.11.6 让系统开机自动挂载这块硬盘</a></p></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="section" id="linux">
-<h1><a class="toc-backref" href="#id7">1.11 Linux下挂载新磁盘</a><a class="headerlink" href="#linux" title="永久链接至标题">¶</a></h1>
+<h1><a class="toc-backref" href="#id8">1.11 Linux下挂载新磁盘</a><a class="headerlink" href="#linux" title="永久链接至标题">¶</a></h1>
 <p>需求：新增加一块硬盘sdb，只分一个区，格式化挂载到/date</p>
 <div class="section" id="id2">
-<h2><a class="toc-backref" href="#id8">1.11.1 查看现在已有的分区状态</a><a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<h2><a class="toc-backref" href="#id9">1.11.1 查看现在已有的分区状态</a><a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
 <p>df -h <img alt="df.png" src="https://i.loli.net/2019/07/12/5d2839079c76674098.png" /></p>
 <p>图中显示没有看到sdb硬盘</p>
 </div>
 <div class="section" id="id3">
-<h2><a class="toc-backref" href="#id9">1.11.2 查看服务器安装的硬盘状态（包括格式化和未格式化的）</a><a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<h2><a class="toc-backref" href="#id10">1.11.2 查看服务器安装的硬盘状态（包括格式化和未格式化的）</a><a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
 <p>fdisk -l <img alt="fdi.png" src="https://i.loli.net/2019/07/12/5d28394e2aac122932.png" /></p>
 <p>图中显示，有sdb硬盘，但是没有分区</p>
 </div>
 <div class="section" id="id4">
-<h2><a class="toc-backref" href="#id10">1.11.3 添加新分区</a><a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<h2><a class="toc-backref" href="#id11">1.11.3 添加新分区</a><a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
 <p>fdisk /dev/sdb <img alt="添加磁盘.png" src="https://i.loli.net/2019/07/12/5d2839759c55d71148.png" /> 按照以下红框输入：</p>
 <p>N 回车 P 回车 1 回车 两次回车 W 回车</p>
 <p>用以下命令查看分区</p>
 <p>fdisk -l <img alt="查看分区.png" src="https://i.loli.net/2019/07/12/5d2839a2251f217270.png" /> 图中红框显示已经多出了一个分区，但是没有格式化</p>
 </div>
 <div class="section" id="id5">
-<h2><a class="toc-backref" href="#id11">1.11.4 格式化分区</a><a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
+<h2><a class="toc-backref" href="#id12">1.11.4 格式化分区</a><a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
 <p>mkfs -t ext4 -c /dev/sdb1 <img alt="格式化分区.png" src="https://i.loli.net/2019/07/12/5d2839d1d5e2079315.png" /> -t
 指定要把磁盘格式化成什么类型</p>
 <p>-c 在建立文件系统之前检查坏道，可能会很费时间，新硬盘一般不需要</p>
 </div>
 <div class="section" id="id6">
-<h2><a class="toc-backref" href="#id12">1.11.5 挂载新硬盘</a><a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h2>
+<h2><a class="toc-backref" href="#id13">1.11.5 挂载新硬盘</a><a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h2>
 <p>在根目录下建一个文件夹，待会将分区挂载在这个文件夹上，以后要往新硬盘存东西，就放在这个新建的文件夹里就可以
 mkdir /data</p>
 <p>挂载硬盘</p>
-<p>mount /dev/sdb1 /data <img alt="挂载磁盘.png" src="https://i.loli.net/2019/07/12/5d2839fbb2c1224987.png" /> ##### 1.11.6
-让系统开机自动挂载这块硬盘</p>
+<p>mount /dev/sdb1 /data <img alt="挂载磁盘.png" src="https://i.loli.net/2019/07/12/5d2839fbb2c1224987.png" /></p>
+</div>
+<div class="section" id="id7">
+<h2><a class="toc-backref" href="#id14">1.11.6 让系统开机自动挂载这块硬盘</a><a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h2>
 <p>echo “/dev/sdb1 /data ext4 defaults 0 0”&gt; /etc/fstab
 <img alt="查看挂载后分区.png" src="https://i.loli.net/2019/07/12/5d283a357c51424911.png" /> —</p>
 </div>

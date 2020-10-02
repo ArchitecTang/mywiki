@@ -48,8 +48,10 @@ mkdir /data
 
 挂载硬盘
 
-mount /dev/sdb1 /data |挂载磁盘.png| ##### 1.11.6
-让系统开机自动挂载这块硬盘
+mount /dev/sdb1 /data |挂载磁盘.png|
+
+1.11.6 让系统开机自动挂载这块硬盘
+---------------------------------
 
 echo “/dev/sdb1 /data ext4 defaults 0 0”> /etc/fstab
 |查看挂载后分区.png| —
