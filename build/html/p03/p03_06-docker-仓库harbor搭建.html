@@ -1,0 +1,397 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>3.6 docker 仓库harbor搭建 &mdash; ArchitecTang’Wiki 2.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="第四章 网络相关笔记" href="../chapters/p04.html" />
+    <link rel="prev" title="第三章 微服务笔记" href="../chapters/p03.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> ArchitecTang’Wiki
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../preface.html">前言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p01.html">第一章 Linux 笔记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p02.html">第二章 Python 笔记</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../chapters/p03.html">第三章 微服务笔记</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3.6 docker 仓库harbor搭建</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">3.6.1 初始化</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id3">3.6.1.1 配置安装源</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#docker-compose">3.6.1.2 安装docker-compose</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#harbor">3.6.2、下载安装harbor，选择自己需要的版本</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id4">3.6.2.1 修改Harbor配置文件，修改服务地址</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#harboradmin-harbor12345">3.6.2.2 修改harbor的默认admin密码（默认密码为Harbor12345）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">3.6.2.3 安装后配置</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">3.6.3 简单使用</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p04.html">第四章 网络相关笔记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p05.html">第五章 安全相关笔记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p06.html">第六章 shell 笔记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p07.html">第七章 工具相关</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/p08.html">第八章 数据库相关笔记</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ArchitecTang’Wiki</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../chapters/p03.html">第三章 微服务笔记</a> &raquo;</li>
+        
+      <li>3.6 docker 仓库harbor搭建</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/p03/p03_06-docker-仓库harbor搭建.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="contents topic" id="id1">
+<p class="topic-title">目录</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#docker-harbor" id="id7">3.6 docker 仓库harbor搭建</a></p>
+<ul>
+<li><p><a class="reference internal" href="#id2" id="id8">3.6.1 初始化</a></p>
+<ul>
+<li><p><a class="reference internal" href="#id3" id="id9">3.6.1.1 配置安装源</a></p></li>
+<li><p><a class="reference internal" href="#docker-compose" id="id10">3.6.1.2 安装docker-compose</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#harbor" id="id11">3.6.2、下载安装harbor，选择自己需要的版本</a></p>
+<ul>
+<li><p><a class="reference internal" href="#id4" id="id12">3.6.2.1 修改Harbor配置文件，修改服务地址</a></p></li>
+<li><p><a class="reference internal" href="#harboradmin-harbor12345" id="id13">3.6.2.2 修改harbor的默认admin密码（默认密码为Harbor12345）</a></p></li>
+<li><p><a class="reference internal" href="#id5" id="id14">3.6.2.3 安装后配置</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#id6" id="id15">3.6.3 简单使用</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="docker-harbor">
+<h1><a class="toc-backref" href="#id7">3.6 docker 仓库harbor搭建</a><a class="headerlink" href="#docker-harbor" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id2">
+<h2><a class="toc-backref" href="#id8">3.6.1 初始化</a><a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>在正式安装harbor之前，需要对OS环境进行初始化，升级OS内核，具体内核升级步骤可以自己了解下</p>
+<div class="section" id="id3">
+<h3><a class="toc-backref" href="#id9">3.6.1.1 配置安装源</a><a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h3>
+<p>因为需要安装相关的以来软件，所以需要安装yum源，安装前先将原先的yum备份</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[root@harbor yum.repos.d]# mv CentOS-Base.repo CentOS-Base.repo.bak
+[root@harbor yum.repos.d]# vim CentOS-Base.repo
+[base]
+name=CentOS-$releasever – Base – 163.com
+#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&amp;arch=$basearch&amp;repo=os
+baseurl=http://mirrors.163.com/centos/$releasever/os/$basearch/
+gpgcheck=1
+gpgkey=http://mirrors.163.com/centos/RPM-GPG-KEY-CentOS-7
+#released updates
+[updates]
+name=CentOS-$releasever – Updates – 163.com
+#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&amp;arch=$basearch&amp;repo=updates
+baseurl=http://mirrors.163.com/centos/$releasever/updates/$basearch/
+gpgcheck=1
+gpgkey=http://mirrors.163.com/centos/RPM-GPG-KEY-CentOS-7
+#additional packages that may be useful
+[extras]
+name=CentOS-$releasever – Extras – 163.com
+#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&amp;arch=$basearch&amp;repo=extras
+baseurl=http://mirrors.163.com/centos/$releasever/extras/$basearch/
+gpgcheck=1
+gpgkey=http://mirrors.163.com/centos/RPM-GPG-KEY-CentOS-7
+#additional packages that extend functionality of existing packages
+[centosplus]
+name=CentOS-$releasever – Plus – 163.com
+baseurl=http://mirrors.163.com/centos/$releasever/centosplus/$basearch/
+gpgcheck=1
+enabled=0
+gpgkey=http://mirrors.163.com/centos/RPM-GPG-KEY-CentOS-7
+</pre></div>
+</div>
+<p><img alt="epel.png" src="https://i.loli.net/2019/07/12/5d2850a00566f24895.png" /> 安装阿里云epel源</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="o">-</span><span class="n">O</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">yum</span><span class="o">.</span><span class="n">repos</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">epel</span><span class="o">.</span><span class="n">repo</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">mirrors</span><span class="o">.</span><span class="n">aliyun</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">repo</span><span class="o">/</span><span class="n">epel</span><span class="o">-</span><span class="mf">7.</span><span class="n">repo</span>
+</pre></div>
+</div>
+<p><img alt="安装epel.png" src="https://i.loli.net/2019/07/12/5d28510e95a7b40843.png" /> 安装docker</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">docker</span>
+</pre></div>
+</div>
+<p>启动docker并查看docker版本 <img alt="安装docker.png" src="https://i.loli.net/2019/07/12/5d2851689228260891.png" /></p>
+</div>
+<div class="section" id="docker-compose">
+<h3><a class="toc-backref" href="#id10">3.6.1.2 安装docker-compose</a><a class="headerlink" href="#docker-compose" title="永久链接至标题">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">certbot</span> <span class="n">libevent</span><span class="o">-</span><span class="n">devel</span> <span class="n">gcc</span> <span class="n">libffi</span><span class="o">-</span><span class="n">devel</span> <span class="n">python</span><span class="o">-</span><span class="n">devel</span> <span class="n">openssl</span><span class="o">-</span><span class="n">devel</span> <span class="n">python2</span><span class="o">-</span><span class="n">pip</span>
+</pre></div>
+</div>
+<p>使用pip的方式进行安装，命令如下</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">U</span> <span class="n">docker</span><span class="o">-</span><span class="n">compose</span>
+</pre></div>
+</div>
+<p><img alt="dockercompose.png" src="https://i.loli.net/2019/07/12/5d2851bd5d99095382.png" /> 查看安装的版本</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="n">version</span>
+</pre></div>
+</div>
+<div class="figure align-default">
+<img alt="查看安装.png" src="https://i.loli.net/2019/07/12/5d2851ed6e9fd60328.png" />
+</div>
+</div>
+</div>
+<div class="section" id="harbor">
+<h2><a class="toc-backref" href="#id11">3.6.2、下载安装harbor，选择自己需要的版本</a><a class="headerlink" href="#harbor" title="永久链接至标题">¶</a></h2>
+<p>官网地址：<a class="reference external" href="http://harbor.orientsoft.cn/">http://harbor.orientsoft.cn/</a> <img alt="Harbor.png" src="https://i.loli.net/2019/07/12/5d2852421d18d60335.png" /></p>
+<div class="section" id="id4">
+<h3><a class="toc-backref" href="#id12">3.6.2.1 修改Harbor配置文件，修改服务地址</a><a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@harbor</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ls</span>
+<span class="n">anaconda</span><span class="o">-</span><span class="n">ks</span><span class="o">.</span><span class="n">cfg</span>  <span class="n">harbor</span><span class="o">-</span><span class="n">offline</span><span class="o">-</span><span class="n">installer</span><span class="o">-</span><span class="n">v1</span><span class="o">.</span><span class="mf">4.0</span><span class="o">.</span><span class="n">tgz</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@harbor</span> <span class="o">~</span><span class="p">]</span><span class="c1"># tar xf harbor-offline-installer-v1.4.0.tgz</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@harbor</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ls</span>
+<span class="n">anaconda</span><span class="o">-</span><span class="n">ks</span><span class="o">.</span><span class="n">cfg</span>  <span class="n">harbor</span>  <span class="n">harbor</span><span class="o">-</span><span class="n">offline</span><span class="o">-</span><span class="n">installer</span><span class="o">-</span><span class="n">v1</span><span class="o">.</span><span class="mf">4.0</span><span class="o">.</span><span class="n">tgz</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@harbor</span> <span class="o">~</span><span class="p">]</span><span class="c1"># mv harbor /usr/local/</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@harbor</span> <span class="o">~</span><span class="p">]</span><span class="c1"># vim harbor.cfg</span>
+</pre></div>
+</div>
+<p>修改hostname为主机的IP（没有域名的情况下） <img alt="修改hostsname.png" src="https://i.loli.net/2019/07/12/5d2852fc2cd6988291.png" /></p>
+</div>
+<div class="section" id="harboradmin-harbor12345">
+<h3><a class="toc-backref" href="#id13">3.6.2.2 修改harbor的默认admin密码（默认密码为Harbor12345）</a><a class="headerlink" href="#harboradmin-harbor12345" title="永久链接至标题">¶</a></h3>
+<div class="figure align-default">
+<img alt="修改Harbor默认密码.png" src="https://i.loli.net/2019/07/12/5d28535b2963447635.png" />
+</div>
+<p>安装harbor <img alt="安装.png" src="https://i.loli.net/2019/07/12/5d2853818460889055.png" />
+步骤一会下载相关的docker镜像，这个过程根据各自的网络情况不同花费的时间也不同，相关的docker镜像如下：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">images</span>
+</pre></div>
+</div>
+<p><img alt="dockerimages.png" src="https://i.loli.net/2019/07/12/5d2853b91656a11429.png" />
+查看容器，可以看到没有Notary与Clair相关服务；也可使用“docker ps”；</p>
+<p>“docker-compose ps”需要在“docker-compose.yml”文件所在目录执行相关操作</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@harbor</span> <span class="n">harbor</span><span class="p">]</span><span class="c1"># docker-compose ps</span>
+</pre></div>
+</div>
+<div class="figure align-default">
+<img alt="dockerps.png" src="https://i.loli.net/2019/07/12/5d2853fe445b964442.png" />
+</div>
+</div>
+<div class="section" id="id5">
+<h3><a class="toc-backref" href="#id14">3.6.2.3 安装后配置</a><a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<p>访问harbor ui
+（注意服务器的防火墙和selinux，可以关闭或者放行相关端口）admin/默认密码
+<img alt="登陆.png" src="https://i.loli.net/2019/07/12/5d28543a3a18690521.png" /> harbor安装完成 <img alt="登陆2.png" src="https://i.loli.net/2019/07/12/5d285467ed7a348734.png" /></p>
+<p>harbor 使用docker login报错的问题 <img alt="登陆报错.png" src="https://i.loli.net/2019/07/12/5d28549b523cf57301.png" />
+从harbor安装文档中可以看到<a class="reference external" href="https://github.com/vmware/harbor/blob/master/docs/installation_guide.md">https://github.com/vmware/harbor/blob/master/docs/installation_guide.md</a>
+<img alt="报错排查.png" src="https://i.loli.net/2019/07/12/5d2854e03c93357954.png" />
+在Harbor主机和客户机都对这个文件进行设置/etc/docker/daemon.json：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span> <span class="s2">&quot;insecure-registries&quot;</span><span class="p">:[</span><span class="s2">&quot;192.168.33.10&quot;</span><span class="p">]</span> <span class="p">}</span>
+</pre></div>
+</div>
+<div class="figure align-default">
+<img alt="报错解决.png" src="https://i.loli.net/2019/07/12/5d28551d6227692895.png" />
+</div>
+</div>
+</div>
+<div class="section" id="id6">
+<h2><a class="toc-backref" href="#id15">3.6.3 简单使用</a><a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h2>
+<p>向harbor上推拉镜象</p>
+<p>给docker.io/tomcat这个镜像打上tag</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@harbor</span> <span class="o">~</span><span class="p">]</span><span class="c1"># docker tag docker.io/tomcat 172.31.8.25/library/tomcat2</span>
+</pre></div>
+</div>
+<p><img alt="镜像推送.png" src="https://i.loli.net/2019/07/12/5d28555f2525562448.png" /> 推送至harbor</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@harbor</span> <span class="o">~</span><span class="p">]</span><span class="c1"># docker push 172.31.8.25/library/tomcat2</span>
+</pre></div>
+</div>
+<div class="figure align-default">
+<img alt="推送.png" src="https://i.loli.net/2019/07/12/5d28558b0c6d544922.png" />
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../chapters/p04.html" class="btn btn-neutral float-right" title="第四章 网络相关笔记" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../chapters/p03.html" class="btn btn-neutral float-left" title="第三章 微服务笔记" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; 版权所有 2020, Architectang
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
